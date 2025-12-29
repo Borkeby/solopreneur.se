@@ -1,0 +1,212 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+
+// Justera sökvägen om din bild ligger i en undermapp under src/assets/images/
+import DanielBorkebyImage from "@/assets/images/DanielBorkeby.png";
+
+const pageTitle = "Om Solopreneur";
+const pageDescription =
+  "Vad Solopreneur är, vem sidan är för och vem som står bakom – med länkar till verktyg, blogg, community och nyhetsbrev.";
+---
+
+<Layout title={`${pageTitle} – Solopreneur`} description={pageDescription}>
+  <Header />
+
+  <main id="main-content">
+    <!-- Hero -->
+    <section class="pt-8 pb-6">
+      <h1 class="so-section-title">Om Solopreneur</h1>
+      <p class="so-section-muted">
+        Solopreneur.se hjälper soloentreprenörer och små tjänstebolag att skapa struktur,
+        lönsamhet och tillväxt. Jag är Daniel Borkeby – entreprenör med mer än 17 års erfarenhet –
+        och här delar jag verktyg, playbooks och råd om företagande, ekonomi och hur man bygger ett företag.
+      </p>
+
+      <ul class="mt-4 list-disc pl-5 text-sm text-foreground/80">
+        <li>Klarspråk och konkreta genomgångar</li>
+        <li>Praktiska flöden som går att använda direkt</li>
+        <li>Struktur och ordning</li>
+      </ul>
+    </section>
+
+    <!-- Snabblänkar -->
+    <section class="pt-2 pb-6">
+      <h2 class="so-section-title">Snabblänkar</h2>
+
+      <div class="mt-4 grid gap-4 sm:grid-cols-3">
+        <!-- Verktyg: ska gå till verktygssidan, inte startsidans ankare -->
+        <a href="/verktyg/" class="so-card so-card-hover block p-5 sm:p-6">
+          <div class="text-lg font-semibold tracking-tight">Verktyg</div>
+          <p class="mt-2 text-sm text-foreground/75">Kalkylatorer, mallar och checklistor</p>
+        </a>
+
+        <a href="/posts/" class="so-card so-card-hover block p-5 sm:p-6">
+          <div class="text-lg font-semibold tracking-tight">Blogg</div>
+          <p class="mt-2 text-sm text-foreground/75">Genomgångar och perspektiv</p>
+        </a>
+
+        <!-- Playbooks: ska peka till playbooks-route -->
+        <a href="/playbooks/" class="so-card so-card-hover block p-5 sm:p-6">
+          <div class="text-lg font-semibold tracking-tight">Playbooks</div>
+          <p class="mt-2 text-sm text-foreground/75">Steg-för-steg guider</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- Vad du får här + Vem det är för -->
+    <section class="pt-2 pb-6">
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div class="so-card p-5 sm:p-6">
+          <h2 class="text-xl font-semibold tracking-tight">Vad du får här</h2>
+          <p class="mt-2 text-sm text-foreground/75">
+            Samlade verktyg, playbooks och guider för att få bättre koll och underlätta ditt företagande –
+            och med fokus på genomförande.
+          </p>
+          <ul class="mt-3 list-disc pl-5 text-sm text-foreground/80">
+            <li>Playbooks för ekonomi, prissättning och lönsamhet</li>
+            <li>Checklistor och mallar som sparar tid</li>
+            <li>Genomgångar som går från strategi till praktik</li>
+          </ul>
+        </div>
+
+        <div class="so-card p-5 sm:p-6">
+          <h2 class="text-xl font-semibold tracking-tight">Vem Solopreneur är för</h2>
+          <ul class="mt-3 list-disc pl-5 text-sm text-foreground/80">
+            <li>Soloföretagare och konsulter som vill växa med kontroll</li>
+            <li>Små tjänstebolag som behöver bättre struktur och uppföljning</li>
+            <li>Du som är intresserad av att starta företag på heltid eller vid sidan av en anställning</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Om Daniel -->
+    <section class="pt-2 pb-6">
+      <!-- Viktigt: so-card ska omsluta både bild + text -->
+      <div class="so-card p-5 sm:p-6">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-6">
+          <!-- Avatar (perfekt rund, aldrig oval) -->
+          <div class="shrink-0">
+            <div
+              class="so-avatar-wrap size-24 sm:size-28 overflow-hidden rounded-full border border-border bg-muted"
+              aria-hidden="true"
+            >
+              <img
+                src={DanielBorkebyImage.src}
+                alt="Daniel Borkeby"
+                class="so-avatar-img h-full w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </div>
+
+          <!-- Text -->
+          <div class="min-w-0 flex-1">
+            <h2 class="text-xl font-semibold tracking-tight">Om Daniel Borkeby</h2>
+
+            <p class="mt-2 text-sm text-foreground/75">
+              Jag är företagsledare, CFO och entreprenör med över 17 års erfarenhet av ekonomi,
+              bolagsstyrning och affärsutveckling. Jag har byggt och drivit bolag inom finans och redovisning,
+              både i team och som soloentreprenör – bland annat Paidin Finans AB och Paidin Redovisning AB –
+              med fokus på tillväxt, struktur och lönsamhet.
+            </p>
+
+            <p class="mt-3 text-sm text-foreground/75">
+              Erfarenhet från både ledningsgrupper och styrelsearbete har gett mig en helhetssyn på företagande:
+              från strategi och beslutsfattande till praktiskt genomförande. Jag trivs med att göra komplexa frågor
+              begripliga och användbara i vardagen.
+            </p>
+
+            <p class="mt-3 text-sm text-foreground/75">
+              Jag har under flera år varit mentor för nystartade företagare, bland annat via Almi.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Börja här -->
+    <section class="pt-2 pb-6">
+      <h2 class="so-section-title">Börja här</h2>
+
+      <div class="mt-4 grid gap-4 sm:grid-cols-2">
+        <a href="/community/" class="so-card so-card-hover block p-5 sm:p-6">
+          <div class="text-lg font-semibold tracking-tight">Community</div>
+          <p class="mt-2 text-sm text-foreground/75">Frågor, erfarenheter och feedback</p>
+        </a>
+
+        <a href="/nyhetsbrev/" class="so-card so-card-hover block p-5 sm:p-6">
+          <div class="text-lg font-semibold tracking-tight">Nyhetsbrev</div>
+          <p class="mt-2 text-sm text-foreground/75">Genomgångar, verktyg och playbooks</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- Sponsring + Kontakt -->
+    <section class="pt-2 pb-10">
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div class="so-card p-5 sm:p-6">
+          <h2 class="text-xl font-semibold tracking-tight">Sponsring och partners</h2>
+          <p class="mt-2 text-sm text-foreground/75">
+            Solopreneur drivs fristående men med erfarenheterna från Paidin i ryggen.
+          </p>
+          <p class="mt-3 text-sm">
+            Paidin Finans:
+            <a
+              class="text-accent underline decoration-dashed underline-offset-4 hover:opacity-90"
+              href="https://paidin.se"
+              target="_blank"
+              rel="noopener"
+            >
+              https://paidin.se
+            </a>
+          </p>
+        </div>
+
+        <div class="so-card p-5 sm:p-6">
+          <h2 class="text-xl font-semibold tracking-tight">Kontakt</h2>
+          <p class="mt-2 text-sm text-foreground/75">
+            Gå med i communityt eller prenumerera på nyhetsbrevet för uppdateringar.
+          </p>
+          <p class="mt-3 text-sm">
+            För samarbeten:
+            <a
+              class="text-accent underline decoration-dashed underline-offset-4 hover:opacity-90"
+              href="mailto:support@paidin.se"
+            >
+              support@paidin.se
+            </a>
+          </p>
+        </div>
+      </div>
+
+      <div class="so-card mt-4 p-5 sm:p-6">
+        <h2 class="text-xl font-semibold tracking-tight">Policy</h2>
+        <p class="mt-2 text-sm text-foreground/75">
+          Integritets- och cookiepolicy finns på:
+          <a
+            class="text-accent underline decoration-dashed underline-offset-4 hover:opacity-90"
+            href="/integritet"
+          >
+            /integritet
+          </a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+
+  <style>
+    /*
+      Finjustering: om du vill "flytta ner" motivet lite i cirkeln utan att kapa toppen
+      så justerar du object-position här. Prova t.ex. 50% 35% eller 50% 30%.
+    */
+    .so-avatar-img {
+      object-position: 50% 28%;
+    }
+  </style>
+</Layout>

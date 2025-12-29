@@ -1,0 +1,36 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import BeehiivEmbed from "@/components/BeehiivEmbed.astro";
+
+const pageTitle = "Nyhetsbrev";
+const pageDescription =
+  "Prenumerera på Solopreneurs nyhetsbrev. Kort, konkret och praktiskt.";
+
+const embedUrl =
+  "https://subscribe-forms.beehiiv.com/5fdfef00-874d-469d-a98e-463ef390d8d6";
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <Header />
+
+  <main id="main-content">
+    <section class="pt-8 pb-10">
+      <h1 class="so-section-title">Nyhetsbrev</h1>
+      <p class="so-section-muted">
+        Kort och konkret: det jag bygger, lär mig och rekommenderar – för dig som vill växa som soloprenör.
+      </p>
+
+      <div class="mt-4">
+        <BeehiivEmbed
+          title="Prenumerera på Solopreneur nyhetsbrev"
+          embedUrl={embedUrl}
+          publicUrl="/"
+        />
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

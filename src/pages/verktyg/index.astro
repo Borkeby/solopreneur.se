@@ -1,0 +1,370 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+
+import MomsKalkylatorTool from "./_tools/MomsKalkylatorTool.astro";
+import BildverktygTool from "./_tools/BildverktygTool.astro";
+import TimprisKalkylatorTool from "./_tools/TimprisKalkylatorTool.astro";
+
+const pageTitle = "Verktyg";
+const pageDescription =
+  "Kalkylatorer och verktyg för företagare: moms, timpris och bildformat för sociala medier.";
+
+const TIMPRIS_PATH = "/verktyg/timpriskalkylator";
+
+// Bilder
+import momsToolImage from "@/assets/images/tools/moms.jpg";
+import timprisToolImage from "@/assets/images/tools/timpris.jpg";
+import bildToolImage from "@/assets/images/tools/bild.jpg";
+
+const tools = [
+  {
+    id: "moms",
+    tag: "Skatt & prissättning",
+    title: "Momskalkylator",
+    description:
+      "Räkna ut moms baklänges eller framlänges med 25, 12 eller 6 % moms. Se direkt hur mycket som är moms och vad som är exklusive moms.",
+    href: "/verktyg/moms-kalkylator",
+    image: momsToolImage.src,
+    imageAlt: "Momskalkylator",
+  },
+  {
+    id: "timpris",
+    tag: "Skatt & prissättning",
+    title: "Timpriskalkylator",
+    description:
+      "Räkna ut timpris baserat på mål, kostnader och debiterbar tid.",
+    href: TIMPRIS_PATH,
+    image: timprisToolImage.src,
+    imageAlt: "Timpriskalkylator",
+  },
+  {
+    id: "bild",
+    tag: "Marknadsföring",
+    title: "Bildverktyg",
+    description:
+      "Beskär och exportera bilder i rätt format för Instagram, Facebook, LinkedIn, YouTube och TikTok.",
+    href: "/verktyg",
+    image: bildToolImage.src,
+    imageAlt: "Bildverktyg",
+  },
+];
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <Header />
+
+  <main id="main-content">
+    <section class="pt-8 pb-10">
+      <header>
+        <h1 class="so-section-title">Verktyg</h1>
+        <p class="so-section-muted">
+          Välj ett verktyg. Det öppnas i en modal, så du kan jobba vidare utan att lämna sidan.
+        </p>
+      </header>
+
+      <!-- Samma kortlayout som på startsidan -->
+      <div class="mt-4 space-y-4">
+        {tools.map((t) => (
+          <a
+            href={t.href}
+            class="so-card so-card-hover block overflow-hidden"
+            data-open-tool={t.id}
+          >
+            <div class="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:gap-6 sm:p-6">
+              <div class="min-w-0 flex-1">
+                <div class="text-xs font-semibold tracking-wide text-foreground/60">
+                  VERKTYG · {t.tag}
+                </div>
+                <div class="mt-2 text-lg font-semibold tracking-tight">
+                  {t.title}
+                </div>
+                <p class="mt-2 text-sm text-foreground/75">{t.description}</p>
+              </div>
+
+              {t.image && (
+                <img
+                  src={t.image}
+                  alt={t.imageAlt ?? t.title}
+                  class="h-28 w-full rounded-xl object-cover sm:h-24 sm:w-40"
+                  loading="lazy"
+                  decoding="async"
+                />
+              )}
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Modal: Moms -->
+    <dialog
+      class="so-modal"
+      id="tool-modal-moms"
+      data-tool-modal="moms"
+      aria-label="Momskalkylator"
+    >
+      <div class="so-modal-inner">
+        <div class="so-modal-header">
+          <div>
+            <p class="text-sm font-semibold text-foreground">Momskalkylator</p>
+            <p class="text-xs text-foreground/60">Beräkna moms snabbt</p>
+          </div>
+          <button type="button" class="so-modal-close" data-modal-close>
+            Stäng
+          </button>
+        </div>
+
+        <div class="so-modal-body">
+          <MomsKalkylatorTool showHeader={false} />
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Modal: Timpris -->
+    <dialog
+      class="so-modal"
+      id="tool-modal-timpris"
+      data-tool-modal="timpris"
+      aria-label="Timpriskalkylator"
+    >
+      <div class="so-modal-inner">
+        <div class="so-modal-header">
+          <div>
+            <p class="text-sm font-semibold text-foreground">Timpriskalkylator</p>
+            <p class="text-xs text-foreground/60">Räkna ut ett rimligt timpris</p>
+          </div>
+          <button type="button" class="so-modal-close" data-modal-close>
+            Stäng
+          </button>
+        </div>
+
+        <div class="so-modal-body">
+          <TimprisKalkylatorTool showHeader={false} />
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Modal: Bildverktyg -->
+    <dialog
+      class="so-modal"
+      id="tool-modal-bild"
+      data-tool-modal="bild"
+      aria-label="Bildverktyg"
+    >
+      <div class="so-modal-inner">
+        <div class="so-modal-header">
+          <div>
+            <p class="text-sm font-semibold text-foreground">Bildverktyg</p>
+            <p class="text-xs text-foreground/60">Sociala medier-format</p>
+          </div>
+          <button type="button" class="so-modal-close" data-modal-close>
+            Stäng
+          </button>
+        </div>
+
+        <div class="so-modal-body">
+          <BildverktygTool />
+        </div>
+      </div>
+    </dialog>
+  </main>
+
+  <Footer />
+
+  <style>
+    /* Scroll-lock: både html och body */
+    html[data-modal-open="1"],
+    body[data-modal-open="1"] {
+      overflow: hidden;
+      height: 100%;
+    }
+
+    /* VIKTIGT: Dialog ska vara osynlig när den INTE har "open". */
+    .so-modal {
+      display: none;
+      border: none;
+      padding: 12px;
+      margin: 0;
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: transparent;
+      overflow: hidden;
+    }
+
+    .so-modal[open] {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .so-modal::backdrop {
+      background: rgba(0, 0, 0, 0.55);
+    }
+
+    .so-modal-inner {
+      display: flex;
+      flex-direction: column;
+      width: min(980px, calc(100vw - 24px));
+      max-height: min(90vh, 900px);
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .so-modal-header,
+    .so-modal-close {
+      position: relative;
+    }
+
+    .so-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      background: rgba(255, 255, 255, 0.98);
+      flex: 0 0 auto;
+      z-index: 1;
+    }
+
+    /* EN scrollbar: här */
+    .so-modal-body {
+      padding: 16px;
+      overflow: auto;
+      flex: 1 1 auto;
+      min-height: 0;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .so-modal-close {
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 12px;
+      padding: 8px 12px;
+      font-weight: 600;
+      background: white;
+      white-space: nowrap;
+    }
+  </style>
+
+  <script is:inline>
+    function initToolModals() {
+      const openers = document.querySelectorAll("[data-open-tool]");
+      const modals = document.querySelectorAll("dialog.so-modal");
+
+      if (!openers || openers.length === 0 || !modals || modals.length === 0) return;
+
+      if (document.documentElement.getAttribute("data-tools-init") === "1") return;
+      document.documentElement.setAttribute("data-tools-init", "1");
+
+      let lastActive = null;
+
+      function setScrollLock(on) {
+        if (on) {
+          document.documentElement.setAttribute("data-modal-open", "1");
+          document.body.setAttribute("data-modal-open", "1");
+        } else {
+          document.documentElement.removeAttribute("data-modal-open");
+          document.body.removeAttribute("data-modal-open");
+        }
+      }
+
+      function closeModal(dialog) {
+        if (!dialog) return;
+
+        try {
+          dialog.close();
+        } catch {
+          // no-op
+        }
+
+        setScrollLock(false);
+
+        if (lastActive && typeof lastActive.focus === "function") {
+          lastActive.focus();
+        }
+      }
+
+      function closeAll() {
+        modals.forEach((d) => {
+          if (d && d.open) closeModal(d);
+        });
+      }
+
+      function openModal(toolId) {
+        const dialog = document.getElementById("tool-modal-" + toolId);
+        if (!dialog || typeof dialog.showModal !== "function") return;
+
+        closeAll();
+
+        lastActive = document.activeElement;
+
+        setScrollLock(true);
+        dialog.showModal();
+
+        const closeBtn = dialog.querySelector("[data-modal-close]");
+        if (closeBtn && typeof closeBtn.focus === "function") closeBtn.focus();
+      }
+
+      // Öppna via kort
+      openers.forEach((a) => {
+        a.addEventListener("click", (e) => {
+          const toolId = a.getAttribute("data-open-tool");
+          if (!toolId) return;
+
+          e.preventDefault();
+          openModal(toolId);
+        });
+      });
+
+      // Close + klick utanför + ESC (robust)
+      modals.forEach((dialog) => {
+        const closeBtn = dialog.querySelector("[data-modal-close]");
+        const inner = dialog.querySelector(".so-modal-inner");
+
+        // Stäng-knapp
+        if (closeBtn) {
+          closeBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            closeModal(dialog);
+          });
+        }
+
+        // Klick utanför rutan: använd koordinater (fungerar oavsett event-target)
+        dialog.addEventListener("pointerdown", (e) => {
+          if (!inner) return;
+
+          const r = inner.getBoundingClientRect();
+          const x = e.clientX;
+          const y = e.clientY;
+
+          const inside = x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+          if (!inside) closeModal(dialog);
+        });
+
+        // ESC
+        dialog.addEventListener("cancel", (e) => {
+          e.preventDefault();
+          closeModal(dialog);
+        });
+
+        // Säkerhetsnät
+        dialog.addEventListener("close", () => {
+          setScrollLock(false);
+        });
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", initToolModals);
+    document.addEventListener("astro:page-load", initToolModals);
+    document.addEventListener("astro:after-swap", () => {
+      document.documentElement.removeAttribute("data-tools-init");
+      initToolModals();
+    });
+  </script>
+</Layout>

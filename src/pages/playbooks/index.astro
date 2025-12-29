@@ -1,0 +1,60 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Card from "@/components/Card.astro";
+import Hr from "@/components/Hr.astro";
+import getSortedPosts from "@/utils/getSortedPosts";
+
+import defaultCover from "@/assets/images/blog/default-cover.jpg";
+
+const posts = await getCollection("blog");
+const sortedPosts = getSortedPosts(posts);
+
+const playbooks = sortedPosts.filter(p =>
+  (p.data.kategori ?? "").toLowerCase() === "playbook"
+);
+
+const fallbackCardImage = defaultCover.src;
+---
+
+<Layout title="Playbooks – Solopreneur" description="Steg-för-steg guider med fokus på genomförande.">
+  <Header />
+
+  <main id="main-content" data-layout="playbooks">
+    <section class="pt-8 pb-6">
+      <h1 class="so-section-title">Playbooks</h1>
+      <p class="so-section-muted">
+        Steg-för-steg guider med fokus på genomförande.
+      </p>
+    </section>
+
+    <Hr />
+
+    <section class="pt-6 pb-10">
+      {playbooks.length === 0 ? (
+        <div class="so-card p-5 sm:p-6">
+          <div class="text-sm text-foreground/75">
+            Inga playbooks hittades ännu. Lägg <code>kategori: \"Playbook\"</code> i frontmatter på de inlägg du vill visa här.
+          </div>
+        </div>
+      ) : (
+        <ul>
+          {playbooks.map(entry => (
+            <Card
+              variant="h3"
+              {...entry}
+              eyebrow="PLAYBOOK"
+              href={`/playbooks/${entry.id}`}
+              forceImage={true}
+              fallbackImage={fallbackCardImage}
+            />
+          ))}
+        </ul>
+      )}
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

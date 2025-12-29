@@ -1,0 +1,615 @@
+---
+const t = {
+  heading: "Bildverktyg för sociala medier",
+  intro:
+    "Ladda upp en bild, välj plattform och format, finjustera beskärningen och ladda ner färdiga filer.",
+  platformLabel: "Plattform",
+  formatLabel: "Format",
+  uploadLabel: "Ladda upp bild",
+  uploadHelp: "PNG eller JPG fungerar bäst. Större originalbilder ger oftast bättre resultat.",
+  dropHint: "Du kan också dra och släppa en bild i rutan eller förhandsvisningen.",
+  currentSize: "Aktuellt format",
+  cropLabel: "Justera beskärning",
+  cropHelp: "Dra reglaget för att flytta utsnittet inom bilden. Formatet behåller alltid rätt proportioner.",
+  qualityLabel: "Komprimering (JPEG)",
+  qualityHelp: "Lägre kvalitet ger mindre filstorlek men kan påverka skärpan.",
+  qualityLow: "Mer komprimerad",
+  qualityHigh: "Högre kvalitet",
+  thumbLabel: "Thumbnail-bredd (px)",
+  thumbHelp: "Vi skapar en extra liten version av bilden, perfekt som förhandsvisning eller lista.",
+  downloadMainPng: "Ladda ner PNG",
+  downloadMainJpeg: "Ladda ner JPEG",
+  downloadThumb: "Ladda ner thumbnail",
+  noImageWarning: "Ladda upp en bild först.",
+  customSizeLabel: "Eget format (valfritt)",
+  customSizeHelp: "Om du fyller i egen bredd och höjd används dessa i stället för standardformatet.",
+  fileSizePrefix: "Beräknad JPEG-storlek: ",
+};
+---
+
+<section class="so-card p-5 sm:p-6" data-imgtool-root>
+  <header>
+    <h2 class="so-section-title">{t.heading}</h2>
+    <p class="so-section-muted">{t.intro}</p>
+  </header>
+
+  <!-- Plattform -->
+  <div class="mt-5">
+    <p class="text-xs font-semibold uppercase tracking-wide text-foreground/60">{t.platformLabel}</p>
+    <div class="mt-2 flex flex-wrap gap-3 text-sm" data-imgtool-platform-group>
+      <button type="button" class="sp-pill sp-pill--active" data-imgtool-platform="instagram">Instagram</button>
+      <button type="button" class="sp-pill" data-imgtool-platform="facebook">Facebook</button>
+      <button type="button" class="sp-pill" data-imgtool-platform="linkedin">LinkedIn</button>
+      <button type="button" class="sp-pill" data-imgtool-platform="youtube">YouTube</button>
+      <button type="button" class="sp-pill" data-imgtool-platform="tiktok">TikTok</button>
+    </div>
+  </div>
+
+  <!-- Format -->
+  <div class="mt-6">
+    <div class="flex flex-col gap-2">
+      <label class="text-xs font-semibold uppercase tracking-wide text-foreground/60">
+        {t.formatLabel}
+      </label>
+      <select class="rounded-xl border border-border bg-surface px-3 py-2 text-sm shadow-sm" data-imgtool-format>
+        <!-- Fylls av JS -->
+      </select>
+      <p class="text-sm text-foreground/70">
+        {t.currentSize}: <span class="font-semibold" data-imgtool-size>–</span>
+      </p>
+    </div>
+
+    <div class="mt-4">
+      <p class="text-xs font-semibold uppercase tracking-wide text-foreground/60">{t.customSizeLabel}</p>
+      <div class="mt-2 flex flex-wrap items-center gap-2">
+        <input
+          type="number"
+          min="50"
+          max="4000"
+          placeholder="Bredd"
+          class="w-28 rounded-xl border border-border bg-surface px-3 py-2 text-sm shadow-sm"
+          data-imgtool-custom-width
+        />
+        <span>×</span>
+        <input
+          type="number"
+          min="50"
+          max="4000"
+          placeholder="Höjd"
+          class="w-28 rounded-xl border border-border bg-surface px-3 py-2 text-sm shadow-sm"
+          data-imgtool-custom-height
+        />
+        <span class="text-sm text-foreground/70">px</span>
+      </div>
+      <p class="mt-2 text-xs text-foreground/60">{t.customSizeHelp}</p>
+    </div>
+  </div>
+
+  <!-- Upload -->
+  <div class="mt-6">
+    <p class="text-xs font-semibold uppercase tracking-wide text-foreground/60">{t.uploadLabel}</p>
+
+    <div class="mt-2 rounded-2xl border border-border bg-background p-4" data-imgtool-dropzone>
+      <label class="inline-flex cursor-pointer items-center gap-3">
+        <input type="file" accept="image/*" class="hidden" data-imgtool-file />
+        <span class="rounded-xl border border-border bg-surface px-3 py-2 text-sm font-semibold">
+          {t.uploadLabel}
+        </span>
+      </label>
+
+      <p class="mt-3 text-xs text-foreground/60">{t.uploadHelp}</p>
+      <p class="mt-1 text-xs text-foreground/60">{t.dropHint}</p>
+    </div>
+  </div>
+
+  <!-- Preview + kontroller -->
+  <div class="mt-6 grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+    <div class="rounded-2xl border border-border bg-muted p-3" data-imgtool-preview-dropzone>
+      <canvas class="w-full h-auto rounded-xl bg-background" data-imgtool-canvas></canvas>
+      <p class="mt-3 rounded-xl border border-border bg-background px-3 py-2 text-sm font-semibold" data-imgtool-noimage hidden>
+        {t.noImageWarning}
+      </p>
+    </div>
+
+    <div class="grid gap-4">
+      <div class="rounded-2xl border border-border bg-background p-4">
+        <label class="text-xs font-semibold uppercase tracking-wide text-foreground/60">{t.cropLabel}</label>
+        <input type="range" min="0" max="100" value="50" class="mt-3 w-full" data-imgtool-crop />
+        <p class="mt-2 text-xs text-foreground/60">{t.cropHelp}</p>
+      </div>
+
+      <div class="rounded-2xl border border-border bg-background p-4">
+        <label class="text-xs font-semibold uppercase tracking-wide text-foreground/60">{t.qualityLabel}</label>
+        <input type="range" min="40" max="100" value="85" class="mt-3 w-full" data-imgtool-quality />
+        <div class="mt-2 flex justify-between text-xs text-foreground/60">
+          <span>{t.qualityLow}</span>
+          <span>{t.qualityHigh}</span>
+        </div>
+        <p class="mt-2 text-xs text-foreground/60" data-imgtool-filesize data-label-prefix={t.fileSizePrefix}></p>
+        <p class="mt-1 text-xs text-foreground/60">{t.qualityHelp}</p>
+      </div>
+
+      <div class="rounded-2xl border border-border bg-background p-4">
+        <label class="text-xs font-semibold uppercase tracking-wide text-foreground/60">{t.thumbLabel}</label>
+        <input
+          type="number"
+          min="100"
+          max="2000"
+          value="400"
+          class="mt-3 w-full rounded-xl border border-border bg-surface px-3 py-2 text-sm shadow-sm"
+          data-imgtool-thumb-width
+        />
+        <p class="mt-2 text-xs text-foreground/60">{t.thumbHelp}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="mt-6 flex flex-wrap gap-3">
+    <button type="button" class="rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-background" data-imgtool-download-png>
+      {t.downloadMainPng}
+    </button>
+    <button type="button" class="rounded-xl border border-border bg-background px-4 py-2 text-sm font-semibold" data-imgtool-download-jpeg>
+      {t.downloadMainJpeg}
+    </button>
+    <button type="button" class="rounded-xl border border-border bg-background px-4 py-2 text-sm font-semibold" data-imgtool-download-thumb>
+      {t.downloadThumb}
+    </button>
+  </div>
+</section>
+
+<style>
+  .sp-pill {
+    border: 1px solid var(--border-color, rgba(0,0,0,0.08));
+    border-radius: 999px;
+    padding: 8px 12px;
+    font-weight: 600;
+  }
+  .sp-pill--active {
+    border-color: var(--accent-color, rgba(0,0,0,0.2));
+  }
+</style>
+
+<script is:inline>
+  const IMGTOOL_PRESETS = {
+    instagram: {
+      id: "instagram",
+      name: "Instagram",
+      formats: [
+        { id: "ig-feed-portrait", label: "Feed – stående (rekommenderad)", width: 1080, height: 1350 },
+        { id: "ig-feed-square", label: "Feed – kvadrat", width: 1080, height: 1080 },
+        { id: "ig-feed-landscape", label: "Feed – liggande", width: 1080, height: 566 },
+        { id: "ig-story", label: "Story / Reels (helskärm)", width: 1080, height: 1920 },
+        { id: "ig-profile", label: "Profilbild (minst)", width: 320, height: 320 },
+      ],
+    },
+    facebook: {
+      id: "facebook",
+      name: "Facebook",
+      formats: [
+        { id: "fb-post", label: "Inlägg i flöde", width: 1200, height: 630 },
+        { id: "fb-cover", label: "Omslagsbild (sida)", width: 820, height: 360 },
+        { id: "fb-profile", label: "Profilbild (minst)", width: 320, height: 320 },
+        { id: "fb-story", label: "Story", width: 1080, height: 1920 },
+      ],
+    },
+    linkedin: {
+      id: "linkedin",
+      name: "LinkedIn",
+      formats: [
+        { id: "li-post", label: "Inlägg i flöde", width: 1200, height: 627 },
+        { id: "li-profile", label: "Profilbild (minst)", width: 400, height: 400 },
+        { id: "li-cover", label: "Omslagsbild (person)", width: 1584, height: 396 },
+        { id: "li-company-logo", label: "Företagslogotyp", width: 300, height: 300 },
+      ],
+    },
+    youtube: {
+      id: "youtube",
+      name: "YouTube",
+      formats: [
+        { id: "yt-thumb", label: "Videominiatyr", width: 1280, height: 720 },
+        { id: "yt-banner", label: "Kanalbanner", width: 2560, height: 1440 },
+      ],
+    },
+    tiktok: {
+      id: "tiktok",
+      name: "TikTok",
+      formats: [
+        { id: "tt-video", label: "Video / flöde", width: 1080, height: 1920 },
+        { id: "tt-profile", label: "Profilbild (minst)", width: 200, height: 200 },
+      ],
+    },
+  };
+
+  function imgtool_findPreset(platformId, formatId) {
+    const platform = IMGTOOL_PRESETS[platformId];
+    if (!platform) return null;
+    if (!formatId && platform.formats.length > 0) return platform.formats[0];
+    return platform.formats.find((f) => f.id === formatId) || null;
+  }
+
+  function imgtool_downloadCanvas(canvas, filename, mimeType, quality) {
+    if (!canvas || !canvas.width || !canvas.height) return;
+    const type = mimeType || "image/png";
+    const q = typeof quality === "number" ? quality : 0.9;
+
+    canvas.toBlob(
+      function (blob) {
+        if (!blob) return;
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      },
+      type,
+      q
+    );
+  }
+
+  function initImgToolAll() {
+    const roots = document.querySelectorAll("[data-imgtool-root]");
+    if (!roots || roots.length === 0) return;
+
+    roots.forEach(function (root) {
+      if (root.getAttribute("data-init") === "1") return;
+      root.setAttribute("data-init", "1");
+
+      const platformButtons = root.querySelectorAll("[data-imgtool-platform]");
+      const formatSelect = root.querySelector("[data-imgtool-format]");
+      const sizeLabel = root.querySelector("[data-imgtool-size]");
+      const fileInput = root.querySelector("[data-imgtool-file]");
+      const dropzone = root.querySelector("[data-imgtool-dropzone]");
+      const previewDropzone = root.querySelector("[data-imgtool-preview-dropzone]");
+      const canvas = root.querySelector("[data-imgtool-canvas]");
+      const noImageWarning = root.querySelector("[data-imgtool-noimage]");
+      const cropRange = root.querySelector("[data-imgtool-crop]");
+      const qualityRange = root.querySelector("[data-imgtool-quality]");
+      const thumbWidthInput = root.querySelector("[data-imgtool-thumb-width]");
+      const customWidthInput = root.querySelector("[data-imgtool-custom-width]");
+      const customHeightInput = root.querySelector("[data-imgtool-custom-height]");
+      const btnPng = root.querySelector("[data-imgtool-download-png]");
+      const btnJpeg = root.querySelector("[data-imgtool-download-jpeg]");
+      const btnThumb = root.querySelector("[data-imgtool-download-thumb]");
+      const filesizeLabel = root.querySelector("[data-imgtool-filesize]");
+      const filesizePrefix = (filesizeLabel && filesizeLabel.getAttribute("data-label-prefix")) || "";
+
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+
+      let currentPlatformId = "instagram";
+      let currentFormatId = null;
+      let currentImage = null;
+      let cropPosition = 0.5;
+      let quality = 0.85;
+      let customWidth = null;
+      let customHeight = null;
+
+      function getTargetSize(preset) {
+        let w = preset ? preset.width : 1080;
+        let h = preset ? preset.height : 1080;
+
+        if (typeof customWidth === "number" && customWidth > 0 && typeof customHeight === "number" && customHeight > 0) {
+          w = customWidth;
+          h = customHeight;
+        }
+        return { w, h };
+      }
+
+      function updateSizeLabel() {
+        const preset = imgtool_findPreset(currentPlatformId, currentFormatId);
+        if (!preset || !sizeLabel) return;
+        const size = getTargetSize(preset);
+        sizeLabel.textContent = size.w + " × " + size.h + " px";
+      }
+
+      function renderPreview() {
+        const preset = imgtool_findPreset(currentPlatformId, currentFormatId);
+        if (!preset || !currentImage) {
+          if (ctx) ctx.clearRect(0, 0, canvas.width || 0, canvas.height || 0);
+          if (noImageWarning) noImageWarning.hidden = false;
+          return;
+        }
+
+        if (noImageWarning) noImageWarning.hidden = true;
+
+        const size = getTargetSize(preset);
+        const targetW = size.w;
+        const targetH = size.h;
+
+        canvas.width = targetW;
+        canvas.height = targetH;
+
+        const img = currentImage;
+        const srcW = img.naturalWidth || img.width;
+        const srcH = img.naturalHeight || img.height;
+
+        if (!srcW || !srcH) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          return;
+        }
+
+        const targetRatio = targetW / targetH;
+        const srcRatio = srcW / srcH;
+
+        let sx = 0, sy = 0, sw = srcW, sh = srcH;
+
+        if (srcRatio > targetRatio) {
+          sh = srcH;
+          sw = Math.round(sh * targetRatio);
+          const extraW = srcW - sw;
+          sx = Math.round(extraW * cropPosition);
+          sy = 0;
+        } else {
+          sw = srcW;
+          sh = Math.round(sw / targetRatio);
+          const extraH = srcH - sh;
+          sx = 0;
+          sy = Math.round(extraH * cropPosition);
+        }
+
+        if (sx < 0) sx = 0;
+        if (sy < 0) sy = 0;
+        if (sw > srcW) sw = srcW;
+        if (sh > srcH) sh = srcH;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, sx, sy, sw, sh, 0, 0, targetW, targetH);
+      }
+
+      function updateEstimatedSize() {
+        if (!filesizeLabel) return;
+        if (!currentImage || !canvas.width || !canvas.height) {
+          filesizeLabel.textContent = "";
+          return;
+        }
+
+        canvas.toBlob(
+          function (blob) {
+            if (!blob) {
+              filesizeLabel.textContent = "";
+              return;
+            }
+            const bytes = blob.size;
+            let text;
+            if (bytes < 1024) text = bytes + " B";
+            else if (bytes < 1024 * 1024) text = (bytes / 1024).toFixed(1) + " kB";
+            else text = (bytes / 1024 / 1024).toFixed(2) + " MB";
+
+            filesizeLabel.textContent = filesizePrefix + text;
+          },
+          "image/jpeg",
+          quality
+        );
+      }
+
+      function rerenderAndUpdateSize() {
+        renderPreview();
+        updateEstimatedSize();
+      }
+
+      function populateFormatSelect() {
+        if (!formatSelect) return;
+        const platform = IMGTOOL_PRESETS[currentPlatformId];
+        if (!platform) return;
+
+        formatSelect.innerHTML = "";
+        platform.formats.forEach(function (f, index) {
+          const opt = document.createElement("option");
+          opt.value = f.id;
+          opt.textContent = f.label + " (" + f.width + " × " + f.height + ")";
+          if (index === 0) {
+            opt.selected = true;
+            currentFormatId = f.id;
+          }
+          formatSelect.appendChild(opt);
+        });
+
+        updateSizeLabel();
+        rerenderAndUpdateSize();
+      }
+
+      platformButtons.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          const id = btn.getAttribute("data-imgtool-platform");
+          if (!id || !IMGTOOL_PRESETS[id]) return;
+
+          currentPlatformId = id;
+
+          platformButtons.forEach(function (b) {
+            b.classList.remove("sp-pill--active");
+          });
+          btn.classList.add("sp-pill--active");
+
+          populateFormatSelect();
+        });
+      });
+
+      if (formatSelect) {
+        formatSelect.addEventListener("change", function () {
+          currentFormatId = formatSelect.value;
+          updateSizeLabel();
+          rerenderAndUpdateSize();
+        });
+      }
+
+      function loadFile(file) {
+        if (!file) return;
+        const img = new Image();
+        const url = URL.createObjectURL(file);
+
+        img.onload = function () {
+          URL.revokeObjectURL(url);
+          currentImage = img;
+          cropPosition = 0.5;
+          if (cropRange) cropRange.value = "50";
+          rerenderAndUpdateSize();
+        };
+
+        img.onerror = function () {
+          URL.revokeObjectURL(url);
+          currentImage = null;
+          rerenderAndUpdateSize();
+        };
+
+        img.src = url;
+      }
+
+      if (fileInput) {
+        fileInput.addEventListener("change", function (e) {
+          const file = e.target.files && e.target.files[0];
+          loadFile(file);
+        });
+      }
+
+      function setupDropTarget(target) {
+        if (!target) return;
+
+        ["dragenter", "dragover"].forEach(function (eventName) {
+          target.addEventListener(eventName, function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            target.classList.add("border-accent");
+          });
+        });
+
+        ["dragleave", "drop"].forEach(function (eventName) {
+          target.addEventListener(eventName, function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            target.classList.remove("border-accent");
+          });
+        });
+
+        target.addEventListener("drop", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          const dt = e.dataTransfer;
+          if (!dt || !dt.files || dt.files.length === 0) return;
+          loadFile(dt.files[0]);
+        });
+      }
+
+      setupDropTarget(dropzone);
+      setupDropTarget(previewDropzone);
+
+      if (cropRange) {
+        cropRange.addEventListener("input", function () {
+          let val = parseInt(cropRange.value, 10);
+          if (isNaN(val)) val = 50;
+          cropPosition = Math.max(0, Math.min(1, val / 100));
+          rerenderAndUpdateSize();
+        });
+      }
+
+      if (qualityRange) {
+        qualityRange.addEventListener("input", function () {
+          let val = parseInt(qualityRange.value, 10);
+          if (isNaN(val)) val = 85;
+          quality = Math.max(0.1, Math.min(1, val / 100));
+          updateEstimatedSize();
+        });
+      }
+
+      function updateCustomSize() {
+        let w = null;
+        let h = null;
+
+        if (customWidthInput) {
+          const parsedW = parseInt(customWidthInput.value, 10);
+          if (!isNaN(parsedW) && parsedW > 0) w = parsedW;
+        }
+        if (customHeightInput) {
+          const parsedH = parseInt(customHeightInput.value, 10);
+          if (!isNaN(parsedH) && parsedH > 0) h = parsedH;
+        }
+
+        customWidth = w;
+        customHeight = h;
+
+        updateSizeLabel();
+        rerenderAndUpdateSize();
+      }
+
+      if (customWidthInput) customWidthInput.addEventListener("input", updateCustomSize);
+      if (customHeightInput) customHeightInput.addEventListener("input", updateCustomSize);
+
+      if (btnPng) {
+        btnPng.addEventListener("click", function () {
+          if (!currentImage) {
+            if (noImageWarning) noImageWarning.hidden = false;
+            return;
+          }
+          const preset = imgtool_findPreset(currentPlatformId, currentFormatId);
+          if (!preset) return;
+
+          renderPreview();
+          const filename = currentPlatformId + "-" + (currentFormatId || "format") + ".png";
+          imgtool_downloadCanvas(canvas, filename, "image/png", 1.0);
+        });
+      }
+
+      if (btnJpeg) {
+        btnJpeg.addEventListener("click", function () {
+          if (!currentImage) {
+            if (noImageWarning) noImageWarning.hidden = false;
+            return;
+          }
+          const preset = imgtool_findPreset(currentPlatformId, currentFormatId);
+          if (!preset) return;
+
+          renderPreview();
+          const filename = currentPlatformId + "-" + (currentFormatId || "format") + ".jpg";
+          imgtool_downloadCanvas(canvas, filename, "image/jpeg", quality);
+        });
+      }
+
+      if (btnThumb) {
+        btnThumb.addEventListener("click", function () {
+          if (!currentImage) {
+            if (noImageWarning) noImageWarning.hidden = false;
+            return;
+          }
+          const preset = imgtool_findPreset(currentPlatformId, currentFormatId);
+          if (!preset) return;
+
+          renderPreview();
+
+          const baseSize = getTargetSize(preset);
+          const baseW = baseSize.w;
+          const baseH = baseSize.h;
+
+          let tw = 400;
+          if (thumbWidthInput) {
+            const parsed = parseInt(thumbWidthInput.value, 10);
+            if (!isNaN(parsed) && parsed > 50 && parsed <= 2000) tw = parsed;
+          }
+
+          const ratio = baseW / baseH;
+          const th = Math.round(tw / ratio);
+
+          const thumbCanvas = document.createElement("canvas");
+          thumbCanvas.width = tw;
+          thumbCanvas.height = th;
+
+          const tctx = thumbCanvas.getContext("2d");
+          if (!tctx) return;
+
+          tctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, tw, th);
+
+          const filename = currentPlatformId + "-" + (currentFormatId || "format") + "-thumb.jpg";
+          imgtool_downloadCanvas(thumbCanvas, filename, "image/jpeg", quality);
+        });
+      }
+
+      populateFormatSelect();
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", initImgToolAll);
+  document.addEventListener("astro:page-load", initImgToolAll);
+  document.addEventListener("astro:after-swap", initImgToolAll);
+</script>

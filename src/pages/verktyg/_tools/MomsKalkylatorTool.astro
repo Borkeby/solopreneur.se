@@ -1,0 +1,243 @@
+---
+export interface Props {
+  showHeader?: boolean;
+}
+
+const { showHeader = true } = Astro.props;
+---
+
+<section>
+  {showHeader && (
+    <header>
+      <h2 class="so-section-title">Momskalkylator</h2>
+      <p class="so-section-muted">
+        Skriv in beloppet, välj om det är exklusive eller inklusive moms och välj momssats.
+        Kalkylatorn räknar ut pris exkl. moms, inkl. moms och själva momsbeloppet.
+      </p>
+    </header>
+  )}
+
+  <form class="so-card mt-4 p-5 sm:p-6" data-moms-form>
+    <!-- Input: typ av belopp -->
+    <div class="mb-5">
+      <p class="text-xs font-semibold uppercase tracking-wide text-foreground/60">
+        Typ av belopp
+      </p>
+      <div class="mt-2 flex flex-wrap gap-4 text-sm">
+        <label class="inline-flex items-center gap-2">
+          <input type="radio" name="amountType" value="ex" class="h-4 w-4" checked />
+          <span>Belopp exklusive moms</span>
+        </label>
+        <label class="inline-flex items-center gap-2">
+          <input type="radio" name="amountType" value="inkl" class="h-4 w-4" />
+          <span>Belopp inklusive moms</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Input: belopp -->
+    <div class="mb-5">
+      <label class="block text-xs font-semibold uppercase tracking-wide text-foreground/60">
+        Belopp
+      </label>
+      <div class="mt-2 flex items-center gap-2">
+        <input
+          type="number"
+          min="0"
+          step="0.01"
+          inputmode="decimal"
+          class="w-full rounded-xl border border-border bg-surface px-3 py-2 text-sm shadow-sm"
+          placeholder="Skriv in belopp, t.ex. 1000"
+          data-moms-amount
+        />
+        <span class="text-sm text-foreground/70">kr</span>
+      </div>
+    </div>
+
+    <!-- Val av momssats -->
+    <div class="mb-6">
+      <p class="text-xs font-semibold uppercase tracking-wide text-foreground/60">
+        Momssats
+      </p>
+
+      <div class="mt-2 flex flex-wrap gap-3 text-sm" data-moms-rate-group>
+        <button
+          type="button"
+          data-rate="25"
+          data-active="true"
+          class="moms-rate-btn rounded-full border border-border bg-background px-4 py-2 text-sm font-semibold hover:border-accent
+                 data-[active=true]:bg-accent data-[active=true]:border-accent data-[active=true]:text-background"
+        >
+          25 %
+        </button>
+
+        <button
+          type="button"
+          data-rate="12"
+          class="moms-rate-btn rounded-full border border-border bg-background px-4 py-2 text-sm font-semibold hover:border-accent
+                 data-[active=true]:bg-accent data-[active=true]:border-accent data-[active=true]:text-background"
+        >
+          12 %
+        </button>
+
+        <button
+          type="button"
+          data-rate="6"
+          class="moms-rate-btn rounded-full border border-border bg-background px-4 py-2 text-sm font-semibold hover:border-accent
+                 data-[active=true]:bg-accent data-[active=true]:border-accent data-[active=true]:text-background"
+        >
+          6 %
+        </button>
+      </div>
+    </div>
+
+    <!-- Resultat -->
+    <div class="grid gap-4 md:grid-cols-3">
+      <div class="rounded-2xl border border-border bg-muted p-4">
+        <p class="text-xs font-semibold uppercase tracking-wide text-foreground/60">
+          Pris exkl. moms
+        </p>
+        <p class="mt-2 text-lg font-semibold" data-result-ex>–</p>
+      </div>
+
+      <div class="rounded-2xl border border-border bg-muted p-4">
+        <p class="text-xs font-semibold uppercase tracking-wide text-foreground/60">
+          Momsbelopp
+        </p>
+        <p class="mt-2 text-lg font-semibold" data-result-vat>–</p>
+      </div>
+
+      <div class="rounded-2xl border border-border bg-muted p-4">
+        <p class="text-xs font-semibold uppercase tracking-wide text-foreground/60">
+          Pris inkl. moms
+        </p>
+        <p class="mt-2 text-lg font-semibold" data-result-incl>–</p>
+      </div>
+    </div>
+
+    <p class="mt-4 text-xs text-foreground/60">
+      Beräkningen är förenklad och avrundas till två decimaler. Kontrollera alltid mot din
+      bokföring och dina fakturor.
+    </p>
+  </form>
+</section>
+
+<script is:inline>
+  function formatCurrency(value) {
+    if (!isFinite(value)) return "–";
+    return (
+      value.toLocaleString("sv-SE", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }) + " kr"
+    );
+  }
+
+  function setDash(root) {
+    const resultEx = root.querySelector("[data-result-ex]");
+    const resultVat = root.querySelector("[data-result-vat]");
+    const resultIncl = root.querySelector("[data-result-incl]");
+    if (resultEx) resultEx.textContent = "–";
+    if (resultVat) resultVat.textContent = "–";
+    if (resultIncl) resultIncl.textContent = "–";
+  }
+
+  function recalc(root) {
+    const amountInput = root.querySelector("[data-moms-amount]");
+    const amountTypeEl = root.querySelector('input[name="amountType"]:checked');
+    const activeRateBtn = root.querySelector(".moms-rate-btn[data-active='true']");
+
+    const resultEx = root.querySelector("[data-result-ex]");
+    const resultVat = root.querySelector("[data-result-vat]");
+    const resultIncl = root.querySelector("[data-result-incl]");
+
+    if (!amountInput || !amountTypeEl || !activeRateBtn) {
+      setDash(root);
+      return;
+    }
+
+    const raw = String(amountInput.value || "").replace(",", ".").trim();
+    const amount = parseFloat(raw);
+
+    if (isNaN(amount) || amount < 0) {
+      setDash(root);
+      return;
+    }
+
+    const rate = parseFloat(activeRateBtn.getAttribute("data-rate") || "25");
+    const multiplier = 1 + rate / 100;
+    const type = amountTypeEl.value; // "ex" eller "inkl"
+
+    let ex, incl, vat;
+    if (type === "ex") {
+      ex = amount;
+      incl = amount * multiplier;
+      vat = incl - ex;
+    } else {
+      incl = amount;
+      ex = amount / multiplier;
+      vat = incl - ex;
+    }
+
+    if (resultEx) resultEx.textContent = formatCurrency(ex);
+    if (resultVat) resultVat.textContent = formatCurrency(vat);
+    if (resultIncl) resultIncl.textContent = formatCurrency(incl);
+  }
+
+  function initMomsCalculatorAll() {
+    const forms = document.querySelectorAll("[data-moms-form]");
+    if (!forms || forms.length === 0) return;
+
+    forms.forEach((form) => {
+      if (form.getAttribute("data-init") === "1") {
+        recalc(form);
+        return;
+      }
+      form.setAttribute("data-init", "1");
+
+      const rateButtons = form.querySelectorAll(".moms-rate-btn");
+      const amountInput = form.querySelector("[data-moms-amount]");
+      const radios = form.querySelectorAll('input[name="amountType"]');
+
+      // Default (25%) om ingen aktiv
+      const active = form.querySelector(".moms-rate-btn[data-active='true']");
+      if (!active) {
+        const defaultRateBtn = form.querySelector('.moms-rate-btn[data-rate="25"]');
+        if (defaultRateBtn) {
+          defaultRateBtn.setAttribute("data-active", "true");
+          defaultRateBtn.classList.add("bg-accent", "text-white", "border-accent");
+        }
+      }
+
+      if (amountInput) {
+        amountInput.addEventListener("input", function () {
+          recalc(form);
+        });
+      }
+
+      radios.forEach(function (r) {
+        r.addEventListener("change", function () {
+          recalc(form);
+        });
+      });
+
+      rateButtons.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          rateButtons.forEach(function (b) {
+            b.removeAttribute("data-active");
+            b.classList.remove("bg-accent", "text-white", "border-accent");
+          });
+          btn.setAttribute("data-active", "true");
+          btn.classList.add("bg-accent", "text-white", "border-accent");
+          recalc(form);
+        });
+      });
+
+      recalc(form);
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", initMomsCalculatorAll);
+  document.addEventListener("astro:page-load", initMomsCalculatorAll);
+  document.addEventListener("astro:after-swap", initMomsCalculatorAll);
+</script>

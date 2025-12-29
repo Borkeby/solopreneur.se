@@ -1,0 +1,56 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+
+const pageTitle = "Community – Solopreneur.se";
+const pageDescription = "Gå med i Solopreneurs community på Discord.";
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <Header />
+
+  <main id="main-content">
+    <section class="pt-8 pb-10">
+      <h1 class="so-section-title">Community</h1>
+      <p class="so-section-muted">
+        Gå med i Solopreneurs community på Discord för frågor, feedback och diskussioner.
+      </p>
+
+      <div class="so-card mt-4 p-5 sm:p-6">
+        <div class="text-sm text-foreground/80">
+          <div class="font-semibold">Kom igång</div>
+          <p class="mt-1">
+            Registrera dig här:
+            <a
+              class="text-accent underline decoration-dashed underline-offset-4 hover:opacity-90"
+              href="https://www.solopreneur.se/discord"
+              target="_blank"
+              rel="noopener"
+            >
+              Discord-inbjudan
+            </a>
+          </p>
+
+          <p class="mt-3">
+            Gå direkt till communityt:
+            <a
+              class="text-accent underline decoration-dashed underline-offset-4 hover:opacity-90"
+              href="https://discord.com/channels/1409621217660375071/1409621218277064859"
+              target="_blank"
+              rel="noopener"
+            >
+              Solopreneur.se på Discord
+            </a>
+          </p>
+
+          <p class="mt-4 text-xs text-foreground/60">
+            Du lämnar Solopreneur.se och öppnar Discord i ny flik.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

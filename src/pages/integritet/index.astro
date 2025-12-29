@@ -1,0 +1,245 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+
+const page = {
+  title: "Integritet och cookies",
+  description:
+    "Hur Solopreneur behandlar personuppgifter och använder cookies – uppgifter, ändamål, lagring, leverantörer och dina rättigheter.",
+  updated: "2025-12-17",
+};
+---
+
+<Layout title={`${page.title} – Solopreneur`} description={page.description}>
+  <Header />
+
+  <main id="main-content" data-layout="policy">
+    <section class="pt-8 pb-6">
+      <div class="so-card p-5 sm:p-6">
+        <h1 class="text-2xl font-semibold tracking-tight">Integritet och cookies</h1>
+        <p class="mt-2 text-sm text-foreground/75">
+          Denna sida beskriver hur Solopreneur.se behandlar personuppgifter och använder cookies.
+          Här framgår vilka uppgifter som kan samlas in, ändamål, lagringstider, leverantörer samt dina rättigheter enligt GDPR.
+        </p>
+        <p class="mt-3 text-xs text-foreground/60">
+          Gäller för: <strong>solopreneur.se</strong>. Senast uppdaterad:
+          <time datetime={page.updated}> {page.updated}</time>.
+        </p>
+      </div>
+    </section>
+
+    <section class="pt-2 pb-6">
+      <div class="so-card p-5 sm:p-6">
+        <h2 class="text-lg font-semibold tracking-tight">Innehåll</h2>
+        <ol class="mt-3 grid list-decimal gap-2 pl-5 text-sm text-foreground/80 sm:grid-cols-2">
+          <li><a class="underline decoration-dashed underline-offset-4 hover:text-accent" href="#personuppgiftsansvarig">Personuppgiftsansvarig och kontakt</a></li>
+          <li><a class="underline decoration-dashed underline-offset-4 hover:text-accent" href="#vilka-uppgifter">Vilka uppgifter vi behandlar</a></li>
+          <li><a class="underline decoration-dashed underline-offset-4 hover:text-accent" href="#andamal-grund">Ändamål och rättslig grund</a></li>
+          <li><a class="underline decoration-dashed underline-offset-4 hover:text-accent" href="#lagring">Lagringstider</a></li>
+          <li><a class="underline decoration-dashed underline-offset-4 hover:text-accent" href="#mottagare">Mottagare och leverantörer</a></li>
+          <li><a class="underline decoration-dashed underline-offset-4 hover:text-accent" href="#overforing">Överföring utanför EU/EES</a></li>
+          <li><a class="underline decoration-dashed underline-offset-4 hover:text-accent" href="#sakerhet">Säkerhet</a></li>
+          <li><a class="underline decoration-dashed underline-offset-4 hover:text-accent" href="#rattigheter">Dina rättigheter</a></li>
+          <li><a class="underline decoration-dashed underline-offset-4 hover:text-accent" href="#cookies">Cookies</a></li>
+          <li><a class="underline decoration-dashed underline-offset-4 hover:text-accent" href="#inbaddat">Inbäddat innehåll och länkar</a></li>
+          <li><a class="underline decoration-dashed underline-offset-4 hover:text-accent" href="#andringar">Ändringar i denna policy</a></li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="personuppgiftsansvarig" class="pt-2 pb-6">
+      <div class="so-card p-5 sm:p-6">
+        <h2 class="text-xl font-semibold tracking-tight">Personuppgiftsansvarig och kontakt</h2>
+        <p class="mt-2 text-sm text-foreground/75">
+          Personuppgiftsansvarig för behandlingar på Solopreneur.se är <strong>Daniel Borkeby (Solopreneur)</strong>.
+          Vid frågor eller för att utöva dina rättigheter, kontakta:
+        </p>
+        <ul class="mt-3 list-disc pl-5 text-sm text-foreground/80">
+          <li>E-post: <a class="underline decoration-dashed underline-offset-4 hover:text-accent" href="mailto:support@paidin.se">support@paidin.se</a></li>
+          <li>Post: Kivra: 559044-7016, 106&nbsp;31 Stockholm</li>
+          <li>Telefon: 08-557&nbsp;698&nbsp;72</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="vilka-uppgifter" class="pt-2 pb-6">
+      <div class="so-card p-5 sm:p-6">
+        <h2 class="text-xl font-semibold tracking-tight">Vilka uppgifter vi behandlar</h2>
+        <ul class="mt-3 list-disc pl-5 text-sm text-foreground/80">
+          <li><strong>Kontaktuppgifter:</strong> namn, e-post, telefon (vid kontakt/prenumeration).</li>
+          <li><strong>Tekniska uppgifter:</strong> IP, webbläsare, enhet, språk, referenssida, tidsstämplar.</li>
+          <li><strong>Användningsdata:</strong> sidvisningar, klick (endast om du samtycker till analyscookies).</li>
+          <li><strong>Kommunikation:</strong> innehåll i meddelanden du skickar till oss.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="andamal-grund" class="pt-2 pb-6">
+      <div class="so-card p-5 sm:p-6">
+        <h2 class="text-xl font-semibold tracking-tight">Ändamål och rättslig grund</h2>
+        <ul class="mt-3 list-disc pl-5 text-sm text-foreground/80">
+          <li><strong>Drift och säkerhet:</strong> tillhandahålla webbplatsen, felsöka, förhindra missbruk. <em>Berättigat intresse.</em></li>
+          <li><strong>Kommunikation:</strong> besvara frågor/förfrågningar. <em>Berättigat intresse eller avtal.</em></li>
+          <li><strong>Nyhetsbrev:</strong> utskick till prenumeranter. <em>Samtycke (kan återkallas).</em></li>
+          <li><strong>Analys och förbättring:</strong> förstå användning och förbättra innehåll. <em>Samtycke (analyscookies).</em></li>
+          <li><strong>Rättsliga förpliktelser:</strong> uppfylla lagkrav. <em>Rättslig förpliktelse.</em></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="lagring" class="pt-2 pb-6">
+      <div class="so-card p-5 sm:p-6">
+        <h2 class="text-xl font-semibold tracking-tight">Lagringstider</h2>
+        <ul class="mt-3 list-disc pl-5 text-sm text-foreground/80">
+          <li><strong>E-postkommunikation:</strong> sparas så länge ärendet kräver, inklusive uppföljning.</li>
+          <li><strong>Nyhetsbrev:</strong> tills du avanmäler dig/återkallar samtycke.</li>
+          <li><strong>Tekniska loggar:</strong> normalt upp till 12 månader (kortare om möjligt).</li>
+          <li><strong>Analysdata:</strong> enligt leverantörens standard eller så länge samtycke gäller.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="mottagare" class="pt-2 pb-6">
+      <div class="so-card p-5 sm:p-6">
+        <h2 class="text-xl font-semibold tracking-tight">Mottagare och leverantörer</h2>
+        <p class="mt-2 text-sm text-foreground/75">
+          Exempel på kategorier av mottagare (biträden):
+        </p>
+        <ul class="mt-3 list-disc pl-5 text-sm text-foreground/80">
+          <li><strong>Hosting och säkerhet</strong> (CDN, brandvägg, prestanda).</li>
+          <li><strong>Webbanalys</strong> (endast efter samtycke).</li>
+          <li><strong>Nyhetsbrev</strong> (e-postplattform om du prenumererar).</li>
+          <li><strong>Kommunikation</strong> (e-postleverantör/inkorg).</li>
+        </ul>
+        <p class="mt-3 text-sm text-foreground/75">
+          Biträden får endast behandla uppgifter enligt avtal och våra instruktioner.
+        </p>
+      </div>
+    </section>
+
+    <section id="overforing" class="pt-2 pb-6">
+      <div class="so-card p-5 sm:p-6">
+        <h2 class="text-xl font-semibold tracking-tight">Överföring utanför EU/EES</h2>
+        <p class="mt-2 text-sm text-foreground/75">
+          Om uppgifter överförs till tredjeland används lämpliga skyddsåtgärder såsom EU-kommissionens
+          standardavtalsklausuler (SCC) och, vid behov, kompletterande tekniska och organisatoriska skydd.
+        </p>
+      </div>
+    </section>
+
+    <section id="sakerhet" class="pt-2 pb-6">
+      <div class="so-card p-5 sm:p-6">
+        <h2 class="text-xl font-semibold tracking-tight">Säkerhet</h2>
+        <p class="mt-2 text-sm text-foreground/75">
+          Vi skyddar personuppgifter med lämpliga tekniska och organisatoriska åtgärder: krypterad överföring (HTTPS),
+          åtkomstkontroller, loggning och dataminimering.
+        </p>
+      </div>
+    </section>
+
+    <section id="rattigheter" class="pt-2 pb-6">
+      <div class="so-card p-5 sm:p-6">
+        <h2 class="text-xl font-semibold tracking-tight">Dina rättigheter</h2>
+        <ul class="mt-3 list-disc pl-5 text-sm text-foreground/80">
+          <li><strong>Tillgång</strong> till dina personuppgifter.</li>
+          <li><strong>Rättelse</strong> av felaktiga/ofullständiga uppgifter.</li>
+          <li><strong>Radering</strong> i relevanta fall.</li>
+          <li><strong>Begränsning</strong> av behandling i vissa situationer.</li>
+          <li><strong>Invändning</strong> mot behandling baserad på berättigat intresse.</li>
+          <li><strong>Återkalla samtycke</strong> när som helst.</li>
+          <li><strong>Dataportabilitet</strong> när behandling sker med samtycke/avtal och automatiserat.</li>
+        </ul>
+        <p class="mt-3 text-sm text-foreground/75">
+          Kontakta <a class="underline decoration-dashed underline-offset-4 hover:text-accent" href="mailto:support@paidin.se">support@paidin.se</a> för att utöva dina rättigheter.
+          Klagomål kan lämnas till
+          <a class="underline decoration-dashed underline-offset-4 hover:text-accent" href="https://www.imy.se/" target="_blank" rel="noopener">Integritetsskyddsmyndigheten (IMY)</a>.
+        </p>
+      </div>
+    </section>
+
+    <section id="cookies" class="pt-2 pb-6">
+      <div class="so-card p-5 sm:p-6">
+        <h2 class="text-xl font-semibold tracking-tight">Cookies</h2>
+        <p class="mt-2 text-sm text-foreground/75">
+          Cookies är små textfiler i din webbläsare. Vi använder nödvändiga cookies för drift och – om du samtycker –
+          funktionella och/eller analyscookies.
+        </p>
+
+        <h3 class="mt-5 text-lg font-semibold tracking-tight">Typer av cookies</h3>
+        <ul class="mt-2 list-disc pl-5 text-sm text-foreground/80">
+          <li><strong>Nödvändiga</strong> – krävs för grundfunktioner (säkerhet, lastbalansering, session).</li>
+          <li><strong>Funktionella</strong> – minns val som språk/tema.</li>
+          <li><strong>Analys</strong> – besöksstatistik (endast efter samtycke).</li>
+          <li><strong>Marknadsföring</strong> – används endast om aktiverat och du samtycker.</li>
+        </ul>
+
+        <h3 class="mt-5 text-lg font-semibold tracking-tight">Hantera samtycke</h3>
+        <p class="mt-2 text-sm text-foreground/75">
+          Ändra/återkalla samtycke via cookiebannern (”Cookie-inställningar”) eller radera/blockera cookies i webbläsaren.
+          Webbplatsen kan fungera sämre om nödvändiga cookies blockeras.
+        </p>
+
+        <h3 class="mt-5 text-lg font-semibold tracking-tight">Exempel på cookies</h3>
+        <div class="mt-3 overflow-x-auto rounded-xl border border-border">
+          <table class="w-full min-w-[820px] text-left text-sm">
+            <thead>
+              <tr class="[&>th]:px-3 [&>th]:py-2 [&>th]:text-xs [&>th]:font-semibold [&>th]:tracking-wide [&>th]:text-foreground/70">
+                <th>Namn</th>
+                <th>Kategori</th>
+                <th>Syfte</th>
+                <th>Giltighet</th>
+                <th>Leverantör</th>
+              </tr>
+            </thead>
+            <tbody class="[&>tr]:border-t [&>tr]:border-border [&>tr>td]:px-3 [&>tr>td]:py-2">
+              <tr>
+                <td>__cf_bm, __cfruid</td>
+                <td>Nödvändiga</td>
+                <td>Prestanda/säkerhet (CDN/brandvägg)</td>
+                <td>30 min – 24 h</td>
+                <td>Hosting/CDN</td>
+              </tr>
+              <tr>
+                <td>pref_theme / lang</td>
+                <td>Funktionella</td>
+                <td>Sparar valt tema/språk</td>
+                <td>6–12 mån</td>
+                <td>Solopreneur</td>
+              </tr>
+              <tr>
+                <td>_ga, _ga_*, _gid</td>
+                <td>Analys</td>
+                <td>Besöksstatistik (om samtycke)</td>
+                <td>1 dag – 24 mån</td>
+                <td>Webbanalys</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="inbaddat" class="pt-2 pb-6">
+      <div class="so-card p-5 sm:p-6">
+        <h2 class="text-xl font-semibold tracking-tight">Inbäddat innehåll och länkar</h2>
+        <p class="mt-2 text-sm text-foreground/75">
+          Inbäddningar och utgående länkar kan omfattas av tredjeparts villkor och integritetspolicyer.
+          Leverantören kan sätta egna cookies eller samla in uppgifter enligt sina villkor.
+        </p>
+      </div>
+    </section>
+
+    <section id="andringar" class="pt-2 pb-10">
+      <div class="so-card p-5 sm:p-6">
+        <h2 class="text-xl font-semibold tracking-tight">Ändringar i denna policy</h2>
+        <p class="mt-2 text-sm text-foreground/75">
+          Policyn kan uppdateras vid behov. Väsentliga ändringar kommuniceras tydligt.
+          Se datumet ”Senast uppdaterad” högst upp.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

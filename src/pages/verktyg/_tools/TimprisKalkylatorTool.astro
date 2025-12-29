@@ -1,0 +1,291 @@
+---
+export interface Props {
+  showHeader?: boolean;
+}
+
+const { showHeader = true } = Astro.props;
+
+const t = {
+  heading: "Timpriskalkylator",
+  intro:
+    "Räkna ut vilket timpris du behöver ta som soloföretagare. Fyll i önskad lön, företagets kostnader, debiterbara timmar och en buffert för säkerhetsmarginal.",
+  inputsTitle: "Förutsättningar",
+  salaryLabel: "Önskad månadslön (före skatt)",
+  costsLabel: "Företagets fasta kostnader per månad",
+  hoursLabel: "Debiterbara timmar per månad",
+  bufferLabel: "Buffert / vinstpåslag (%)",
+  salaryHelp:
+    "Tänk på vilken lön du vill kunna ta ut varje månad. Det här är din privata lön före skatt.",
+  costsHelp:
+    "Exempel: programvaror, mobil, bokföring, försäkring, coworking, pension etc.",
+  hoursHelp:
+    "Hur många timmar per månad kan du realistiskt fakturera? Resten går ofta till säljarbete, admin och ledig tid.",
+  bufferHelp:
+    "Bufferten läggs ovanpå dina kostnader och lön för att ge marginal och vinst.",
+  summaryHeading: "Resultat – ditt timpris",
+  summaryZero: "Fyll i uppgifterna ovan för att se ditt timpris.",
+  labelMinRate: "Minsta timpris (utan buffert)",
+  labelRecRate: "Rekommenderat timpris (med buffert)",
+  labelRevenue: "Månadsintäkt vid rekommenderat timpris",
+  labelCostBase: "Totala kostnader + lön per månad",
+  labelMargin: "Buffert / vinst (kr)",
+  reset: "Rensa formulär",
+};
+---
+
+<section data-rate-form>
+  {showHeader && (
+    <header>
+      <h2 class="so-section-title">{t.heading}</h2>
+      <p class="so-section-muted">{t.intro}</p>
+    </header>
+  )}
+
+  <div class="so-card mt-4 p-5 sm:p-6">
+    <div class="grid gap-6 lg:grid-cols-2">
+      <!-- Inputs -->
+      <section aria-label={t.inputsTitle}>
+        <h3 class="text-sm font-semibold tracking-tight">{t.inputsTitle}</h3>
+
+        <div class="mt-4 space-y-5">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wide text-foreground/60" for="rate-salary">
+              {t.salaryLabel}
+            </label>
+            <div class="mt-2 flex items-center gap-2">
+              <input
+                id="rate-salary"
+                type="text"
+                inputmode="decimal"
+                class="w-full rounded-xl border border-border bg-surface px-3 py-2 text-sm shadow-sm"
+                placeholder="t.ex. 35000"
+                data-rate-salary
+                value="0"
+              />
+              <span class="text-sm text-foreground/70">kr</span>
+            </div>
+            <p class="mt-2 text-xs text-foreground/60">{t.salaryHelp}</p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wide text-foreground/60" for="rate-costs">
+              {t.costsLabel}
+            </label>
+            <div class="mt-2 flex items-center gap-2">
+              <input
+                id="rate-costs"
+                type="text"
+                inputmode="decimal"
+                class="w-full rounded-xl border border-border bg-surface px-3 py-2 text-sm shadow-sm"
+                placeholder="t.ex. 5000"
+                data-rate-costs
+                value="0"
+              />
+              <span class="text-sm text-foreground/70">kr</span>
+            </div>
+            <p class="mt-2 text-xs text-foreground/60">{t.costsHelp}</p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wide text-foreground/60" for="rate-hours">
+              {t.hoursLabel}
+            </label>
+            <div class="mt-2 flex items-center gap-2">
+              <input
+                id="rate-hours"
+                type="number"
+                min="1"
+                max="300"
+                class="w-full rounded-xl border border-border bg-surface px-3 py-2 text-sm shadow-sm"
+                data-rate-hours
+                value="80"
+              />
+              <span class="text-sm text-foreground/70">h/mån</span>
+            </div>
+            <p class="mt-2 text-xs text-foreground/60">{t.hoursHelp}</p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wide text-foreground/60" for="rate-buffer">
+              {t.bufferLabel}
+            </label>
+            <div class="mt-2 flex items-center gap-2">
+              <input
+                id="rate-buffer"
+                type="number"
+                min="0"
+                max="200"
+                class="w-full rounded-xl border border-border bg-surface px-3 py-2 text-sm shadow-sm"
+                data-rate-buffer
+                value="20"
+              />
+              <span class="text-sm text-foreground/70">%</span>
+            </div>
+            <p class="mt-2 text-xs text-foreground/60">{t.bufferHelp}</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Summary -->
+      <section aria-label={t.summaryHeading}>
+        <div class="flex items-start justify-between gap-3">
+          <h3 class="text-sm font-semibold tracking-tight">{t.summaryHeading}</h3>
+          <button
+            type="button"
+            class="rounded-xl border border-border bg-background px-3 py-2 text-sm font-semibold hover:border-accent"
+            data-rate-reset
+          >
+            {t.reset}
+          </button>
+        </div>
+
+        <p class="mt-3 text-sm text-foreground/70" data-rate-zero>
+          {t.summaryZero}
+        </p>
+
+        <div class="mt-4 grid gap-3 sm:grid-cols-2" data-rate-summary>
+          <div class="rounded-2xl border border-border bg-muted p-4">
+            <p class="text-xs font-semibold uppercase tracking-wide text-foreground/60">
+              {t.labelMinRate}
+            </p>
+            <p class="mt-2 text-lg font-semibold" data-rate-out="min">0 kr/h</p>
+          </div>
+
+          <div class="rounded-2xl border border-border bg-muted p-4">
+            <p class="text-xs font-semibold uppercase tracking-wide text-foreground/60">
+              {t.labelRecRate}
+            </p>
+            <p class="mt-2 text-lg font-semibold" data-rate-out="rec">0 kr/h</p>
+          </div>
+
+          <div class="rounded-2xl border border-border bg-muted p-4">
+            <p class="text-xs font-semibold uppercase tracking-wide text-foreground/60">
+              {t.labelRevenue}
+            </p>
+            <p class="mt-2 text-lg font-semibold" data-rate-out="revenue">0 kr/mån</p>
+          </div>
+
+          <div class="rounded-2xl border border-border bg-muted p-4">
+            <p class="text-xs font-semibold uppercase tracking-wide text-foreground/60">
+              {t.labelCostBase}
+            </p>
+            <p class="mt-2 text-lg font-semibold" data-rate-out="costbase">0 kr/mån</p>
+          </div>
+
+          <div class="rounded-2xl border border-border bg-muted p-4 sm:col-span-2">
+            <p class="text-xs font-semibold uppercase tracking-wide text-foreground/60">
+              {t.labelMargin}
+            </p>
+            <p class="mt-2 text-lg font-semibold" data-rate-out="margin">0 kr/mån</p>
+          </div>
+        </div>
+
+        <p class="mt-4 text-xs text-foreground/60">
+          Det här är en förenklad kalkyl som hjälper dig hitta ett rimligt golv för ditt timpris.
+        </p>
+      </section>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (function () {
+    function rate_formatCurrency(value) {
+      if (!isFinite(value)) return "0 kr";
+      try {
+        return value.toLocaleString("sv-SE", {
+          style: "currency",
+          currency: "SEK",
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        });
+      } catch {
+        return Math.round(value).toString() + " kr";
+      }
+    }
+
+    function rate_parseAmount(raw) {
+      if (typeof raw !== "string") return 0;
+      const normalized = raw.replace(/\s/g, "").replace(",", ".");
+      const num = parseFloat(normalized);
+      return isNaN(num) ? 0 : num;
+    }
+
+    function initRateCalculatorAll() {
+      const roots = document.querySelectorAll("[data-rate-form]");
+      if (!roots || roots.length === 0) return;
+
+      roots.forEach((root) => {
+        if (root.getAttribute("data-init") === "1") return;
+        root.setAttribute("data-init", "1");
+
+        const salaryInput = root.querySelector("[data-rate-salary]");
+        const costsInput = root.querySelector("[data-rate-costs]");
+        const hoursInput = root.querySelector("[data-rate-hours]");
+        const bufferInput = root.querySelector("[data-rate-buffer]");
+        const zeroText = root.querySelector("[data-rate-zero]");
+        const summary = root.querySelector("[data-rate-summary]");
+        const outMin = root.querySelector('[data-rate-out="min"]');
+        const outRec = root.querySelector('[data-rate-out="rec"]');
+        const outRevenue = root.querySelector('[data-rate-out="revenue"]');
+        const outCostbase = root.querySelector('[data-rate-out="costbase"]');
+        const outMargin = root.querySelector('[data-rate-out="margin"]');
+        const resetBtn = root.querySelector("[data-rate-reset]");
+
+        function recalc() {
+          const salary = rate_parseAmount((salaryInput && salaryInput.value) || "0");
+          const costs = rate_parseAmount((costsInput && costsInput.value) || "0");
+          let hours = parseFloat((hoursInput && hoursInput.value) || "0");
+          let buffer = parseFloat((bufferInput && bufferInput.value) || "0");
+
+          if (!isFinite(hours) || hours <= 0) hours = 1;
+          if (!isFinite(buffer) || buffer < 0) buffer = 0;
+
+          const basePerMonth = salary + costs;
+          const minRate = basePerMonth / hours;
+          const recRate = minRate * (1 + buffer / 100);
+          const revenueRec = recRate * hours;
+          const marginKr = revenueRec - basePerMonth;
+
+          if (basePerMonth <= 0) {
+            if (zeroText) zeroText.style.display = "";
+            if (summary) summary.style.opacity = "0.65";
+          } else {
+            if (zeroText) zeroText.style.display = "none";
+            if (summary) summary.style.opacity = "1";
+          }
+
+          if (outMin) outMin.textContent = rate_formatCurrency(minRate) + "/h";
+          if (outRec) outRec.textContent = rate_formatCurrency(recRate) + "/h";
+          if (outRevenue) outRevenue.textContent = rate_formatCurrency(revenueRec) + "/mån";
+          if (outCostbase) outCostbase.textContent = rate_formatCurrency(basePerMonth) + "/mån";
+          if (outMargin) outMargin.textContent = rate_formatCurrency(marginKr) + "/mån";
+        }
+
+        [salaryInput, costsInput].forEach((el) => {
+          if (!el) return;
+          el.addEventListener("input", recalc);
+        });
+
+        if (hoursInput) hoursInput.addEventListener("input", recalc);
+        if (bufferInput) bufferInput.addEventListener("input", recalc);
+
+        if (resetBtn) {
+          resetBtn.addEventListener("click", () => {
+            if (salaryInput) salaryInput.value = "0";
+            if (costsInput) costsInput.value = "0";
+            if (hoursInput) hoursInput.value = "80";
+            if (bufferInput) bufferInput.value = "20";
+            recalc();
+          });
+        }
+
+        recalc();
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", initRateCalculatorAll);
+    document.addEventListener("astro:page-load", initRateCalculatorAll);
+    document.addEventListener("astro:after-swap", initRateCalculatorAll);
+  })();
+</script>

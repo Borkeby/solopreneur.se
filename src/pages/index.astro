@@ -3,117 +3,232 @@ import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import Socials from "@/components/Socials.astro";
 import LinkButton from "@/components/LinkButton.astro";
-import Card from "@/components/Card.astro";
 import Hr from "@/components/Hr.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
-import IconRss from "@/assets/icons/IconRss.svg";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
-import { SITE } from "@/config";
-import { SOCIALS } from "@/constants";
+import { getPath } from "@/utils/getPath";
+
+// Bilder (från src/assets/images/...)
+// Justera paths om dina mappar heter annorlunda.
+import defaultCover from "@/assets/images/blog/default-cover.jpg";
+import momsToolImage from "@/assets/images/tools/moms.jpg";
+import paidinLogo from "@/assets/images/sponsors/paidin.png";
 
 const posts = await getCollection("blog");
-
 const sortedPosts = getSortedPosts(posts);
+
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
-const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+const heroPost = featuredPosts[0] ?? sortedPosts[0];
+
+// Viktigt: använd AstroPapers routing-helper (inte heroPost.slug)
+const heroHref = heroPost ? getPath(heroPost.id) : "/posts/";
+
+const heroDate =
+  heroPost?.data?.pubDatetime
+    ? heroPost.data.pubDatetime.toLocaleDateString("sv-SE", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      })
+    : null;
+
+const toImageSrc = (v: unknown): string | null => {
+  if (!v) return null;
+
+  if (typeof v === "string") {
+    const s = v.trim();
+    return s.length ? s : null;
+  }
+
+  if (typeof v === "object" && v && "src" in v) {
+    const src = (v as any).src;
+    return typeof src === "string" && src.length ? src : null;
+  }
+
+  return null;
+};
+
+// Om inlägget saknar ogImage: fallback till default-cover i assets
+const heroImage = toImageSrc(heroPost?.data?.ogImage) ?? defaultCover.src;
+
+const tools = [
+  {
+    tag: "Skatt & prissättning",
+    title: "Momskalkylator",
+    description:
+      "Räkna ut moms baklänges eller framlänges med 25, 12 eller 6 % moms. Se direkt hur mycket som är moms och vad som är exklusive moms.",
+    href: "/verktyg/moms-kalkylator",
+    image: momsToolImage.src,
+    imageAlt: "Momskalkylator",
+  },
+];
+
+const sponsor = {
+  label: "ANNONS · Paidin Finans",
+  title: "Fakturera utan företag – kom igång med Paidin Finans",
+  description:
+    "Egenanställning för soloprenörer. Skicka din första faktura på några minuter – utan F-skatt och utan bokföring.",
+  href: "https://paidin.se/",
+  logo: paidinLogo.src,
+  logoAlt: "Paidin",
+};
 ---
 
 <Layout>
   <Header />
-  <main id="main-content" data-layout="index">
-    <section id="hero" class="pt-8 pb-6">
-      <h1 class="my-4 inline-block text-4xl font-bold sm:my-8 sm:text-5xl">
-        Mingalaba
-      </h1>
-      <a
-        target="_blank"
-        href="/rss.xml"
-        class="inline-block"
-        aria-label="rss feed"
-        title="RSS Feed"
-      >
-        <IconRss
-          width={20}
-          height={20}
-          class="scale-125 stroke-accent stroke-3 rtl:-rotate-90"
-        />
-        <span class="sr-only">RSS Feed</span>
-      </a>
 
-      <p>
-        AstroPaper is a minimal, responsive, accessible and SEO-friendly Astro
-        blog theme. This theme follows best practices and provides accessibility
-        out of the box. Light and dark mode are supported by default. Moreover,
-        additional color schemes can also be configured.
+  <main id="main-content" data-layout="index">
+    <!-- Blogg -->
+    <section class="pt-8 pb-6">
+      <h1 class="so-section-title">Blogg</h1>
+      <p class="so-section-muted">
+        Senaste och utvalda inlägg från Solopreneur.
       </p>
-      <p class="mt-2">
-        Read the blog posts or check
-        <LinkButton
-          class="underline decoration-dashed underline-offset-4 hover:text-accent"
-          href="https://github.com/satnaing/astro-paper#readme"
-        >
-          README
-        </LinkButton> for more info.
-      </p>
+
       {
-        // only display if at least one social link is enabled
-        SOCIALS.length > 0 && (
-          <div class="mt-4 flex flex-col sm:flex-row sm:items-center">
-            <div class="me-2 mb-1 whitespace-nowrap sm:mb-0">Social Links:</div>
-            <Socials />
-          </div>
+        heroPost && (
+          <a
+            href={heroHref}
+            class="so-card so-card-hover mt-4 block overflow-hidden"
+          >
+            <img
+              src={heroImage}
+              alt={heroPost.data.title}
+              class="h-56 w-full object-cover sm:h-72"
+              loading="eager"
+              decoding="async"
+            />
+
+            <div class="p-5 sm:p-6">
+              <div class="text-xs font-semibold tracking-wide text-foreground/60">
+                BLOGG · {heroDate}
+              </div>
+
+              <div class="mt-2 text-2xl font-semibold tracking-tight">
+                {heroPost.data.title}
+              </div>
+
+              {(heroPost.data.ingress ?? heroPost.data.description) && (
+                <p class="mt-2 text-sm text-foreground/75">
+                  {heroPost.data.ingress ?? heroPost.data.description}
+                </p>
+              )}
+
+              <div class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-accent">
+                Läs mer <IconArrowRight class="inline-block rtl:-rotate-180" />
+              </div>
+            </div>
+          </a>
         )
       }
+
+      <div class="mt-5">
+        <LinkButton href="/posts/" class="inline-flex items-center gap-2">
+          Visa alla inlägg{" "}
+          <IconArrowRight class="inline-block rtl:-rotate-180" />
+        </LinkButton>
+      </div>
     </section>
 
     <Hr />
 
-    {
-      featuredPosts.length > 0 && (
-        <>
-          <section id="featured" class="pt-12 pb-6">
-            <h2 class="text-2xl font-semibold tracking-wide">Featured</h2>
-            <ul>
-              {featuredPosts.map(data => (
-                <Card variant="h3" {...data} />
-              ))}
-            </ul>
-          </section>
-          {recentPosts.length > 0 && <Hr />}
-        </>
-      )
-    }
+    <!-- CTA / Nyhetsbrev -->
+    <section class="pt-6 pb-6">
+      <div class="so-card p-5 sm:p-6">
+        <div class="text-lg font-semibold tracking-tight">
+          Prenumerera på Solopreneur nyhetsbrev
+        </div>
+        <p class="mt-1 text-sm text-foreground/75">
+          Kort och konkret: det jag bygger, lär mig och rekommenderar – för dig
+          som vill växa som soloprenör.
+        </p>
 
-    {
-      recentPosts.length > 0 && (
-        <section id="recent-posts" class="pt-12 pb-6">
-          <h2 class="text-2xl font-semibold tracking-wide">Recent Posts</h2>
-          <ul>
-            {recentPosts.map(
-              (data, index) =>
-                index < SITE.postPerIndex && <Card variant="h3" {...data} />
-            )}
-          </ul>
-        </section>
-      )
-    }
+        <a class="so-btn-primary mt-4" href="/nyhetsbrev/">
+          Prenumerera
+        </a>
+      </div>
+    </section>
 
-    <div class="my-8 text-center">
-      <LinkButton href="/posts/">
-        All Posts
-        <IconArrowRight class="inline-block rtl:-rotate-180" />
-      </LinkButton>
-    </div>
+    <!-- Verktyg -->
+    <section id="verktyg" class="pt-2 pb-6">
+      <h2 class="so-section-title">Verktyg</h2>
+      <p class="so-section-muted">
+        Här hittar du utvalda verktyg från Solopreneur. Fler verktyg kommer
+        löpande.
+      </p>
+
+      <div class="mt-4 space-y-4">
+        {tools.map(t => (
+          <a href={t.href} class="so-card so-card-hover block overflow-hidden">
+            <div class="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:gap-6 sm:p-6">
+              <div class="min-w-0 flex-1">
+                <div class="text-xs font-semibold tracking-wide text-foreground/60">
+                  VERKTYG · {t.tag}
+                </div>
+                <div class="mt-2 text-lg font-semibold tracking-tight">
+                  {t.title}
+                </div>
+                <p class="mt-2 text-sm text-foreground/75">{t.description}</p>
+              </div>
+
+              {t.image && (
+                <img
+                  src={t.image}
+                  alt={t.imageAlt ?? t.title}
+                  class="h-28 w-full rounded-xl object-cover sm:h-24 sm:w-40"
+                  loading="lazy"
+                  decoding="async"
+                />
+              )}
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Sponsrat -->
+    <section class="pt-2 pb-10">
+      <h2 class="so-section-title">Sponsrat</h2>
+
+      <div class="mt-4 so-card overflow-hidden">
+        <div class="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:gap-6 sm:p-6">
+          <div class="min-w-0 flex-1">
+            <div class="text-xs font-semibold tracking-wide text-foreground/60">
+              {sponsor.label}
+            </div>
+            <div class="mt-2 text-xl font-semibold tracking-tight">
+              {sponsor.title}
+            </div>
+            <p class="mt-2 text-sm text-foreground/75">{sponsor.description}</p>
+
+            <div class="mt-4">
+              <a class="so-btn-primary" href={sponsor.href}>
+                Läs mer
+              </a>
+            </div>
+          </div>
+
+          {sponsor.logo && (
+            <img
+              src={sponsor.logo}
+              alt={sponsor.logoAlt ?? "Sponsor"}
+              class="h-14 w-auto rounded-md bg-white p-2 sm:h-16"
+              loading="lazy"
+              decoding="async"
+            />
+          )}
+        </div>
+      </div>
+    </section>
   </main>
+
   <Footer />
 </Layout>
 
 <script>
   document.addEventListener("astro:page-load", () => {
-    const indexLayout = (document.querySelector("#main-content") as HTMLElement)
-      ?.dataset?.layout;
+    const indexLayout = document.querySelector("#main-content")?.dataset?.layout;
     if (indexLayout) {
       sessionStorage.setItem("backUrl", "/");
     }

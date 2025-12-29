@@ -1,36 +1,97 @@
 ---
-import { slugifyStr } from "@/utils/slugify";
 import type { CollectionEntry } from "astro:content";
+import { slugifyStr } from "@/utils/slugify";
 import { getPath } from "@/utils/getPath";
-import Datetime from "./Datetime.astro";
 
 export interface Props extends CollectionEntry<"blog"> {
   variant?: "h2" | "h3";
+  filePath?: string;
+  eyebrow?: string; // valfritt: t.ex. "BLOGG"
+
+  // NYTT: override länk (behåller getPath som default)
+  href?: string;
+
+  // NYTT: tvinga bild + fallback om ogImage saknas
+  forceImage?: boolean;
+  fallbackImage?: string;
 }
 
-const { variant = "h2", data, id, filePath } = Astro.props;
+const {
+  variant = "h3",
+  data,
+  id,
+  filePath,
+  eyebrow,
+  href: hrefOverride,
+  forceImage = false,
+  fallbackImage,
+} = Astro.props as Props;
 
-const { title, description, pubDatetime, modDatetime, timezone } = data;
+const href = hrefOverride ?? getPath(id, filePath);
+
+const title = data.title;
+const ingress = data.ingress ?? data.description;
+
+const dateStr = data.pubDatetime
+  ? data.pubDatetime.toLocaleDateString("sv-SE", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })
+  : "";
+
+const ogImageRaw = data.ogImage as unknown;
+const ogImage =
+  typeof ogImageRaw === "string"
+    ? ogImageRaw
+    : (ogImageRaw && typeof ogImageRaw === "object" && "src" in (ogImageRaw as any)
+        ? (ogImageRaw as any).src
+        : null);
+
+// Bild: använd ogImage om den finns, annars fallback om forceImage=true
+const imageSrc = ogImage ?? (forceImage ? (fallbackImage ?? null) : null);
+
+const primaryPill = data.kategori ?? data.tags?.[0];
+const pills = [primaryPill, data.nivå, data.tid].filter(Boolean) as string[];
 
 const headerProps = {
   style: { viewTransitionName: slugifyStr(title) },
-  class: "text-lg font-medium decoration-dashed hover:underline",
+  class: "mt-2 text-xl font-semibold tracking-tight",
 };
 ---
 
-<li class="my-6">
-  <a
-    href={getPath(id, filePath)}
-    class="inline-block text-lg font-medium text-accent decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
-  >
+<li class="mt-4">
+  <a href={href} class="so-card so-card-hover block overflow-hidden">
     {
-      variant === "h2" ? (
-        <h2 {...headerProps}>{title}</h2>
-      ) : (
-        <h3 {...headerProps}>{title}</h3>
+      imageSrc && (
+        <img
+          src={imageSrc}
+          alt={title}
+          class="h-44 w-full object-cover sm:h-56"
+          loading="lazy"
+          decoding="async"
+        />
       )
     }
+
+    <div class="p-5 sm:p-6">
+      <div class="text-xs font-semibold tracking-wide text-foreground/60">
+        {(eyebrow ?? "BLOGG")} · {dateStr}
+      </div>
+
+      {variant === "h2" ? <h2 {...headerProps}>{title}</h2> : <h3 {...headerProps}>{title}</h3>}
+
+      {ingress && <p class="mt-2 text-sm text-foreground/75">{ingress}</p>}
+
+      {
+        pills.length > 0 && (
+          <div class="mt-4 flex flex-wrap gap-2">
+            {pills.map(p => (
+              <span class="so-pill">{p}</span>
+            ))}
+          </div>
+        )
+      }
+    </div>
   </a>
-  <Datetime {pubDatetime} {modDatetime} {timezone} />
-  <p>{description}</p>
 </li>

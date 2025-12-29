@@ -20,6 +20,12 @@ const blog = defineCollection({
       canonicalURL: z.string().optional(),
       hideEditPost: z.boolean().optional(),
       timezone: z.string().optional(),
+
+      // Extra fält som du redan använder i frontmatter
+      ingress: z.string().optional(),
+      kategori: z.string().optional(),
+      nivå: z.string().optional(),
+      tid: z.string().optional(),
     }),
 });
 

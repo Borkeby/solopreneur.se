@@ -3,16 +3,17 @@ import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import LinkButton from "@/components/LinkButton.astro";
 import Hr from "@/components/Hr.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
 import { getPath } from "@/utils/getPath";
 
-// Bilder (från src/assets/images/...)
-// Justera paths om dina mappar heter annorlunda.
 import defaultCover from "@/assets/images/blog/default-cover.jpg";
+
 import momsToolImage from "@/assets/images/tools/moms.jpg";
+import timprisToolImage from "@/assets/images/tools/timpris.jpg";
+import bildToolImage from "@/assets/images/tools/bild.jpg";
+
 import paidinLogo from "@/assets/images/sponsors/paidin.png";
 
 const posts = await getCollection("blog");
@@ -20,18 +21,6 @@ const sortedPosts = getSortedPosts(posts);
 
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const heroPost = featuredPosts[0] ?? sortedPosts[0];
-
-// Viktigt: använd AstroPapers routing-helper (inte heroPost.slug)
-const heroHref = heroPost ? getPath(heroPost.id) : "/posts/";
-
-const heroDate =
-  heroPost?.data?.pubDatetime
-    ? heroPost.data.pubDatetime.toLocaleDateString("sv-SE", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      })
-    : null;
 
 const toImageSrc = (v: unknown): string | null => {
   if (!v) return null;
@@ -49,18 +38,61 @@ const toImageSrc = (v: unknown): string | null => {
   return null;
 };
 
-// Om inlägget saknar ogImage: fallback till default-cover i assets
+const heroHref = heroPost ? getPath(heroPost.id, heroPost.filePath) : "/posts/";
+const heroDate =
+  heroPost?.data?.pubDatetime
+    ? heroPost.data.pubDatetime.toLocaleDateString("sv-SE", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      })
+    : null;
+
 const heroImage = toImageSrc(heroPost?.data?.ogImage) ?? defaultCover.src;
+
+const latestPosts = sortedPosts
+  .filter(p => (heroPost ? p.id !== heroPost.id : true))
+  .slice(0, 4);
+
+const playbookPosts = sortedPosts
+  .filter(p => (p.data.kategori ?? "").toLowerCase() === "playbook")
+  .slice(0, 3);
+
+const quickLinks = [
+  { label: "Playbooks", href: "/playbooks/" },
+  { label: "Verktyg", href: "/verktyg/" },
+  { label: "Nyhetsbrev", href: "/nyhetsbrev/" },
+  { label: "Community", href: "/community/" },
+  { label: "Om", href: "/om/" },
+];
 
 const tools = [
   {
     tag: "Skatt & prissättning",
     title: "Momskalkylator",
     description:
-      "Räkna ut moms baklänges eller framlänges med 25, 12 eller 6 % moms. Se direkt hur mycket som är moms och vad som är exklusive moms.",
+      "Räkna ut moms baklänges eller framlänges med 25, 12 eller 6 %. Se direkt moms och exkl. moms.",
     href: "/verktyg/moms-kalkylator",
     image: momsToolImage.src,
     imageAlt: "Momskalkylator",
+  },
+  {
+    tag: "Skatt & prissättning",
+    title: "Timpriskalkylator",
+    description:
+      "Räkna ut timpris baserat på mål, kostnader och debiterbar tid.",
+    href: "/verktyg/timpriskalkylator",
+    image: timprisToolImage.src,
+    imageAlt: "Timpriskalkylator",
+  },
+  {
+    tag: "Marknadsföring",
+    title: "Bildverktyg",
+    description:
+      "Beskär och exportera bilder i rätt format för Instagram, Facebook, LinkedIn, YouTube och TikTok.",
+    href: "/verktyg/",
+    image: bildToolImage.src,
+    imageAlt: "Bildverktyg",
   },
 ];
 
@@ -75,123 +107,278 @@ const sponsor = {
 };
 ---
 
-<Layout>
+<Layout
+  title="Solopreneur – playbooks och verktyg för soloföretagare"
+  description="Praktiska playbooks, verktyg och artiklar för att bygga ett lönsamt och hållbart soloföretag – med AI som operativ hävstång."
+>
   <Header />
 
   <main id="main-content" data-layout="index">
-    <!-- Blogg -->
-    <section class="pt-8 pb-6">
-      <h1 class="so-section-title">Blogg</h1>
-      <p class="so-section-muted">
-        Senaste och utvalda inlägg från Solopreneur.
-      </p>
+    <!-- Hero -->
+    <section class="pt-10 pb-10">
+      <div class="so-hero">
+        <div class="so-eyebrow">Solopreneur</div>
 
-      {
-        heroPost && (
-          <a
-            href={heroHref}
-            class="so-card so-card-hover mt-4 block overflow-hidden"
-          >
-            <img
-              src={heroImage}
-              alt={heroPost.data.title}
-              class="h-56 w-full object-cover sm:h-72"
-              loading="eager"
-              decoding="async"
-            />
+        <h1 class="so-hero-title">
+          Bygg ett lönsamt soloföretag – med playbooks, verktyg och AI som hävstång
+        </h1>
 
-            <div class="p-5 sm:p-6">
-              <div class="text-xs font-semibold tracking-wide text-foreground/60">
-                BLOGG · {heroDate}
-              </div>
+        <p class="so-hero-lead">
+          Solopreneur samlar konkreta guider (playbooks) och verktyg som hjälper dig att planera,
+          prissätta, sälja och leverera – utan att fastna i fluff.
+        </p>
 
-              <div class="mt-2 text-2xl font-semibold tracking-tight">
-                {heroPost.data.title}
-              </div>
-
-              {(heroPost.data.ingress ?? heroPost.data.description) && (
-                <p class="mt-2 text-sm text-foreground/75">
-                  {heroPost.data.ingress ?? heroPost.data.description}
-                </p>
-              )}
-
-              <div class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-accent">
-                Läs mer <IconArrowRight class="inline-block rtl:-rotate-180" />
-              </div>
-            </div>
+        <div class="mt-6 flex flex-wrap items-center gap-3">
+          <a class="so-btn-primary" href="/nyhetsbrev/">
+            Prenumerera
           </a>
-        )
-      }
 
-      <div class="mt-5">
-        <LinkButton href="/posts/" class="inline-flex items-center gap-2">
-          Visa alla inlägg{" "}
-          <IconArrowRight class="inline-block rtl:-rotate-180" />
-        </LinkButton>
+          <a class="so-btn-secondary" href="/verktyg/">
+            Se verktygen
+          </a>
+        </div>
+
+        <div class="mt-6 flex flex-wrap gap-2">
+          {quickLinks.map(l => (
+            <a class="so-pill-link" href={l.href}>
+              {l.label}
+            </a>
+          ))}
+        </div>
       </div>
     </section>
 
     <Hr />
 
-    <!-- CTA / Nyhetsbrev -->
-    <section class="pt-6 pb-6">
-      <div class="so-card p-5 sm:p-6">
-        <div class="text-lg font-semibold tracking-tight">
-          Prenumerera på Solopreneur nyhetsbrev
-        </div>
-        <p class="mt-1 text-sm text-foreground/75">
-          Kort och konkret: det jag bygger, lär mig och rekommenderar – för dig
-          som vill växa som soloprenör.
-        </p>
+    <!-- Utvalt + Senaste -->
+    <section class="pt-8 pb-10">
+      <div class="grid gap-6 lg:grid-cols-3">
+        <div class="lg:col-span-2">
+          <h2 class="so-section-title">Utvalt</h2>
+          <p class="so-section-muted">Senaste utvalda inlägget.</p>
 
-        <a class="so-btn-primary mt-4" href="/nyhetsbrev/">
-          Prenumerera
-        </a>
+          {heroPost && (
+            <a href={heroHref} class="so-card so-card-hover mt-5 block overflow-hidden">
+              <img
+                src={heroImage}
+                alt={heroPost.data.title}
+                class="so-featured-img"
+                loading="eager"
+                decoding="async"
+              />
+
+              <div class="p-5 sm:p-6">
+                <div class="text-xs font-semibold tracking-wide text-foreground/60">
+                  BLOGG · {heroDate}
+                </div>
+
+                <div class="mt-2 text-2xl font-semibold tracking-tight">
+                  {heroPost.data.title}
+                </div>
+
+                {(heroPost.data.ingress ?? heroPost.data.description) && (
+                  <p class="mt-2 text-sm text-foreground/75">
+                    {heroPost.data.ingress ?? heroPost.data.description}
+                  </p>
+                )}
+
+                <div class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-accent">
+                  Läs inlägget <IconArrowRight class="inline-block rtl:-rotate-180" />
+                </div>
+              </div>
+            </a>
+          )}
+
+          <div class="mt-6">
+            <a href="/posts/" class="so-btn-secondary inline-flex items-center gap-2">
+              Visa alla inlägg <IconArrowRight class="inline-block rtl:-rotate-180" />
+            </a>
+          </div>
+        </div>
+
+        <aside class="lg:col-span-1">
+          <h2 class="so-section-title">Senaste</h2>
+          <p class="so-section-muted">Snabba länkar till nya inlägg.</p>
+
+          <div class="mt-5 so-card so-card-soft p-4 sm:p-5">
+            {latestPosts.length === 0 ? (
+              <div class="text-sm text-foreground/75">
+                Inga fler inlägg att visa ännu.
+              </div>
+            ) : (
+              <ul class="space-y-1">
+                {latestPosts.map(p => {
+                  const href = getPath(p.id, p.filePath);
+                  const d =
+                    p.data.pubDatetime?.toLocaleDateString("sv-SE", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                    }) ?? "";
+
+                  return (
+                    <li>
+                      <a href={href} class="so-latest-link">
+                        <div class="so-latest-date">{d}</div>
+                        <div class="so-latest-title">{p.data.title}</div>
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+        </aside>
       </div>
     </section>
 
+    <Hr />
+
     <!-- Verktyg -->
-    <section id="verktyg" class="pt-2 pb-6">
+    <section id="verktyg" class="pt-8 pb-10">
       <h2 class="so-section-title">Verktyg</h2>
       <p class="so-section-muted">
-        Här hittar du utvalda verktyg från Solopreneur. Fler verktyg kommer
-        löpande.
+        Utvalda verktyg som löser vanliga problem snabbt. Fler kommer löpande.
       </p>
 
-      <div class="mt-4 space-y-4">
+      <div class="mt-5 grid gap-4 md:grid-cols-3">
         {tools.map(t => (
           <a href={t.href} class="so-card so-card-hover block overflow-hidden">
-            <div class="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:gap-6 sm:p-6">
-              <div class="min-w-0 flex-1">
-                <div class="text-xs font-semibold tracking-wide text-foreground/60">
-                  VERKTYG · {t.tag}
-                </div>
-                <div class="mt-2 text-lg font-semibold tracking-tight">
-                  {t.title}
-                </div>
-                <p class="mt-2 text-sm text-foreground/75">{t.description}</p>
+            {t.image && (
+              <img
+                src={t.image}
+                alt={t.imageAlt ?? t.title}
+                class="so-tool-img"
+                loading="lazy"
+                decoding="async"
+              />
+            )}
+
+            <div class="p-5">
+              <div class="text-xs font-semibold tracking-wide text-foreground/60">
+                VERKTYG · {t.tag}
               </div>
 
-              {t.image && (
-                <img
-                  src={t.image}
-                  alt={t.imageAlt ?? t.title}
-                  class="h-28 w-full rounded-xl object-cover sm:h-24 sm:w-40"
-                  loading="lazy"
-                  decoding="async"
-                />
-              )}
+              <div class="mt-2 text-lg font-semibold tracking-tight">
+                {t.title}
+              </div>
+
+              <p class="mt-2 text-sm text-foreground/75">
+                {t.description}
+              </p>
             </div>
           </a>
         ))}
       </div>
+
+      <div class="mt-6">
+        <a href="/verktyg/" class="so-btn-secondary inline-flex items-center gap-2">
+          Visa alla verktyg <IconArrowRight class="inline-block rtl:-rotate-180" />
+        </a>
+      </div>
+    </section>
+
+    <!-- Nyhetsbrev -->
+    <section class="pt-2 pb-10">
+      <div class="so-card so-card-emphasis p-5 sm:p-6">
+        <div class="text-lg font-semibold tracking-tight">
+          Prenumerera på Solopreneur nyhetsbrev
+        </div>
+
+        <p class="mt-2 max-w-3xl text-sm text-foreground/75">
+          Kort och konkret: det jag bygger, lär mig och rekommenderar – för dig som vill växa som soloprenör.
+        </p>
+
+        <div class="mt-4 flex flex-wrap items-center gap-3">
+          <a class="so-btn-primary" href="/nyhetsbrev/">
+            Prenumerera
+          </a>
+          <a class="so-btn-secondary" href="/nyhetsbrev/">
+            Läs mer
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Playbooks -->
+    <section class="pt-2 pb-10">
+      <h2 class="so-section-title">Playbooks</h2>
+      <p class="so-section-muted">Steg-för-steg guider med fokus på genomförande.</p>
+
+      {playbookPosts.length > 0 ? (
+        <div class="mt-5 grid gap-4 md:grid-cols-3">
+          {playbookPosts.map(p => (
+            <a href={`/playbooks/${p.id}`} class="so-card so-card-hover block p-5">
+              <div class="text-xs font-semibold tracking-wide text-foreground/60">
+                PLAYBOOK
+              </div>
+
+              <div class="mt-2 text-base font-semibold tracking-tight">
+                {p.data.title}
+              </div>
+
+              {(p.data.ingress ?? p.data.description) && (
+                <p class="mt-2 text-sm text-foreground/75">
+                  {p.data.ingress ?? p.data.description}
+                </p>
+              )}
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="mt-5 so-card p-5 sm:p-6">
+          <div class="text-sm text-foreground/75">
+            Fler playbooks kommer snart. Under tiden kan du börja med bloggen och verktygen.
+          </div>
+        </div>
+      )}
+
+      <div class="mt-6">
+        <a href="/playbooks/" class="so-btn-secondary inline-flex items-center gap-2">
+          Visa alla playbooks <IconArrowRight class="inline-block rtl:-rotate-180" />
+        </a>
+      </div>
+    </section>
+
+    <Hr />
+
+    <!-- Community + Om -->
+    <section class="pt-8 pb-10">
+      <div class="grid gap-4 md:grid-cols-2">
+        <a href="/community/" class="so-card so-card-hover block p-5 sm:p-6">
+          <div class="text-lg font-semibold tracking-tight">Community</div>
+          <p class="mt-1 text-sm text-foreground/75">
+            Diskutera, få feedback och följ bygget i praktiken.
+          </p>
+          <div class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-accent">
+            Gå med <IconArrowRight class="inline-block rtl:-rotate-180" />
+          </div>
+        </a>
+
+        <a href="/om/" class="so-card so-card-hover block p-5 sm:p-6">
+          <div class="text-lg font-semibold tracking-tight">Om Solopreneur</div>
+          <p class="mt-1 text-sm text-foreground/75">
+            Varför sidan finns och vad som byggs – med fokus på genomförande och lärdomar.
+          </p>
+          <div class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-accent">
+            Läs mer <IconArrowRight class="inline-block rtl:-rotate-180" />
+          </div>
+        </a>
+      </div>
     </section>
 
     <!-- Sponsrat -->
-    <section class="pt-2 pb-10">
+    <section class="pt-2 pb-12">
       <h2 class="so-section-title">Sponsrat</h2>
 
-      <div class="mt-4 so-card overflow-hidden">
+      <a
+        href={sponsor.href}
+        target="_blank"
+        rel="noopener noreferrer sponsored"
+        aria-label={`${sponsor.title} (annons)`}
+        class="mt-5 so-card so-card-hover block overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+        style="background-color: #fff6ea;"
+      >
         <div class="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:gap-6 sm:p-6">
           <div class="min-w-0 flex-1">
             <div class="text-xs font-semibold tracking-wide text-foreground/60">
@@ -200,13 +387,9 @@ const sponsor = {
             <div class="mt-2 text-xl font-semibold tracking-tight">
               {sponsor.title}
             </div>
-            <p class="mt-2 text-sm text-foreground/75">{sponsor.description}</p>
-
-            <div class="mt-4">
-              <a class="so-btn-primary" href={sponsor.href}>
-                Läs mer
-              </a>
-            </div>
+            <p class="mt-2 text-sm text-foreground/75">
+              {sponsor.description}
+            </p>
           </div>
 
           {sponsor.logo && (
@@ -219,7 +402,7 @@ const sponsor = {
             />
           )}
         </div>
-      </div>
+      </a>
     </section>
   </main>
 

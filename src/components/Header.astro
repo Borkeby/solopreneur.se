@@ -7,20 +7,41 @@ import IconMenuDeep from "@/assets/icons/IconMenuDeep.svg";
 import LinkButton from "./LinkButton.astro";
 import { SITE } from "@/config";
 
-// Justera sökvägen om bilden ligger någon annanstans än src/assets/images/
 import SolopreneurLogo from "@/assets/images/Solopreneur.jpg";
 
 const { pathname } = Astro.url;
 
-const currentPath =
-  pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
+const normalize = (p: string) => {
+  if (!p) return "/";
+  let s = p.trim();
+  if (!s.startsWith("/")) s = "/" + s;
+  if (s.length > 1 && s.endsWith("/")) s = s.slice(0, -1);
+  return s;
+};
+
+const currentPath = normalize(
+  pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname
+);
 
 const isActive = (path: string) => {
-  const currentPathArray = currentPath.split("/").filter(p => p.trim());
-  const pathArray = path.split("/").filter(p => p.trim());
+  const target = normalize(path);
+  if (currentPath === target) return true;
 
-  return currentPath === path || currentPathArray[0] === pathArray[0];
+  const currentPathArray = currentPath.split("/").filter(p => p.trim());
+  const pathArray = target.split("/").filter(p => p.trim());
+
+  return currentPathArray[0] && pathArray[0] && currentPathArray[0] === pathArray[0];
 };
+
+const nav = [
+  { label: "Blogg", href: "/posts/", active: "/posts" },
+  { label: "Playbooks", href: "/playbooks/", active: "/playbooks" },
+  { label: "Taggar", href: "/tags/", active: "/tags" },
+  { label: "Verktyg", href: "/verktyg/", active: "/verktyg" },
+  { label: "Nyhetsbrev", href: "/nyhetsbrev/", active: "/nyhetsbrev" },
+  { label: "Community", href: "/community/", active: "/community" },
+  { label: "Om", href: "/om/", active: "/om" },
+];
 ---
 
 <header class="border-b border-border bg-surface">
@@ -29,13 +50,12 @@ const isActive = (path: string) => {
     href="#main-content"
     class="absolute start-16 -top-full z-50 bg-surface px-3 py-2 text-accent backdrop-blur-lg transition-all focus:top-4"
   >
-    Skip to content
+    Hoppa till innehåll
   </a>
 
   <div class="mx-auto max-w-app px-4">
     <div class="flex items-center justify-between gap-4 py-4 sm:py-6">
       <div class="flex items-center gap-6">
-        <!-- LOGGA (ersätter {SITE.title}) -->
         <a href="/" class="inline-flex items-center" aria-label={SITE.title}>
           <img
             src={SolopreneurLogo.src}
@@ -46,77 +66,46 @@ const isActive = (path: string) => {
           />
         </a>
 
-        <nav class="hidden sm:block" aria-label="Primary">
+        <nav class="hidden sm:block" aria-label="Huvudnavigering">
           <ul class="flex items-center gap-5 [&>li>a]:text-sm [&>li>a]:font-semibold [&>li>a]:text-foreground/80 [&>li>a]:hover:text-accent">
-            <li>
-              <a href="/posts" class:list={{ "active-nav": isActive("/posts") }}>
-                Blogg
-              </a>
-            </li>
-
-            <li>
-              <a
-                href="/playbooks/"
-                class:list={{ "active-nav": isActive("/playbooks") }}
-              >
-                Playbooks
-              </a>
-            </li>
-
-            <li>
-              <a href="/tags" class:list={{ "active-nav": isActive("/tags") }}>
-                Taggar
-              </a>
-            </li>
-
-            <li>
-              <a
-                href="/verktyg"
-                class:list={{ "active-nav": isActive("/verktyg") }}
-              >
-                Verktyg
-              </a>
-            </li>
-
-            <li>
-              <a
-                href="/nyhetsbrev/"
-                class:list={{ "active-nav": isActive("/nyhetsbrev") }}
-              >
-                Nyhetsbrev
-              </a>
-            </li>
-
-            <li>
-              <a
-                href="/community/"
-                class:list={{ "active-nav": isActive("/community") }}
-              >
-                Community
-              </a>
-            </li>
-
-            <li>
-              <a href="/om/" class:list={{ "active-nav": isActive("/om") }}>
-                Om
-              </a>
-            </li>
+            {nav.map(item => {
+              const active = isActive(item.active);
+              return (
+                <li>
+                  <a
+                    href={item.href}
+                    class:list={{ "active-nav": active }}
+                    aria-current={active ? "page" : undefined}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
         </nav>
       </div>
 
       <div class="flex items-center gap-1">
+        <a
+          href="/nyhetsbrev/"
+          class="hidden sm:inline-flex so-btn-primary"
+          aria-label="Prenumerera på nyhetsbrevet"
+        >
+          Prenumerera
+        </a>
+
         <LinkButton
           href="/search"
           class:list={[
             "focus-outline flex p-2",
             { "[&>svg]:stroke-accent": isActive("/search") },
           ]}
-          ariaLabel="search"
-          title="Search"
+          ariaLabel="Sök"
+          title="Sök"
         >
           <IconSearch />
-          <span class="sr-only">Search</span>
+          <span class="sr-only">Sök</span>
         </LinkButton>
 
         {
@@ -124,8 +113,8 @@ const isActive = (path: string) => {
             <button
               id="theme-btn"
               class="focus-outline relative size-10 p-2 hover:[&>svg]:stroke-accent"
-              title="Toggles light & dark"
-              aria-label="auto"
+              title="Växla tema"
+              aria-label="Växla tema"
               aria-live="polite"
             >
               <IconMoon class="absolute top-[50%] left-[50%] -translate-[50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
@@ -137,7 +126,7 @@ const isActive = (path: string) => {
         <button
           id="menu-btn"
           class="focus-outline p-2 sm:hidden"
-          aria-label="Open Menu"
+          aria-label="Öppna meny"
           aria-expanded="false"
           aria-controls="menu-items"
         >
@@ -147,7 +136,7 @@ const isActive = (path: string) => {
       </div>
     </div>
 
-    <nav class="sm:hidden pb-4" aria-label="Mobile">
+    <nav class="sm:hidden pb-4" aria-label="Mobilnavigering">
       <ul
         id="menu-items"
         class:list={[
@@ -157,61 +146,25 @@ const isActive = (path: string) => {
         ]}
       >
         <li>
-          <a href="/posts" class:list={{ "active-nav": isActive("/posts") }}>
-            Blogg
+          <a href="/nyhetsbrev/" class="so-btn-primary mx-3 my-2 justify-center">
+            Prenumerera
           </a>
         </li>
 
-        <li>
-          <a
-            href="/playbooks/"
-            class:list={{ "active-nav": isActive("/playbooks") }}
-          >
-            Playbooks
-          </a>
-        </li>
-
-        <li>
-          <a href="/tags" class:list={{ "active-nav": isActive("/tags") }}>
-            Taggar
-          </a>
-        </li>
-
-        <li>
-          <a href="/verktyg" class:list={{ "active-nav": isActive("/verktyg") }}>
-            Verktyg
-          </a>
-        </li>
-
-        <li>
-          <a
-            href="/nyhetsbrev/"
-            class:list={{ "active-nav": isActive("/nyhetsbrev") }}
-          >
-            Nyhetsbrev
-          </a>
-        </li>
-
-        <li>
-          <a
-            href="/community/"
-            class:list={{ "active-nav": isActive("/community") }}
-          >
-            Community
-          </a>
-        </li>
-
-        <li>
-          <a href="/om/" class:list={{ "active-nav": isActive("/om") }}>
-            Om
-          </a>
-        </li>
-
-        <li>
-          <a href="/verktyg/moms-kalkylator">
-            Moms-kalkylator
-          </a>
-        </li>
+        {nav.map(item => {
+          const active = isActive(item.active);
+          return (
+            <li>
+              <a
+                href={item.href}
+                class:list={{ "active-nav": active }}
+                aria-current={active ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          );
+        })}
       </ul>
     </nav>
   </div>
@@ -225,7 +178,6 @@ const isActive = (path: string) => {
     const closeIcon = document.querySelector("#close-icon");
 
     if (!menuBtn || !menuItems || !menuIcon || !closeIcon) return;
-
     if (menuBtn.dataset.bound === "1") return;
     menuBtn.dataset.bound = "1";
 
@@ -233,7 +185,7 @@ const isActive = (path: string) => {
       const openMenu = menuBtn.getAttribute("aria-expanded") === "true";
 
       menuBtn.setAttribute("aria-expanded", openMenu ? "false" : "true");
-      menuBtn.setAttribute("aria-label", openMenu ? "Open Menu" : "Close Menu");
+      menuBtn.setAttribute("aria-label", openMenu ? "Öppna meny" : "Stäng meny");
 
       menuItems.classList.toggle("hidden");
       menuIcon.classList.toggle("hidden");

@@ -5,104 +5,176 @@
 
 :root,
 html[data-theme="light"] {
-  /* Bas */
-  --background: #f8fafc; /* ljusgrå bakgrund som din live-sida */
-  --surface: #ffffff;    /* vita kort/ytor */
-  --foreground: #111827; /* nära svart */
-  --muted: #f1f5f9;      /* mjuk grå */
-  --border: #e5e7eb;     /* ljus border */
-
-  /* Accent (byt om du vill) */
-  --accent: #77c043;
+    --background: #eef2f7;
+    --surface: #ffffff;
+    --foreground: #111827;
+    --muted: #f1f5f9;
+    --border: #e5e7eb;
+    --accent: #77c043;
 }
 
 html[data-theme="dark"] {
-  --background: #0b1220;
-  --surface: #0f172a;
-  --foreground: #e5e7eb;
-  --muted: #1f2937;
-  --border: #334155;
-
-  --accent: #77c043;
+    --background: #0b1220;
+    --surface: #0f172a;
+    --foreground: #e5e7eb;
+    --muted: #1f2937;
+    --border: #334155;
+    --accent: #77c043;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-surface: var(--surface);
-  --color-foreground: var(--foreground);
-  --color-accent: var(--accent);
-  --color-muted: var(--muted);
-  --color-border: var(--border);
+    --color-background: var(--background);
+    --color-surface: var(--surface);
+    --color-foreground: var(--foreground);
+    --color-accent: var(--accent);
+    --color-muted: var(--muted);
+    --color-border: var(--border);
 }
 
 @layer base {
-  * {
-    @apply border-border outline-accent/75;
-    scrollbar-width: auto;
-    scrollbar-color: var(--color-muted) transparent;
-  }
+    * {
+        @apply border-border outline-accent/75;
+        scrollbar-width: auto;
+        scrollbar-color: var(--color-muted) transparent;
+    }
 
-  html {
-    @apply overflow-y-scroll scroll-smooth;
-  }
+    html {
+        @apply overflow-y-scroll scroll-smooth;
+    }
 
-  body {
-    /* Byt till font-mono igen om du vill behålla AstroPaper-känslan */
-    @apply flex min-h-svh flex-col bg-background font-sans text-foreground selection:bg-accent/75 selection:text-surface;
-  }
+    body {
+        @apply flex min-h-svh flex-col bg-background font-sans text-foreground selection:bg-accent/75 selection:text-surface;
+    }
 
-  a,
-  button {
-    @apply outline-offset-1 outline-accent focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-dashed;
-  }
+    a,
+    button {
+        @apply outline-offset-1 outline-accent focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-dashed;
+    }
 
-  button:not(:disabled),
-  [role="button"]:not(:disabled) {
-    cursor: pointer;
-  }
+        button:not(:disabled),
+        [role="button"]:not(:disabled) {
+            cursor: pointer;
+        }
 
-  section,
-  footer {
-    @apply mx-auto max-w-app px-4;
-  }
+    section,
+    footer {
+        @apply mx-auto max-w-app px-4;
+    }
 }
 
 @utility max-w-app {
-  /* Din live-sida är visuellt bredare än max-w-3xl */
-  @apply max-w-6xl;
+    @apply max-w-6xl;
 }
 
 @layer components {
-  .so-card {
-    @apply rounded-2xl border border-border bg-surface shadow-sm;
-  }
+    /* Cards */
+    .so-card {
+        @apply rounded-2xl border border-border bg-surface;
+        box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+    }
 
-  .so-card-hover {
-    @apply transition will-change-transform hover:-translate-y-0.5 hover:shadow-md;
-  }
+    .so-card-hover {
+        @apply transition will-change-transform;
+    }
 
-  .so-section-title {
-    @apply text-xl font-semibold tracking-tight;
-  }
+        .so-card-hover:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 22px rgba(16, 24, 40, 0.09);
+        }
 
-  .so-section-muted {
-    @apply mt-1 text-sm text-foreground/70;
-  }
+    .so-card-soft {
+        @apply bg-muted/35;
+    }
 
-  .so-pill {
-    @apply inline-flex items-center rounded-full bg-muted px-3 py-1 text-xs font-semibold text-foreground/70;
-  }
+    .so-card-emphasis {
+        @apply bg-muted/25;
+    }
 
-  .so-btn-primary {
-    @apply inline-flex items-center justify-center rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white;
-  }
+    /* Sections */
+    .so-section-title {
+        @apply text-2xl font-semibold tracking-tight;
+    }
+
+    .so-section-muted {
+        @apply mt-1 text-base text-foreground/70;
+    }
+
+    /* Hero */
+    .so-hero {
+        @apply rounded-2xl border border-border bg-muted/55;
+        @apply p-6 shadow-md sm:p-10;
+    }
+
+    .so-eyebrow {
+        @apply text-xs font-semibold tracking-wide text-foreground/60;
+    }
+
+    .so-hero-title {
+        @apply mt-2 max-w-4xl text-4xl font-semibold tracking-tight sm:text-5xl;
+    }
+
+    .so-hero-lead {
+        @apply mt-4 max-w-3xl text-base text-foreground/75 sm:text-lg;
+    }
+
+    /* Buttons */
+    .so-btn-primary {
+        @apply inline-flex items-center justify-center rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white transition;
+    }
+
+        .so-btn-primary:hover {
+            opacity: 0.95;
+        }
+
+    .so-btn-secondary {
+        @apply inline-flex items-center justify-center rounded-full border border-border bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition;
+    }
+
+        .so-btn-secondary:hover {
+            background: color-mix(in srgb, var(--color-muted) 60%, transparent);
+        }
+
+    /* Pills */
+    .so-pill-link {
+        @apply inline-flex items-center rounded-full bg-muted px-3 py-1 text-xs font-semibold text-foreground/70 transition;
+    }
+
+        .so-pill-link:hover {
+            @apply bg-border;
+        }
+
+    /* Featured image */
+    .so-featured-img {
+        @apply h-60 w-full object-cover sm:h-96;
+    }
+
+    /* Tool image */
+    .so-tool-img {
+        @apply h-40 w-full object-cover;
+    }
+
+    /* Latest list */
+    .so-latest-link {
+        @apply block rounded-xl px-3 py-2 transition;
+    }
+
+        .so-latest-link:hover {
+            background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+        }
+
+    .so-latest-date {
+        @apply text-xs font-semibold text-foreground/60;
+    }
+
+    .so-latest-title {
+        @apply mt-1 text-sm font-semibold;
+    }
 }
 
 .active-nav {
-  @apply text-accent underline decoration-2 underline-offset-8;
+    @apply text-accent underline decoration-2 underline-offset-8;
 }
 
-/* Anything that has been anchored to should have extra scroll margin */
 :target {
-  scroll-margin-block: 1rem;
+    scroll-margin-block: 1rem;
 }

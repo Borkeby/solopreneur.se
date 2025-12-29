@@ -4,7 +4,7 @@ import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 
 const pageTitle = "Community – Solopreneur.se";
-const pageDescription = "Gå med i Solopreneurs community på Discord.";
+const pageDescription = "Gå med i Solopreneurs community på Discord för frågor, feedback och diskussioner.";
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
@@ -14,38 +14,42 @@ const pageDescription = "Gå med i Solopreneurs community på Discord.";
     <section class="pt-8 pb-10">
       <h1 class="so-section-title">Community</h1>
       <p class="so-section-muted">
-        Gå med i Solopreneurs community på Discord för frågor, feedback och diskussioner.
+        Ett forum för soloföretagare och små tjänstebolag: frågor, feedback, struktur och praktiska lösningar.
       </p>
 
       <div class="so-card mt-4 p-5 sm:p-6">
-        <div class="text-sm text-foreground/80">
-          <div class="font-semibold">Kom igång</div>
-          <p class="mt-1">
-            Registrera dig här:
-            <a
-              class="text-accent underline decoration-dashed underline-offset-4 hover:opacity-90"
-              href="https://www.solopreneur.se/discord"
-              target="_blank"
-              rel="noopener"
-            >
-              Discord-inbjudan
-            </a>
-          </p>
+        <h2 class="text-lg font-semibold tracking-tight">Vad du får</h2>
+        <ul class="mt-3 list-disc pl-5 text-sm text-foreground/80">
+          <li>Feedback på idéer, upplägg och innehåll</li>
+          <li>Diskussioner om prissättning, struktur och genomförande</li>
+          <li>Uppdateringar när nya playbooks och verktyg släpps</li>
+        </ul>
 
-          <p class="mt-3">
-            Gå direkt till communityt:
+        <div class="mt-5 flex flex-wrap gap-3">
+          <a class="so-btn-primary" href="/discord" target="_blank" rel="noopener noreferrer">
+            Gå med via Discord-inbjudan
+          </a>
+
+          <a class="so-btn-secondary" href="/nyhetsbrev/">
+            Eller prenumerera på nyhetsbrevet
+          </a>
+        </div>
+
+        <p class="mt-4 text-xs text-foreground/60">
+          Du lämnar Solopreneur.se och öppnar Discord i ny flik.
+        </p>
+
+        <div class="mt-4">
+          <p class="text-sm text-foreground/80">
+            Direktlänk (om du redan är med):
             <a
-              class="text-accent underline decoration-dashed underline-offset-4 hover:opacity-90"
+              class="ml-2 text-accent underline decoration-dashed underline-offset-4 hover:opacity-90"
               href="https://discord.com/channels/1409621217660375071/1409621218277064859"
               target="_blank"
-              rel="noopener"
+              rel="noopener noreferrer"
             >
-              Solopreneur.se på Discord
+              Öppna communityt i Discord
             </a>
-          </p>
-
-          <p class="mt-4 text-xs text-foreground/60">
-            Du lämnar Solopreneur.se och öppnar Discord i ny flik.
           </p>
         </div>
       </div>

@@ -1,0 +1,5 @@
+---
+const posts = await getCollection('posts');
+const visible = posts.filter(p => p.data.hide_from_blog !== true && !(p.data.tags || []).includes('playbook'));
+---
+{visible.map(p => /* render */)}

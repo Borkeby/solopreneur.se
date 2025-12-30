@@ -61,11 +61,11 @@ const layoutProps = {
   author,
   description,
   pubDatetime,
-  modDatetime,
-  canonicalURL,
-  ogImage,
   scrollSmooth: true,
-} as const;
+  ...(modDatetime !== undefined ? { modDatetime } : {}),
+  ...(canonicalURL !== undefined ? { canonicalURL } : {}),
+  ...(ogImage !== undefined ? { ogImage } : {}),
+};
 
 /* ========== Prev/Next Posts ========== */
 

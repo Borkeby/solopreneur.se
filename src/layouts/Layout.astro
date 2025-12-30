@@ -9,10 +9,10 @@ export interface Props {
   author?: string;
   profile?: string;
   description?: string;
-  ogImage?: string;
-  canonicalURL?: URL;
+  ogImage?: string | undefined;
+  canonicalURL?: string | URL | undefined;
   pubDatetime?: Date;
-  modDatetime?: Date | null;
+  modDatetime?: Date | null | undefined;
   scrollSmooth?: boolean;
 }
 

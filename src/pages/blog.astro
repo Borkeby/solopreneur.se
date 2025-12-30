@@ -1,5 +1,28 @@
 ---
-const posts = await getCollection('posts');
-const visible = posts.filter(p => p.data.hide_from_blog !== true && !(p.data.tags || []).includes('playbook'));
+import { getCollection } from "astro:content";
+
+const posts = await getCollection("blog");
+
+// Valfritt: filtrera bort dolda inlägg + playbook-taggar, utan att spräcka typing
+const visible = posts.filter((p) => {
+  const data = p.data as any;
+  const tags = (data.tags ?? []) as string[];
+  return data.hide_from_blog !== true && !tags.includes("playbook");
+});
 ---
-{visible.map(p => /* render */)}
+
+<main id="main-content">
+  <h1>Blogg</h1>
+
+  {visible.length === 0 ? (
+    <p>Inga inlägg att visa.</p>
+  ) : (
+    <ul>
+      {visible.map((p) => (
+        <li>
+          <a href={`/blog/${p.slug}/`}>{p.data.title}</a>
+        </li>
+      ))}
+    </ul>
+  )}
+</main>

@@ -411,7 +411,7 @@ const sponsor = {
 
 <script>
   document.addEventListener("astro:page-load", () => {
-    const indexLayout = document.querySelector("#main-content")?.dataset?.layout;
+    const indexLayout = document.querySelector<HTMLElement>("#main-content")?.dataset?.layout;
     if (indexLayout) {
       sessionStorage.setItem("backUrl", "/");
     }

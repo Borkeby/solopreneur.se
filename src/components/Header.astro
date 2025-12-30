@@ -171,27 +171,29 @@ const nav = [
 </header>
 
 <script>
-  function toggleNav() {
-    const menuBtn = document.querySelector("#menu-btn");
-    const menuItems = document.querySelector("#menu-items");
-    const menuIcon = document.querySelector("#menu-icon");
-    const closeIcon = document.querySelector("#close-icon");
+function toggleNav() {
+  const menuBtn = document.querySelector<HTMLButtonElement>("#menu-btn");
+  const menuItems = document.querySelector<HTMLElement>("#menu-items");
+  const menuIcon = document.querySelector<HTMLElement>("#menu-icon");
+  const closeIcon = document.querySelector<HTMLElement>("#close-icon");
 
-    if (!menuBtn || !menuItems || !menuIcon || !closeIcon) return;
-    if (menuBtn.dataset.bound === "1") return;
-    menuBtn.dataset.bound = "1";
+  if (!menuBtn || !menuItems || !menuIcon || !closeIcon) return;
 
-    menuBtn.addEventListener("click", () => {
-      const openMenu = menuBtn.getAttribute("aria-expanded") === "true";
+  if (menuBtn.dataset.bound === "1") return;
+  menuBtn.dataset.bound = "1";
 
-      menuBtn.setAttribute("aria-expanded", openMenu ? "false" : "true");
-      menuBtn.setAttribute("aria-label", openMenu ? "Öppna meny" : "Stäng meny");
+  menuBtn.addEventListener("click", () => {
+    const openMenu = menuBtn.getAttribute("aria-expanded") === "true";
 
-      menuItems.classList.toggle("hidden");
-      menuIcon.classList.toggle("hidden");
-      closeIcon.classList.toggle("hidden");
-    });
-  }
+    menuBtn.setAttribute("aria-expanded", openMenu ? "false" : "true");
+    menuBtn.setAttribute("aria-label", openMenu ? "Öppna meny" : "Stäng meny");
+
+    menuItems.classList.toggle("hidden");
+    menuIcon.classList.toggle("hidden");
+    closeIcon.classList.toggle("hidden");
+  });
+}
+
 
   toggleNav();
   document.addEventListener("astro:after-swap", toggleNav);

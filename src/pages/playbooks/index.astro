@@ -3,20 +3,23 @@ import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import Card from "@/components/Card.astro";
 import Hr from "@/components/Hr.astro";
-import getSortedPosts from "@/utils/getSortedPosts";
 
-import defaultCover from "@/assets/images/blog/default-cover.jpg";
+const entries = await getCollection("playbooks", ({ data }) => !data.draft);
 
-const posts = await getCollection("blog");
-const sortedPosts = getSortedPosts(posts);
+// Sortera nyast först (enkel och stabil)
+const playbooks = [...entries].sort((a, b) => {
+  const ad = a.data.pubDatetime ? a.data.pubDatetime.valueOf() : 0;
+  const bd = b.data.pubDatetime ? b.data.pubDatetime.valueOf() : 0;
+  return bd - ad;
+});
 
-const playbooks = sortedPosts.filter(p =>
-  (p.data.kategori ?? "").toLowerCase() === "playbook"
-);
-
-const fallbackCardImage = defaultCover.src;
+const fmtDate = (d: Date) =>
+  new Intl.DateTimeFormat("sv-SE", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(d);
 ---
 
 <Layout title="Playbooks – Solopreneur" description="Steg-för-steg guider med fokus på genomförande.">
@@ -36,21 +39,50 @@ const fallbackCardImage = defaultCover.src;
       {playbooks.length === 0 ? (
         <div class="so-card p-5 sm:p-6">
           <div class="text-sm text-foreground/75">
-            Inga playbooks hittades ännu. Lägg <code>kategori: \"Playbook\"</code> i frontmatter på de inlägg du vill visa här.
+            Inga playbooks hittades ännu. Lägg dina playbooks i <code>src/data/playbooks/</code> och säkerställ att <code>draft</code> inte är satt till <code>true</code>.
           </div>
         </div>
       ) : (
-        <ul>
-          {playbooks.map(entry => (
-            <Card
-              variant="h3"
-              {...entry}
-              eyebrow="PLAYBOOK"
-              href={`/playbooks/${entry.id}`}
-              forceImage={true}
-              fallbackImage={fallbackCardImage}
-            />
-          ))}
+        <ul class="space-y-4">
+          {playbooks.map(entry => {
+            const dateStr = entry.data.pubDatetime ? fmtDate(entry.data.pubDatetime) : "";
+            const nivå = (entry.data.nivå ?? "").trim();
+            const tid = (entry.data.tid ?? "").trim();
+
+            const metaParts = [
+              "PLAYBOOK",
+              dateStr ? dateStr : null,
+              nivå ? nivå : null,
+              tid ? tid : null,
+            ].filter(Boolean);
+
+            const excerpt =
+              (entry.data.ingress ?? "").trim() ||
+              (entry.data.description ?? "").trim();
+
+            return (
+              <li>
+                <a
+                  href={`/playbooks/${entry.id}`}
+                  class="block so-card p-5 sm:p-6 hover:shadow-sm transition-shadow"
+                >
+                  <div class="text-xs text-foreground/70">
+                    {metaParts.join(" · ")}
+                  </div>
+
+                  <div class="mt-2 text-lg font-semibold">
+                    {entry.data.title}
+                  </div>
+
+                  {excerpt ? (
+                    <div class="mt-2 text-sm text-foreground/70">
+                      {excerpt}
+                    </div>
+                  ) : null}
+                </a>
+              </li>
+            );
+          })}
         </ul>
       )}
     </section>

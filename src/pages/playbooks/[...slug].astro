@@ -3,20 +3,15 @@ import { getCollection, render } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import { getPath } from "@/utils/getPath";
 import { SITE } from "@/config";
 
 import defaultCover from "@/assets/images/blog/default-cover.jpg";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog", ({ data }) => !data.draft);
-
-  const playbooks = posts.filter(
-    p => (p.data.kategori ?? "").toLowerCase() === "playbook"
-  );
+  const entries = await getCollection("playbooks", ({ data }) => !data.draft);
 
   // Catch-all route: slug kan innehålla "/"
-  return playbooks.map(p => ({
+  return entries.map(p => ({
     params: { slug: p.id },
     props: { id: p.id },
   }));
@@ -24,32 +19,30 @@ export async function getStaticPaths() {
 
 const { id } = Astro.props as { id: string };
 
-const posts = await getCollection("blog", ({ data }) => !data.draft);
-const entry = posts.find(p => p.id === id);
+const entries = await getCollection("playbooks", ({ data }) => !data.draft);
+const entry = entries.find(p => p.id === id);
 
 if (!entry) {
   return new Response(null, { status: 404 });
 }
 
-const isPlaybook = (entry.data.kategori ?? "").toLowerCase() === "playbook";
-if (!isPlaybook) {
-  // Om någon råkar hamna här med en vanlig post, skicka till /posts/...
-  return Astro.redirect(getPath(entry.id, entry.filePath), 302);
-}
-
 const toImageSrc = (v: unknown): string | null => {
   if (!v) return null;
+
   if (typeof v === "string") {
     const s = v.trim();
     return s.length ? s : null;
   }
-  if (typeof v === "object" && v && "src" in v) {
-    const src = (v as any).src;
-    return typeof src === "string" && src.length ? src : null;
+
+  if (typeof v === "object" && v !== null && "src" in v) {
+    const src = (v as { src?: unknown }).src;
+    return typeof src === "string" && src.trim().length ? src.trim() : null;
   }
+
   return null;
 };
 
+// Behåll OG-image för metadata, men rendera ingen bild på sidan
 const cover = toImageSrc(entry.data.ogImage) ?? defaultCover.src;
 
 const title = entry.data.title;
@@ -68,6 +61,15 @@ const dateStr = pubDatetime
       day: "2-digit",
     })
   : "";
+
+const nivå = (entry.data.nivå ?? "").trim();
+const tid = (entry.data.tid ?? "").trim();
+const metaParts = [
+  "PLAYBOOK",
+  dateStr ? dateStr : null,
+  nivå ? nivå : null,
+  tid ? tid : null,
+].filter(Boolean);
 
 const { Content } = await render(entry);
 ---
@@ -95,18 +97,10 @@ const { Content } = await render(entry);
       </h1>
 
       <div class="mt-2 text-sm text-foreground/70">
-        PLAYBOOK{dateStr ? ` · ${dateStr}` : ""}
+        {metaParts.join(" · ")}
       </div>
 
-      <div class="so-card mt-6 overflow-hidden">
-        <img
-          src={cover}
-          alt={title}
-          class="h-64 w-full object-cover"
-          loading="lazy"
-          decoding="async"
-        />
-
+      <div class="so-card mt-6">
         <div class="p-5 sm:p-6">
           <article class="app-prose">
             <Content />

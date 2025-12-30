@@ -1,28 +1,41 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import { getPath } from "@/utils/getPath";
+import { SITE } from "@/config";
 
 const posts = await getCollection("blog");
 
-// Valfritt: filtrera bort dolda inlägg + playbook-taggar, utan att spräcka typing
-const visible = posts.filter((p) => {
+// Filtrera på ett säkert sätt (om du har custom-fält som kan saknas)
+const visible = posts.filter((p: CollectionEntry<"blog">) => {
   const data = p.data as any;
   const tags = (data.tags ?? []) as string[];
   return data.hide_from_blog !== true && !tags.includes("playbook");
 });
 ---
 
-<main id="main-content">
-  <h1>Blogg</h1>
+<Layout title={`Blogg | ${SITE.title}`} description={SITE.desc} scrollSmooth={true}>
+  <Header />
 
-  {visible.length === 0 ? (
-    <p>Inga inlägg att visa.</p>
-  ) : (
-    <ul>
-      {visible.map((p) => (
-        <li>
-          <a href={`/blog/${p.slug}/`}>{p.data.title}</a>
-        </li>
-      ))}
-    </ul>
-  )}
-</main>
+  <main id="main-content" class="mx-auto w-full max-w-app px-4 pb-12">
+    <h1 class="text-2xl font-bold sm:text-3xl">Blogg</h1>
+
+    {visible.length === 0 ? (
+      <p class="mt-4">Inga inlägg att visa.</p>
+    ) : (
+      <ul class="mt-6 space-y-2">
+        {visible.map((p) => (
+          <li>
+            <a class="hover:underline" href={getPath(p.id, p.filePath)}>
+              {p.data.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </main>
+
+  <Footer />
+</Layout>

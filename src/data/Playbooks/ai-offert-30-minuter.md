@@ -12,7 +12,7 @@ description: "Ta fram ett första offertutkast snabbt, som du sedan kvalitetssä
 
 tid: "30–45 min"
 nivå: "Bas"
-kategori: "Playbook"
+kategori: "Guider"
 ingress: "Ta fram ett första offertutkast snabbt, som du sedan kvalitetssäkrar manuellt."
 ---
 

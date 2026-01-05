@@ -22,12 +22,12 @@ const fmtDate = (d: Date) =>
   }).format(d);
 ---
 
-<Layout title="Playbooks – Solopreneur" description="Steg-för-steg guider med fokus på genomförande.">
+<Layout title="Guider – Solopreneur" description="Steg-för-steg guider med fokus på genomförande.">
   <Header />
 
-  <main id="main-content" data-layout="playbooks">
+  <main id="main-content" data-layout="Guider">
     <section class="pt-8 pb-6">
-      <h1 class="so-section-title">Playbooks</h1>
+      <h1 class="so-section-title">Guider</h1>
       <p class="so-section-muted">
         Steg-för-steg guider med fokus på genomförande.
       </p>
@@ -39,7 +39,7 @@ const fmtDate = (d: Date) =>
       {playbooks.length === 0 ? (
         <div class="so-card p-5 sm:p-6">
           <div class="text-sm text-foreground/75">
-            Inga playbooks hittades ännu. Lägg dina playbooks i <code>src/data/playbooks/</code> och säkerställ att <code>draft</code> inte är satt till <code>true</code>.
+            Inga guider hittades ännu. Lägg dina guider i <code>src/data/playbooks/</code> och säkerställ att <code>draft</code> inte är satt till <code>true</code>.
           </div>
         </div>
       ) : (
@@ -50,7 +50,7 @@ const fmtDate = (d: Date) =>
             const tid = (entry.data.tid ?? "").trim();
 
             const metaParts = [
-              "PLAYBOOK",
+              "GUIDER",
               dateStr ? dateStr : null,
               nivå ? nivå : null,
               tid ? tid : null,

@@ -178,3 +178,34 @@ html[data-theme="dark"] {
 :target {
     scroll-margin-block: 1rem;
 }
+
+/* HERO: vänsterställd text, men hela innehållsblocket centrerat i kortet */
+.so-hero.so-hero-left-centered {
+    display: grid !important; /* vinner över ev. flex */
+    justify-items: center !important; /* centrerar child horisontellt */
+}
+
+    .so-hero.so-hero-left-centered > .so-hero-inner {
+        width: 100% !important;
+        max-width: 1120px !important; /* ÖKA för mindre marginaler. MINSKA för mer. */
+        text-align: left !important;
+        padding-left: 76px; /* justera om du vill tajtare/luftigare */
+        padding-right: 76px;
+        box-sizing: border-box;
+    }
+
+    /* säkerställ att rubrik/ingress inte auto-centreras av tidigare regler */
+    .so-hero.so-hero-left-centered .so-hero-title,
+    .so-hero.so-hero-left-centered .so-hero-lead {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        text-align: left !important;
+    }
+
+    /* knappar + pills vänster inom inner-blocket */
+    .so-hero.so-hero-left-centered .so-hero-actions,
+    .so-hero.so-hero-left-centered .so-hero-links {
+        justify-content: flex-start !important;
+    }
+
+

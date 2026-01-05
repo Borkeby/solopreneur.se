@@ -8,7 +8,7 @@ featured: true
 draft: false
 tags: ["Soloföretag", "Bolagsbyggande", "Struktur", "AI", "Tillväxt"]
 ogImage: ""
-description: "Solopreneur.se lanseras: praktiska playbooks för att bygga ett lönsamt och hållbart soloföretag – med AI som operativ hävstång."
+description: "Solopreneur.se lanseras: praktiska guider för att bygga ett lönsamt och hållbart soloföretag – med AI som operativ hävstång."
 
 tid: "5-10 min"
 nivå: "Bas"
@@ -46,7 +46,7 @@ Under mer än 15 år har jag arbetat med bolagsstyrning, ekonomi och affärsutve
 
 Det jag ser om och om igen är att många som drömmer om att driva eget, eller precis har tagit steget, saknar en tydlig karta för hur man faktiskt bygger upp ett företag från grunden. Resultatet blir ofta osäkerhet, stress och känslan av att man mest reagerar på allt som händer i stället för att styra utvecklingen.
 
-Solopreneur är mitt sätt att paketera den erfarenheten på ett konkret sätt: playbooks, verktyg och tydliga arbetssätt som gör det enklare att ta nästa steg – från idé till ett soloföretag som är hanterbart i vardagen.
+Solopreneur är mitt sätt att paketera den erfarenheten på ett konkret sätt: guider, verktyg och tydliga arbetssätt som gör det enklare att ta nästa steg – från idé till ett soloföretag som är hanterbart i vardagen.
 
 ---
 
@@ -92,7 +92,7 @@ Du kan förvänta dig:
 
 * insyn i min egen resa – vad jag testar, vad som fungerar och vad som inte gör det
 * konkreta genomgångar – hur du gör, steg för steg
-* handlingsplaner (playbooks) – färdiga upplägg du kan anpassa till ditt företag
+* handlingsplaner (guider) – färdiga upplägg du kan anpassa till ditt företag
 * verktyg och mallar – sådant jag själv använder i vardagen
 * AI som hävstång – sätt att använda AI som en förlängd kollega utan att du behöver ett team
 

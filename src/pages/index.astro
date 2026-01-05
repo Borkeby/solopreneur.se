@@ -59,7 +59,7 @@ const playbookPosts = sortedPosts
   .slice(0, 3);
 
 const quickLinks = [
-  { label: "Playbooks", href: "/playbooks/" },
+  { label: "Guider", href: "/playbooks/" },
   { label: "Verktyg", href: "/verktyg/" },
   { label: "Nyhetsbrev", href: "/nyhetsbrev/" },
   { label: "Community", href: "/community/" },
@@ -114,39 +114,36 @@ const sponsor = {
   <Header />
 
   <main id="main-content" data-layout="index">
-    <!-- Hero -->
-    <section class="pt-10 pb-10">
-      <div class="so-hero">
-        <div class="so-eyebrow">Solopreneur</div>
+<!-- Hero -->
+<section class="pt-10 pb-10">
+  <div class="so-hero so-hero-left-centered">
+    <div class="so-hero-inner">
+      <div class="so-eyebrow">Solopreneur</div>
 
-        <h1 class="so-hero-title">
-          Bygg ett effektivt soloföretag – med playbooks, verktyg och AI som hävstång
-        </h1>
+      <h1 class="so-hero-title">
+        Bygg ett effektivt soloföretag – med guider, verktyg och AI som hävstång
+      </h1>
 
-        <p class="so-hero-lead">
-          Solopreneur samlar konkreta guider (playbooks) och verktyg som hjälper dig att planera,
-          få användbara tips, sälja och leverera, lite enklare.
-        </p>
+      <p class="so-hero-lead">
+        Solopreneur samlar konkreta guider och verktyg som hjälper dig att planera,
+        få användbara tips, sälja och leverera, lite enklare.
+      </p>
 
-        <div class="mt-6 flex flex-wrap items-center gap-3">
-          <a class="so-btn-primary" href="/nyhetsbrev/">
-            Prenumerera
-          </a>
-
-          <a class="so-btn-secondary" href="/verktyg/">
-            Se verktygen
-          </a>
-        </div>
-
-        <div class="mt-6 flex flex-wrap gap-2">
-          {quickLinks.map(l => (
-            <a class="so-pill-link" href={l.href}>
-              {l.label}
-            </a>
-          ))}
-        </div>
+      <div class="mt-6 flex flex-wrap items-center gap-3 so-hero-actions">
+        <a class="so-btn-primary" href="/nyhetsbrev/">Prenumerera</a>
+        <a class="so-btn-secondary" href="/verktyg/">Se verktygen</a>
       </div>
-    </section>
+
+      <div class="mt-6 flex flex-wrap gap-2 so-hero-links">
+        {quickLinks.map(l => (
+          <a class="so-pill-link" href={l.href}>{l.label}</a>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+
 
     <Hr />
 
@@ -302,7 +299,7 @@ const sponsor = {
 
     <!-- Playbooks -->
     <section class="pt-2 pb-10">
-      <h2 class="so-section-title">Playbooks</h2>
+      <h2 class="so-section-title">Guider</h2>
       <p class="so-section-muted">Steg-för-steg guider med fokus på genomförande.</p>
 
       {playbookPosts.length > 0 ? (
@@ -310,7 +307,7 @@ const sponsor = {
           {playbookPosts.map(p => (
             <a href={`/playbooks/${p.id}`} class="so-card so-card-hover block p-5">
               <div class="text-xs font-semibold tracking-wide text-foreground/60">
-                PLAYBOOK
+                GUIDER
               </div>
 
               <div class="mt-2 text-base font-semibold tracking-tight">
@@ -328,14 +325,14 @@ const sponsor = {
       ) : (
         <div class="mt-5 so-card p-5 sm:p-6">
           <div class="text-sm text-foreground/75">
-            Fler playbooks kommer snart. Under tiden kan du börja med bloggen och verktygen.
+            Fler guider kommer snart. Under tiden kan du börja med bloggen och verktygen.
           </div>
         </div>
       )}
 
       <div class="mt-6">
         <a href="/playbooks/" class="so-btn-secondary inline-flex items-center gap-2">
-          Visa alla playbooks <IconArrowRight class="inline-block rtl:-rotate-180" />
+          Visa alla guider <IconArrowRight class="inline-block rtl:-rotate-180" />
         </a>
       </div>
     </section>

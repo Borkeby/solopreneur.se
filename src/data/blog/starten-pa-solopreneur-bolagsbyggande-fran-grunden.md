@@ -20,7 +20,7 @@ Det här är startskottet för Solopreneur.se.
 
 Sajten är för dig som vill bygga ett soloföretag som fungerar i praktiken – med praktisk vägledning, verktyg, AI-stöd och tydliga handlingsplaner.
 
-Om du är egen eller funderar på att bli det har du säkert redan sett mängder av råd om “frihet”, “passiv inkomst” och “följ din passion”. Problemet är att väldigt lite handlar om hur ett företag ska fungera i vardagen: hur du bygger bolaget från grunden, sätter upp system för sälj och leverans, och använder AI som en praktisk partner när du driver allt själv.
+Om du är egen eller funderar på att bli det har du säkert redan sett mängder av råd om “frihet”, “passiv inkomst” och “följ din passion”. Problemet är att väldigt lite handlar om själva företagandet i vardagen: hur du bygger bolaget från grunden, sätter upp system för sälj och leverans, och använder AI som en praktisk partner när du driver allt själv.
 
 Solopreneur finns för att fylla det gapet.
 

@@ -1,12 +1,17 @@
 ---
 /**
- * Beehiiv embed (iframe) + robust script-loader som funkar med Astro transitions.
+ * Beehiiv embed (iframe) + responsiv skalning (utan horisontell overflow)
+ * + init som fungerar med Astro view transitions.
  */
 interface Props {
   title?: string;
   publicUrl?: string; // fallback-länk (din publika Beehiiv-sida eller valfri sida)
   embedUrl: string;   // Beehiiv iframe src
   legalText?: string;
+
+  // Om Beehiiv ändrar sin “designbredd/höjd” kan du justera dessa.
+  baseWidth?: number;
+  baseHeight?: number;
 }
 
 const {
@@ -14,13 +19,15 @@ const {
   publicUrl = "/",
   embedUrl,
   legalText = "Genom att anmäla dig godkänner du att vi lagrar din e-post för utskick. Du kan när som helst avsluta.",
+  baseWidth = 660,
+  baseHeight = 415,
 } = Astro.props;
 ---
 
-<section class="so-card p-5 sm:p-6">
+<section class="so-card p-5 sm:p-6 so-beehiiv-card">
   <div class="text-lg font-semibold tracking-tight">{title}</div>
 
-  <div class="mt-3">
+  <div class="mt-3 so-beehiiv-frame" data-base-width={baseWidth}>
     <iframe
       src={embedUrl}
       class="beehiiv-embed so-beehiiv-iframe"
@@ -29,6 +36,7 @@ const {
       scrolling="no"
       loading="lazy"
       title={title}
+      style={`width:${baseWidth}px;height:${baseHeight}px;`}
     />
   </div>
 
@@ -41,27 +49,107 @@ const {
 </section>
 
 <script is:inline>
-  // Ladda Beehiiv embed.js exakt en gång (även vid interna navigeringar med ClientRouter)
-  (function loadBeehiivOnce() {
+  (function soBeehiivInit() {
     if (typeof window === "undefined") return;
-    if (window.__beehiivEmbedLoaded) return;
 
-    window.__beehiivEmbedLoaded = true;
+    window.__soBeehiiv = window.__soBeehiiv || {
+      bound: new WeakSet(),
+      listenerAdded: false
+    };
 
-    var s = document.createElement("script");
-    s.async = true;
-    s.src = "https://subscribe-forms.beehiiv.com/embed.js";
-    document.head.appendChild(s);
+    const EMBED_JS_SRC = "https://subscribe-forms.beehiiv.com/embed.js";
+    const SCRIPT_ATTR = "data-so-beehiiv-embedjs";
+
+    function upsertEmbedScript() {
+      // Astro transitions: ny DOM laddas utan full refresh.
+      // För att Beehiiv ska initiera nya embeds byter vi ut script-taggen så den exekveras igen.
+      const existing = document.querySelector(`script[${SCRIPT_ATTR}="1"]`);
+      if (existing) existing.remove();
+
+      const s = document.createElement("script");
+      s.async = true;
+      s.src = EMBED_JS_SRC;
+      s.setAttribute(SCRIPT_ATTR, "1");
+      document.head.appendChild(s);
+    }
+
+    function pxToNumber(px) {
+      const n = parseFloat(px || "");
+      return Number.isFinite(n) ? n : 0;
+    }
+
+    function fitOne(frame, iframe) {
+      const baseWidth = parseInt(frame.getAttribute("data-base-width") || "660", 10);
+      const available = frame.clientWidth || 0;
+      if (!available || !baseWidth) return;
+
+      const scale = Math.min(1, available / baseWidth);
+
+      // Beehiiv/embed.js sätter ofta inline height i px på iframen.
+      // getComputedStyle.height är "oskalad" (transform påverkar inte layoutmåttet).
+      const computedH = pxToNumber(getComputedStyle(iframe).height);
+      const naturalHeight = computedH > 0 ? computedH : 415;
+
+      iframe.style.width = baseWidth + "px";
+      iframe.style.transform = "scale(" + scale + ")";
+
+      // Viktigt: wrapper-höjden måste matcha skalad höjd, annars klipps embedden.
+      frame.style.height = (naturalHeight * scale) + "px";
+    }
+
+    function bindOne(iframe) {
+      if (window.__soBeehiiv.bound.has(iframe)) return;
+
+      const frame = iframe.closest(".so-beehiiv-frame");
+      if (!frame) return;
+
+      const onFit = () => fitOne(frame, iframe);
+
+      // Fit direkt
+      onFit();
+
+      // Uppdatera vid resize/orientation
+      window.addEventListener("resize", onFit, { passive: true });
+
+      // Uppdatera när Beehiiv ändrar inline style (höjd)
+      const mo = new MutationObserver(() => onFit());
+      mo.observe(iframe, { attributes: true, attributeFilter: ["style"] });
+
+      window.__soBeehiiv.bound.add(iframe);
+    }
+
+    function init() {
+      const iframes = document.querySelectorAll("iframe.so-beehiiv-iframe");
+      if (!iframes.length) return;
+
+      upsertEmbedScript();
+      iframes.forEach((iframe) => bindOne(iframe));
+    }
+
+    // Kör på första load
+    init();
+
+    // Kör även på varje client-side navigation med Astro transitions
+    if (!window.__soBeehiiv.listenerAdded) {
+      window.__soBeehiiv.listenerAdded = true;
+      document.addEventListener("astro:page-load", init);
+    }
   })();
 </script>
 
 <style>
-  .so-beehiiv-iframe {
+  .so-beehiiv-frame {
     width: 100%;
-    max-width: 660px;
-    height: 415px; /* startvärde; embed.js justerar normalt höjd */
+    overflow: hidden;      /* stoppar att den “sticker ut” */
+    position: relative;
+    display: flex;
+    justify-content: center; /* centrera embedden i kortet */
+  }
+
+  .so-beehiiv-iframe {
     border: 0;
     background: transparent;
     display: block;
+    transform-origin: top center;
   }
 </style>

@@ -368,38 +368,42 @@ const sponsor = {
     <section class="pt-2 pb-12">
       <h2 class="so-section-title">Sponsrat</h2>
 
-      <a
-        href={sponsor.href}
-        target="_blank"
-        rel="noopener noreferrer sponsored"
-        aria-label={`${sponsor.title} (annons)`}
-        class="mt-5 so-card so-card-hover block overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-        style="background-color: #fff6ea;"
-      >
-        <div class="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:gap-6 sm:p-6">
-          <div class="min-w-0 flex-1">
-            <div class="text-xs font-semibold tracking-wide text-foreground/60">
-              {sponsor.label}
-            </div>
-            <div class="mt-2 text-xl font-semibold tracking-tight">
-              {sponsor.title}
-            </div>
-            <p class="mt-2 text-sm text-foreground/75">
-              {sponsor.description}
-            </p>
-          </div>
+<a
+  href={sponsor.href}
+  target="_blank"
+  rel="noopener noreferrer sponsored"
+  aria-label={`${sponsor.title} (annons)`}
+  class="mt-5 so-card so-card-hover block overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+         bg-[#fff6ea] text-slate-900 border border-black/5
+         dark:bg-[#1b140a] dark:text-slate-100 dark:border-white/10"
+>
+  <div class="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:gap-6 sm:p-6">
+    <div class="min-w-0 flex-1">
+      <div class="text-xs font-semibold tracking-wide text-slate-700/70 dark:text-slate-200/70">
+        {sponsor.label}
+      </div>
 
-          {sponsor.logo && (
-            <img
-              src={sponsor.logo}
-              alt={sponsor.logoAlt ?? "Sponsor"}
-              class="h-14 w-auto rounded-md bg-white p-2 sm:h-16"
-              loading="lazy"
-              decoding="async"
-            />
-          )}
-        </div>
-      </a>
+      <div class="mt-2 text-xl font-semibold tracking-tight text-slate-900 dark:text-slate-50">
+        {sponsor.title}
+      </div>
+
+      <p class="mt-2 text-sm text-slate-700 dark:text-slate-200/80">
+        {sponsor.description}
+      </p>
+    </div>
+
+    {sponsor.logo && (
+      <img
+        src={sponsor.logo}
+        alt={sponsor.logoAlt ?? "Sponsor"}
+        class="h-14 w-auto rounded-md bg-white p-2 sm:h-16 dark:bg-white"
+        loading="lazy"
+        decoding="async"
+      />
+    )}
+  </div>
+</a>
+
     </section>
   </main>
 

@@ -11,8 +11,6 @@ const pageTitle = "Verktyg";
 const pageDescription =
   "Kalkylatorer och verktyg för företagare: moms, timpris och bildformat för sociala medier.";
 
-const TIMPRIS_PATH = "/verktyg/timpriskalkylator";
-
 // Bilder
 import momsToolImage from "@/assets/images/tools/moms.jpg";
 import timprisToolImage from "@/assets/images/tools/timpris.jpg";
@@ -21,31 +19,34 @@ import bildToolImage from "@/assets/images/tools/bild.jpg";
 const tools = [
   {
     id: "moms",
+    hash: "moms-kalkylator",
     tag: "Skatt & prissättning",
     title: "Momskalkylator",
     description:
       "Räkna ut moms baklänges eller framlänges med 25, 12 eller 6 % moms. Se direkt hur mycket som är moms och vad som är exklusive moms.",
-    href: "/verktyg/moms-kalkylator",
+    href: "/verktyg/#moms-kalkylator",
     image: momsToolImage.src,
     imageAlt: "Momskalkylator",
   },
   {
     id: "timpris",
+    hash: "timpriskalkylator",
     tag: "Skatt & prissättning",
     title: "Timpriskalkylator",
     description:
       "Räkna ut timpris baserat på mål, kostnader och debiterbar tid.",
-    href: TIMPRIS_PATH,
+    href: "/verktyg/#timpriskalkylator",
     image: timprisToolImage.src,
     imageAlt: "Timpriskalkylator",
   },
   {
     id: "bild",
+    hash: "bildverktyg",
     tag: "Marknadsföring",
     title: "Bildverktyg",
     description:
       "Beskär och exportera bilder i rätt format för Instagram, Facebook, LinkedIn, YouTube och TikTok.",
-    href: "/verktyg",
+    href: "/verktyg/#bildverktyg",
     image: bildToolImage.src,
     imageAlt: "Bildverktyg",
   },
@@ -71,6 +72,7 @@ const tools = [
             href={t.href}
             class="so-card so-card-hover block overflow-hidden"
             data-open-tool={t.id}
+            data-open-hash={t.hash}
           >
             <div class="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:gap-6 sm:p-6">
               <div class="min-w-0 flex-1">
@@ -250,6 +252,21 @@ const tools = [
       background: white;
       white-space: nowrap;
     }
+
+    /* Dark mode (om AstroPaper använder .dark på html) */
+    :global(.dark) .so-modal-inner {
+      background: #0b1220;
+      border-color: rgba(255, 255, 255, 0.10);
+    }
+    :global(.dark) .so-modal-header {
+      background: rgba(11, 18, 32, 0.98);
+      border-bottom-color: rgba(255, 255, 255, 0.10);
+    }
+    :global(.dark) .so-modal-close {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.12);
+      color: inherit;
+    }
   </style>
 
   <script is:inline>
@@ -274,7 +291,19 @@ const tools = [
         }
       }
 
-      function closeModal(dialog) {
+      function normalizeHash(hashOrKey) {
+        const h = (hashOrKey || "").toString().replace(/^#/, "").trim();
+        return h;
+      }
+
+      function setHash(key) {
+        const h = normalizeHash(key);
+        const url = h ? `/verktyg/#${h}` : "/verktyg/";
+        history.replaceState(null, "", url);
+      }
+
+      function closeModal(dialog, opts) {
+        const clearHash = opts && opts.clearHash === false ? false : true;
         if (!dialog) return;
 
         try {
@@ -284,41 +313,66 @@ const tools = [
         }
 
         setScrollLock(false);
+        if (clearHash) setHash("");
 
         if (lastActive && typeof lastActive.focus === "function") {
           lastActive.focus();
         }
       }
 
-      function closeAll() {
+      function closeAll(opts) {
+        const clearHash = opts && opts.clearHash === true;
         modals.forEach((d) => {
-          if (d && d.open) closeModal(d);
+          if (d && d.open) closeModal(d, { clearHash });
         });
       }
 
-      function openModal(toolId) {
+      function openModal(toolId, hashKey) {
         const dialog = document.getElementById("tool-modal-" + toolId);
         if (!dialog || typeof dialog.showModal !== "function") return;
 
-        closeAll();
+        closeAll({ clearHash: false });
 
         lastActive = document.activeElement;
 
         setScrollLock(true);
         dialog.showModal();
 
+        if (hashKey) setHash(hashKey);
+
         const closeBtn = dialog.querySelector("[data-modal-close]");
         if (closeBtn && typeof closeBtn.focus === "function") closeBtn.focus();
       }
 
-      // Öppna via kort
+      function findToolByHash(hash) {
+        const key = normalizeHash(hash);
+        if (!key) return null;
+
+        const opener = document.querySelector(`[data-open-hash="${CSS.escape(key)}"]`);
+        if (!opener) return null;
+
+        const toolId = opener.getAttribute("data-open-tool");
+        const toolHash = opener.getAttribute("data-open-hash");
+        if (!toolId) return null;
+
+        return { toolId, toolHash };
+      }
+
+      function openFromCurrentHash() {
+        const hit = findToolByHash(window.location.hash);
+        if (!hit) return;
+        openModal(hit.toolId, hit.toolHash);
+      }
+
+      // Öppna via kort + uppdatera hash
       openers.forEach((a) => {
         a.addEventListener("click", (e) => {
           const toolId = a.getAttribute("data-open-tool");
+          const toolHash = a.getAttribute("data-open-hash");
           if (!toolId) return;
 
           e.preventDefault();
-          openModal(toolId);
+          openModal(toolId, toolHash);
         });
       });
 
@@ -331,11 +385,11 @@ const tools = [
         if (closeBtn) {
           closeBtn.addEventListener("click", (e) => {
             e.preventDefault();
-            closeModal(dialog);
+            closeModal(dialog, { clearHash: true });
           });
         }
 
-        // Klick utanför rutan: använd koordinater (fungerar oavsett event-target)
+        // Klick utanför rutan
         dialog.addEventListener("pointerdown", (e) => {
           if (!inner) return;
 
@@ -344,19 +398,34 @@ const tools = [
           const y = e.clientY;
 
           const inside = x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
-          if (!inside) closeModal(dialog);
+          if (!inside) closeModal(dialog, { clearHash: true });
         });
 
         // ESC
         dialog.addEventListener("cancel", (e) => {
           e.preventDefault();
-          closeModal(dialog);
+          closeModal(dialog, { clearHash: true });
         });
 
         // Säkerhetsnät
         dialog.addEventListener("close", () => {
           setScrollLock(false);
         });
+      });
+
+      // Öppna direkt om sidan laddas med hash
+      openFromCurrentHash();
+
+      // Öppna om hash ändras (t.ex. användaren klistrar in URL eller back/forward)
+      window.addEventListener("hashchange", () => {
+        const hit = findToolByHash(window.location.hash);
+        if (hit) {
+          openModal(hit.toolId, hit.toolHash);
+        } else {
+          // Om hash tas bort: stäng alla
+          closeAll({ clearHash: false });
+          setScrollLock(false);
+        }
       });
     }
 

@@ -27,7 +27,7 @@ const t = {
 };
 ---
 
-<section class="so-card p-5 sm:p-6" data-imgtool-root>
+<section class="so-card p-5 sm:p-6" data-imgtool-root id="bildverktyg">
   <header>
     <h2 class="so-section-title">{t.heading}</h2>
     <p class="so-section-muted">{t.intro}</p>
@@ -160,15 +160,51 @@ const t = {
 
 <style>
   .sp-pill {
-    border: 1px solid var(--border-color, rgba(0,0,0,0.08));
+    border: 1px solid rgba(0, 0, 0, 0.10);
     border-radius: 999px;
     padding: 8px 12px;
     font-weight: 600;
+    line-height: 1;
+    background: rgba(0, 0, 0, 0.03);
+    transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
   }
+
+  .sp-pill:hover {
+    background: rgba(0, 0, 0, 0.06);
+  }
+
+  .sp-pill:focus-visible {
+    outline: 2px solid rgba(119, 192, 67, 0.55);
+    outline-offset: 2px;
+  }
+
   .sp-pill--active {
-    border-color: var(--accent-color, rgba(0,0,0,0.2));
+    border-color: rgba(119, 192, 67, 0.65);
+    background: rgba(119, 192, 67, 0.14);
+    box-shadow: 0 0 0 3px rgba(119, 192, 67, 0.10);
+  }
+
+  /* Dark mode (AstroPaper använder normalt .dark på html) */
+  :global(.dark) .sp-pill {
+    border-color: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  :global(.dark) .sp-pill:hover {
+    background: rgba(255, 255, 255, 0.10);
+  }
+
+  :global(.dark) .sp-pill:focus-visible {
+    outline-color: rgba(119, 192, 67, 0.70);
+  }
+
+  :global(.dark) .sp-pill--active {
+    border-color: rgba(119, 192, 67, 0.80);
+    background: rgba(119, 192, 67, 0.22);
+    box-shadow: 0 0 0 3px rgba(119, 192, 67, 0.18);
   }
 </style>
+
 
 <script is:inline>
   const IMGTOOL_PRESETS = {

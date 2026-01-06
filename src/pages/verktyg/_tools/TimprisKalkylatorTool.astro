@@ -188,6 +188,50 @@ const t = {
   </div>
 </section>
 
+<style>
+  /* Timpris: dark-mode förstärkning utan att röra befintliga klasser */
+  :global(.dark) [data-rate-form] .so-card {
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  /* Inputs: mer tydlig yta och fokus i dark */
+  :global(.dark) [data-rate-form] input[type="text"],
+  :global(.dark) [data-rate-form] input[type="number"] {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.14);
+    color: inherit;
+  }
+
+  :global(.dark) [data-rate-form] input[type="text"]:focus,
+  :global(.dark) [data-rate-form] input[type="number"]:focus {
+    outline: 2px solid rgba(119, 192, 67, 0.65);
+    outline-offset: 2px;
+  }
+
+  /* Resultatkort: bättre kontrast i dark */
+  :global(.dark) [data-rate-form] [data-rate-summary] > div {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  /* Reset-knapp: tydlig i dark */
+  :global(.dark) [data-rate-form] [data-rate-reset] {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.14);
+    color: inherit;
+  }
+
+  :global(.dark) [data-rate-form] [data-rate-reset]:hover {
+    border-color: rgba(119, 192, 67, 0.55);
+  }
+
+  :global(.dark) [data-rate-form] [data-rate-reset]:focus-visible {
+    outline: 2px solid rgba(119, 192, 67, 0.65);
+    outline-offset: 2px;
+  }
+</style>
+
 <script is:inline>
   (function () {
     function rate_formatCurrency(value) {

@@ -65,8 +65,7 @@ const { showHeader = true } = Astro.props;
           type="button"
           data-rate="25"
           data-active="true"
-          class="moms-rate-btn rounded-full border border-border bg-background px-4 py-2 text-sm font-semibold hover:border-accent
-                 data-[active=true]:bg-accent data-[active=true]:border-accent data-[active=true]:text-background"
+          class="moms-rate-btn"
         >
           25 %
         </button>
@@ -74,8 +73,7 @@ const { showHeader = true } = Astro.props;
         <button
           type="button"
           data-rate="12"
-          class="moms-rate-btn rounded-full border border-border bg-background px-4 py-2 text-sm font-semibold hover:border-accent
-                 data-[active=true]:bg-accent data-[active=true]:border-accent data-[active=true]:text-background"
+          class="moms-rate-btn"
         >
           12 %
         </button>
@@ -83,8 +81,7 @@ const { showHeader = true } = Astro.props;
         <button
           type="button"
           data-rate="6"
-          class="moms-rate-btn rounded-full border border-border bg-background px-4 py-2 text-sm font-semibold hover:border-accent
-                 data-[active=true]:bg-accent data-[active=true]:border-accent data-[active=true]:text-background"
+          class="moms-rate-btn"
         >
           6 %
         </button>
@@ -93,21 +90,21 @@ const { showHeader = true } = Astro.props;
 
     <!-- Resultat -->
     <div class="grid gap-4 md:grid-cols-3">
-      <div class="rounded-2xl border border-border bg-muted p-4">
+      <div class="moms-result-card" data-result-card>
         <p class="text-xs font-semibold uppercase tracking-wide text-foreground/60">
           Pris exkl. moms
         </p>
         <p class="mt-2 text-lg font-semibold" data-result-ex>–</p>
       </div>
 
-      <div class="rounded-2xl border border-border bg-muted p-4">
+      <div class="moms-result-card" data-result-card>
         <p class="text-xs font-semibold uppercase tracking-wide text-foreground/60">
           Momsbelopp
         </p>
         <p class="mt-2 text-lg font-semibold" data-result-vat>–</p>
       </div>
 
-      <div class="rounded-2xl border border-border bg-muted p-4">
+      <div class="moms-result-card" data-result-card>
         <p class="text-xs font-semibold uppercase tracking-wide text-foreground/60">
           Pris inkl. moms
         </p>
@@ -121,6 +118,70 @@ const { showHeader = true } = Astro.props;
     </p>
   </form>
 </section>
+
+<style>
+  /* Buttons: enhetlig styling som funkar i light/dark */
+  .moms-rate-btn {
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: rgba(0, 0, 0, 0.03);
+    transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+  }
+
+  .moms-rate-btn:hover {
+    border-color: rgba(0, 0, 0, 0.20);
+    background: rgba(0, 0, 0, 0.06);
+  }
+
+  .moms-rate-btn:focus-visible {
+    outline: 2px solid rgba(119, 192, 67, 0.60);
+    outline-offset: 2px;
+  }
+
+  .moms-rate-btn[data-active="true"] {
+    border-color: rgba(119, 192, 67, 0.80);
+    background: rgba(119, 192, 67, 0.18);
+    box-shadow: 0 0 0 3px rgba(119, 192, 67, 0.14);
+  }
+
+  /* Resultatkort: tydligt i dark mode */
+  .moms-result-card {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 16px;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.03);
+  }
+
+  :global(.dark) .moms-rate-btn {
+    border-color: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  :global(.dark) .moms-rate-btn:hover {
+    border-color: rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.10);
+  }
+
+  :global(.dark) .moms-rate-btn[data-active="true"] {
+    border-color: rgba(119, 192, 67, 0.85);
+    background: rgba(119, 192, 67, 0.24);
+    box-shadow: 0 0 0 3px rgba(119, 192, 67, 0.18);
+  }
+
+  :global(.dark) .moms-result-card {
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  /* Radio/checkbox: bättre accent i dark (utan att förstöra tema) */
+  input[type="radio"],
+  input[type="checkbox"] {
+    accent-color: rgb(119, 192, 67);
+  }
+</style>
 
 <script is:inline>
   function formatCurrency(value) {
@@ -203,10 +264,7 @@ const { showHeader = true } = Astro.props;
       const active = form.querySelector(".moms-rate-btn[data-active='true']");
       if (!active) {
         const defaultRateBtn = form.querySelector('.moms-rate-btn[data-rate="25"]');
-        if (defaultRateBtn) {
-          defaultRateBtn.setAttribute("data-active", "true");
-          defaultRateBtn.classList.add("bg-accent", "text-white", "border-accent");
-        }
+        if (defaultRateBtn) defaultRateBtn.setAttribute("data-active", "true");
       }
 
       if (amountInput) {
@@ -225,10 +283,8 @@ const { showHeader = true } = Astro.props;
         btn.addEventListener("click", function () {
           rateButtons.forEach(function (b) {
             b.removeAttribute("data-active");
-            b.classList.remove("bg-accent", "text-white", "border-accent");
           });
           btn.setAttribute("data-active", "true");
-          btn.classList.add("bg-accent", "text-white", "border-accent");
           recalc(form);
         });
       });

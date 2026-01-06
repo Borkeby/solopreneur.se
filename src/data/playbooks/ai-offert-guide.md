@@ -1,4 +1,4 @@
-﻿---
+---
 title: "AI-offert på 30 minuter"
 author: "Daniel Borkeby"
 pubDatetime: 2025-08-25T09:00:00Z

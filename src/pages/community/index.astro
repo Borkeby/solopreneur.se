@@ -5,6 +5,7 @@ import Footer from "@/components/Footer.astro";
 
 const pageTitle = "Community – Solopreneur.se";
 const pageDescription = "Gå med i Solopreneurs community på Discord för frågor, feedback och diskussioner.";
+const discordInviteUrl = "https://discord.com/invite/xZYxNJXy4b";
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
@@ -26,7 +27,7 @@ const pageDescription = "Gå med i Solopreneurs community på Discord för fråg
         </ul>
 
         <div class="mt-5 flex flex-wrap gap-3">
-          <a class="so-btn-primary" href="/discord" target="_blank" rel="noopener noreferrer">
+          <a class="so-btn-primary" href={discordInviteUrl} target="_blank" rel="noopener noreferrer">
             Gå med via Discord-inbjudan
           </a>
 

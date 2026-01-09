@@ -1,0 +1,40 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+
+// Läs alla guider (markdown) från din mapp
+const modules = import.meta.glob("/src/data/playbooks/**/*.md", { eager: true });
+
+export function getStaticPaths() {
+  return Object.entries(modules).map(([filePath, mod]) => {
+    const fm = (mod as any).frontmatter ?? {};
+    const slugFromFile = filePath.split("/").pop()?.replace(/\.md$/, "") ?? "";
+    const slug = fm.slug ?? slugFromFile;
+
+    return {
+      params: { slug },
+      props: {
+        frontmatter: fm,
+        Content: (mod as any).default,
+      },
+    };
+  });
+}
+
+const { frontmatter, Content } = Astro.props;
+---
+
+<Layout title={frontmatter.title} description={frontmatter.description}>
+  <Header />
+
+  <main class="mx-auto max-w-app px-4">
+    <article class="prose prose-zinc dark:prose-invert">
+      <h1>{frontmatter.title}</h1>
+      {frontmatter.ingress && <p class="lead">{frontmatter.ingress}</p>}
+      <Content />
+    </article>
+  </main>
+
+  <Footer />
+</Layout>

@@ -87,19 +87,16 @@ För att:
 Om du bygger egna verktyg eller publicerar mycket innehåll: lägg 5 minuter på att titta på Post Inspector. Det sparar timmar.
 
 ## Uppföljning: hur gick det efter publicering?
-Jag kommer uppdatera detta inlägg med data efter publiceringen.
+Jag kommer uppdatera detta inlägg med LI data efter publiceringen.
 
 ### Efter 24 timmar
-- Visningar på verktygssidan: X
-- Klick från LinkedIn: X
-- Interaktioner på inlägget (reaktioner/kommentarer): X
-- Nya prenumeranter (om relevant): X
+- Visningar på LinkedIn: 503
+- Interaktioner på LI inlägget (reaktioner/kommentarer): 11
 
 ### Efter 7 dagar
-- Visningar på verktygssidan: X
-- Klick från LinkedIn: X
-- Interaktioner totalt: X
-- Lärdomar/justeringar jag gjort: X
+- Visningar på LinkedIn: X
+- Interaktioner på LI inlägget (reaktioner/kommentarer): X
+
 
 ## Testa Momskalkylatorn
 Du hittar den här: [Momskalkylatorn](https://www.solopreneur.se/verktyg/#moms-kalkylator)

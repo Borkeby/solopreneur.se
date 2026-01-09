@@ -22,7 +22,18 @@ const { page } = Astro.props;
   <Header />
   <Main pageTitle="Guider" pageDesc="Steg-för-steg guider med fokus på genomförande.">
     <ul>
-      {page.data.map(data => <Card {...data} />)}
+      {
+        page.data.map((entry) => {
+          const slug = String(entry.data.slug ?? entry.id).replace(/^\/+/, "");
+          return (
+            <Card
+              {...(entry as any)}
+              eyebrow="GUIDER"
+              href={`/playbooks/${slug}/`}
+            />
+          );
+        })
+      }
     </ul>
   </Main>
 

@@ -1,17 +1,32 @@
 ---
-import type { CollectionEntry } from "astro:content";
 import { slugifyStr } from "@/utils/slugify";
 import { getPath } from "@/utils/getPath";
 
-export interface Props extends CollectionEntry<"blog"> {
-  variant?: "h2" | "h3";
-  filePath?: string;
-  eyebrow?: string; // valfritt: t.ex. "BLOGG"
+export interface CardData {
+  title: string;
+  ingress?: string;
+  description?: string;
+  pubDatetime?: Date;
+  ogImage?: unknown;
+  kategori?: string;
+  tags?: string[];
+  nivå?: string;
+  tid?: string;
 
-  // NYTT: override länk (behåller getPath som default)
+  kostnad?: string; // NYTT
+}
+
+export interface Props {
+  variant?: "h2" | "h3";
+  data: CardData;
+  id: string;
+  filePath?: string;
+  eyebrow?: string;
+
+  // override länk (behåller getPath som default)
   href?: string;
 
-  // NYTT: tvinga bild + fallback om ogImage saknas
+  // tvinga bild + fallback om ogImage saknas
   forceImage?: boolean;
   fallbackImage?: string;
 }
@@ -52,7 +67,9 @@ const ogImage =
 const imageSrc = ogImage ?? (forceImage ? (fallbackImage ?? null) : null);
 
 const primaryPill = data.kategori ?? data.tags?.[0];
-const pills = [primaryPill, data.nivå, data.tid].filter(Boolean) as string[];
+
+// NYTT: lägg till kostnad i pill-raden
+const pills = [primaryPill, data.nivå, data.tid, data.kostnad].filter(Boolean) as string[];
 
 const headerProps = {
   style: { viewTransitionName: slugifyStr(title) },
@@ -86,7 +103,7 @@ const headerProps = {
       {
         pills.length > 0 && (
           <div class="mt-4 flex flex-wrap gap-2">
-            {pills.map(p => (
+            {pills.map((p) => (
               <span class="so-pill">{p}</span>
             ))}
           </div>

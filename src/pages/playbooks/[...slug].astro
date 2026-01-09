@@ -10,17 +10,19 @@ import defaultCover from "@/assets/images/blog/default-cover.jpg";
 export async function getStaticPaths() {
   const entries = await getCollection("playbooks", ({ data }) => !data.draft);
 
-  // Catch-all route: slug kan innehålla "/"
-  return entries.map(p => ({
-    params: { slug: p.id },
-    props: { id: p.id },
-  }));
+  return entries.map((p) => {
+    const slug = String(p.data.slug ?? p.id).replace(/^\/+/, "");
+    return {
+      params: { slug },
+      props: { slug },
+    };
+  });
 }
 
-const { id } = Astro.props as { id: string };
+const { slug } = Astro.props as { slug: string };
 
 const entries = await getCollection("playbooks", ({ data }) => !data.draft);
-const entry = entries.find(p => p.id === id);
+const entry = entries.find((p) => String(p.data.slug ?? p.id).replace(/^\/+/, "") === slug);
 
 if (!entry) {
   return new Response(null, { status: 404 });
@@ -83,7 +85,7 @@ const { Content } = await render(entry);
 >
   <Header />
 
-  <main id="main-content">
+  <main id="main-content" data-layout="playbook">
     <section class="pt-8 pb-10">
       <a
         href="/playbooks/"
@@ -102,7 +104,8 @@ const { Content } = await render(entry);
 
       <div class="so-card mt-6">
         <div class="p-5 sm:p-6">
-          <article class="app-prose">
+          <!-- Full bredd i kortet -->
+          <article class="app-prose w-full max-w-none">
             <Content />
           </article>
         </div>

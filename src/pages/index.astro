@@ -54,9 +54,11 @@ const latestPosts = sortedPosts
   .filter(p => (heroPost ? p.id !== heroPost.id : true))
   .slice(0, 4);
 
-const playbookPosts = sortedPosts
-  .filter(p => (p.data.kategori ?? "").toLowerCase() === "playbook")
-  .slice(0, 3);
+const playbooks = await getCollection("playbooks", ({ data }) => !data.draft);
+const sortedPlaybooks = getSortedPosts(playbooks as any);
+
+// Visa 2 guider (ändra till 3 om du vill)
+const playbookPosts = sortedPlaybooks.slice(0, 2);
 
 const quickLinks = [
   { label: "Guider", href: "/playbooks/" },
@@ -305,7 +307,7 @@ const sponsor = {
       {playbookPosts.length > 0 ? (
         <div class="mt-5 grid gap-4 md:grid-cols-3">
           {playbookPosts.map(p => (
-            <a href={`/playbooks/${p.id}`} class="so-card so-card-hover block p-5">
+            <a href={`/playbooks/${p.data.slug}/`} class="so-card so-card-hover block p-5">
               <div class="text-xs font-semibold tracking-wide text-foreground/60">
                 GUIDER
               </div>

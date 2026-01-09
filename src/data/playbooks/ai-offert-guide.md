@@ -11,6 +11,7 @@ ogImage: ""
 description: "Ta fram ett första offertutkast snabbt, som du sedan kvalitetssäkrar manuellt."
 tid: "30–45 min"
 nivå: "Bas"
+kostnad: "Gratis"
 kategori: "Guider"
 ingress: "Ta fram ett första offertutkast snabbt, som du sedan kvalitetssäkrar manuellt."
 ---

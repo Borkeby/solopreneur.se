@@ -29,6 +29,9 @@ const makeSchema = (image: ImageFunction, defaultTags: string[]) =>
 
         // NYTT: kostnad (precis som tid och nivå)
         kostnad: z.string().optional(),
+
+        // NYTT: slug (så att p.data.slug är typat och tillåtet)
+        slug: z.string().optional(),
     });
 
 const blog = defineCollection({

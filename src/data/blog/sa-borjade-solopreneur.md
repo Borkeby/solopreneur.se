@@ -1,7 +1,7 @@
 ﻿---
 author: "Daniel Borkeby"
-pubDatetime: 2026-01-13T13:30:00Z
-modDatetime: 2026-01-13T13:30:00Z
+pubDatetime: 2026-01-12T09:00:00Z
+modDatetime: 2026-01-12T09:00:00Z
 title: "Så började Solopreneur: från billig domän till första statiska sidan"
 slug: "sa-borjade-solopreneur"
 featured: false

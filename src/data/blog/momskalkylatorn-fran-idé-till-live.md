@@ -94,8 +94,8 @@ Jag kommer uppdatera detta inlägg med LI data efter publiceringen.
 - Interaktioner på LI inlägget (reaktioner/kommentarer): 11
 
 ### Efter 7 dagar
-- Visningar på LinkedIn: X
-- Interaktioner på LI inlägget (reaktioner/kommentarer): X
+- Visningar på LinkedIn: 691
+- Interaktioner på LI inlägget (reaktioner/kommentarer): 11
 
 
 ## Testa Momskalkylatorn

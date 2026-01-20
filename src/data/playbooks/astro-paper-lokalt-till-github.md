@@ -1,8 +1,8 @@
 ﻿---
 title: "Från lokal AstroPaper till GitHub utan lösenordsstrul"
 author: "Daniel Borkeby"
-pubDatetime: 2026-01-20T22:20:00Z
-modDatetime: 2026-01-20T22:20:00Z
+pubDatetime: 2026-01-19T22:20:00Z
+modDatetime: 2026-01-19T22:20:00Z
 slug: "astro-paper-lokalt-till-github"
 featured: false
 draft: false

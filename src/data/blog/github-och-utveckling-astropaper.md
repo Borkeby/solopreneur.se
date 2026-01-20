@@ -1,8 +1,8 @@
 ﻿---
 title: "GitHub och källkodsredigerare – så fick jag upp min lokala AstroPaper till molnet"
 author: "Daniel Borkeby"
-pubDatetime: 2026-01-20T22:20:00Z
-modDatetime: 2026-01-20T22:20:00Z
+pubDatetime: 2026-01-19T22:20:00Z
+modDatetime: 2026-01-19T22:20:00Z
 slug: "github-och-utveckling-astropaper"
 featured: false
 draft: false

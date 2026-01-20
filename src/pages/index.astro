@@ -58,7 +58,7 @@ const playbooks = await getCollection("playbooks", ({ data }) => !data.draft);
 const sortedPlaybooks = getSortedPosts(playbooks as any);
 
 // Visa 2 guider (ändra till 3 om du vill)
-const playbookPosts = sortedPlaybooks.slice(0, 2);
+const playbookPosts = sortedPlaybooks.slice(0, 3);
 
 const quickLinks = [
   { label: "Guider", href: "/playbooks/" },

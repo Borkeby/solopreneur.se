@@ -1,0 +1,77 @@
+﻿---
+/**
+ * Modal-vänlig PDF-dela komponent.
+ * Viktigt: inga globala body/:root-stilar här.
+ */
+const prefix = "pdfsplit";
+---
+
+<div class="space-y-4">
+  <div class="space-y-2">
+    <p class="text-sm text-foreground/70">
+      Välj en PDF med flera sidor så delar verktyget upp den i separata PDF-filer. Bearbetningen sker lokalt i din webbläsare.
+    </p>
+  </div>
+
+  <div
+    id={`${prefix}-dropzone`}
+    class="rounded-xl border border-dashed border-black/15 bg-black/[0.02] p-6 text-center hover:bg-black/[0.04] dark:border-white/15 dark:bg-white/[0.02] dark:hover:bg-white/[0.04]"
+    role="button"
+    tabindex="0"
+    aria-label="Dra och släpp en PDF här eller välj fil"
+  >
+    <div class="space-y-2">
+      <div class="text-base font-semibold">Dra och släpp en PDF här</div>
+      <div class="text-sm text-foreground/60">eller</div>
+
+      <label
+        class="inline-flex cursor-pointer items-center justify-center rounded-xl border border-black/10 bg-white px-4 py-2 text-sm font-semibold hover:bg-black/[0.03] dark:border-white/15 dark:bg-white/[0.06] dark:hover:bg-white/[0.10]"
+        for={`${prefix}-fileInput`}
+      >
+        Välj PDF
+      </label>
+
+      <input
+        id={`${prefix}-fileInput`}
+        type="file"
+        accept="application/pdf,.pdf"
+        class="hidden"
+      />
+
+      <p id={`${prefix}-fileMeta`} class="pt-2 text-xs text-foreground/60" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <div class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-black/10 bg-black/[0.02] p-4 dark:border-white/10 dark:bg-white/[0.03]">
+    <label class="inline-flex items-center gap-2 text-sm text-foreground/70">
+      <input id={`${prefix}-zipToggle`} type="checkbox" checked />
+      <span>Packa resultatet som ZIP (rekommenderas)</span>
+    </label>
+
+    <button
+      id={`${prefix}-splitBtn`}
+      type="button"
+      class="rounded-xl bg-black px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-black"
+      disabled
+    >
+      Dela PDF
+    </button>
+  </div>
+
+  <div class="space-y-1">
+    <p id={`${prefix}-statusLine`} class="text-sm text-foreground/60" aria-live="polite"></p>
+    <p id={`${prefix}-errorLine`} class="text-sm text-red-600" aria-live="polite"></p>
+  </div>
+
+  <div id={`${prefix}-results`} class="space-y-3" aria-live="polite"></div>
+</div>
+
+<script type="module">
+  import initPdfSplitter from "@/scripts/pdf-splitter";
+
+  const run = () => initPdfSplitter({ prefix: "pdfsplit" });
+
+  document.addEventListener("DOMContentLoaded", run);
+  document.addEventListener("astro:page-load", run);
+  document.addEventListener("astro:after-swap", run);
+</script>

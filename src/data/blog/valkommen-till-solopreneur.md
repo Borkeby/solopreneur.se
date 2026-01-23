@@ -82,7 +82,7 @@ Jag kommer visa hur jag använder AI för att spara tid, skapa struktur och höja k
 
 Solopreneur är för dig som:
 
-- Vill starta, men vill göra det smart och strukturerat.
+- Vill starta, och göra det smart och strukturerat.
 - Har startat, men känner att det är rörigt och svårt att prioritera.
 - Vill bygga något långsiktigt – inte bara “testa lite”.
 - Vill använda AI för att få mer gjort, men utan att förlora kontrollen.

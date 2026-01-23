@@ -237,7 +237,7 @@ export default function initPdfSplitter(opts?: InitOptions): void {
         }
     };
 
-    // Drag & drop
+    // Drag & DSrop
     const setDragOver = (on: boolean) => {
         dropzone.classList.toggle("is-dragover", on);
     };

@@ -1,0 +1,78 @@
+﻿---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Card from "@/components/Card.astro";
+import { SITE } from "@/config";
+
+const entries = await getCollection("downloads", ({ data }) => !data.draft);
+
+const sorted = entries
+  .slice()
+  .sort((a, b) => {
+    const ad = a.data.pubDatetime ? new Date(a.data.pubDatetime).getTime() : 0;
+    const bd = b.data.pubDatetime ? new Date(b.data.pubDatetime).getTime() : 0;
+    return bd - ad;
+  });
+
+const featured = sorted.filter((p) => p.data.featured);
+const rest = sorted.filter((p) => !p.data.featured);
+
+const title = "Nedladdningar";
+const description =
+  "Mallar och resurser att ladda ner – t.ex. körjournal, checklistor och dokument.";
+---
+
+<Layout title={`${title} – ${SITE.title}`} description={description}>
+  <Header />
+
+  <main id="main-content" data-layout="downloads">
+    <section class="pt-8 pb-10">
+      <h1 class="text-3xl font-semibold tracking-tight">{title}</h1>
+      <p class="mt-2 text-sm text-foreground/75">{description}</p>
+
+      {featured.length > 0 && (
+        <>
+          <h2 class="so-section-title mt-8">Utvalt</h2>
+          <ul class="mt-4 grid gap-4 md:grid-cols-2">
+            {featured.map((p) => (
+              <Card
+                variant="h2"
+                data={p.data as any}
+                id={p.id}
+                filePath={p.filePath}
+                eyebrow="NEDLADDNING"
+                href={`/nedladdningar/${String(p.data.slug ?? p.id).replace(/^\/+/, "")}/`}
+                forceImage={false}
+              />
+            ))}
+          </ul>
+        </>
+      )}
+
+      <h2 class="so-section-title mt-10">Alla</h2>
+
+      {sorted.length === 0 ? (
+        <div class="mt-4 so-card p-5 sm:p-6 text-sm text-foreground/75">
+          Inga nedladdningar ännu.
+        </div>
+      ) : (
+        <ul class="mt-4 grid gap-4 md:grid-cols-2">
+          {rest.map((p) => (
+            <Card
+              data={p.data as any}
+              id={p.id}
+              filePath={p.filePath}
+              eyebrow="NEDLADDNING"
+              href={`/nedladdningar/${String(p.data.slug ?? p.id).replace(/^\/+/, "")}/`}
+              forceImage={false}
+            />
+          ))}
+        </ul>
+      )}
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

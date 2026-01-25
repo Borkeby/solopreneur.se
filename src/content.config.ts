@@ -5,6 +5,7 @@ import { SITE } from "@/config";
 
 export const BLOG_PATH = "src/data/blog";
 export const PLAYBOOKS_PATH = "src/data/playbooks";
+export const DOWNLOADS_PATH = "src/data/downloads";
 
 const makeSchema = (image: ImageFunction, defaultTags: string[]) =>
     z.object({
@@ -21,18 +22,35 @@ const makeSchema = (image: ImageFunction, defaultTags: string[]) =>
         hideEditPost: z.boolean().optional(),
         timezone: z.string().optional(),
 
-        // Extra fält som du redan använder i frontmatter
+        // Extra fält
         ingress: z.string().optional(),
         kategori: z.string().optional(),
         nivå: z.string().optional(),
         tid: z.string().optional(),
-
-        // NYTT: kostnad (precis som tid och nivå)
         kostnad: z.string().optional(),
-
-        // NYTT: slug (så att p.data.slug är typat och tillåtet)
         slug: z.string().optional(),
     });
+
+// Downloads: datum ska inte vara krav, men resten vill vi kunna återanvända.
+// Vi utgår från samma fält som makeSchema, men gör pubDatetime optional och lägger till file/file2.
+const makeDownloadsSchema = (image: ImageFunction, defaultTags: string[]) =>
+    makeSchema(image, defaultTags)
+        .extend({
+            pubDatetime: z.date().optional(),
+            description: z.string().optional(), // tillåt kortare poster utan description
+            file: z.object({
+                href: z.string(), // ex "/downloads/korjournal/korjournal.xlsx"
+                label: z.string().optional(),
+                type: z.string().optional(),
+            }),
+            file2: z
+                .object({
+                    href: z.string(),
+                    label: z.string().optional(),
+                    type: z.string().optional(),
+                })
+                .optional(),
+        });
 
 const blog = defineCollection({
     loader: glob({ pattern: "**/[^_]*.md", base: `./${BLOG_PATH}` }),
@@ -44,4 +62,9 @@ const playbooks = defineCollection({
     schema: ({ image }) => makeSchema(image, ["playbooks"]),
 });
 
-export const collections = { blog, playbooks };
+const downloads = defineCollection({
+    loader: glob({ pattern: "**/[^_]*.md", base: `./${DOWNLOADS_PATH}` }),
+    schema: ({ image }) => makeDownloadsSchema(image, ["downloads"]),
+});
+
+export const collections = { blog, playbooks, downloads };

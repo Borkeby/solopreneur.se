@@ -1,13 +1,19 @@
 ---
 type Props = {
   class?: string;
+  noPadding?: boolean;
 };
 
-const { class: className = "" } = Astro.props as Props;
+const { class: className = "", noPadding = false } = Astro.props as Props;
+
+const frameClass = ["so-hr-frame", noPadding ? "so-hr-frame--no-padding" : ""]
+  .filter(Boolean)
+  .join(" ");
+
 const hrClass = ["so-hr", className].filter(Boolean).join(" ");
 ---
 
-<div class="so-hr-frame">
+<div class={frameClass}>
   <hr class={hrClass} aria-hidden="true" />
 </div>
 
@@ -18,6 +24,12 @@ const hrClass = ["so-hr", className].filter(Boolean).join(" ");
     margin: 0 auto;
     padding-left: clamp(16px, 3vw, 24px);
     padding-right: clamp(16px, 3vw, 24px);
+  }
+
+  /* Används där omgivande container redan har padding (t.ex. footer) */
+  .so-hr-frame--no-padding {
+    padding-left: 0;
+    padding-right: 0;
   }
 
   /* Tydligare linje + tajtare vertikalt */

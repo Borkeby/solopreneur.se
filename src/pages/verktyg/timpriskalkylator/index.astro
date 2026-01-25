@@ -1,0 +1,66 @@
+﻿---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import TimprisKalkylatorTool from "../_tools/TimprisKalkylatorTool.astro";
+
+const title = "Timpriskalkylator – räkna ut timpris | Solopreneur";
+const description =
+  "Räkna ut ett rimligt timpris baserat på mål, kostnader och debiterbar tid. Timpriskalkylator för konsulter och frilansare.";
+
+const faq = [
+  { q: "Vad baseras timpriset på?", a: "Mål, kostnader och debiterbar tid." },
+  { q: "Passar den för både konsulter och frilansare?", a: "Ja, den är byggd för tjänstebaserat arbete." },
+  { q: "Sparas mina värden?", a: "Nej, verktyget kör i din webbläsare och sparar inte dina inmatningar." },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((x) => ({
+    "@type": "Question",
+    name: x.q,
+    acceptedAnswer: { "@type": "Answer", text: x.a },
+  })),
+};
+---
+
+<Layout title={title} description={description}>
+  <Header />
+
+  <main id="main-content">
+    <section class="pt-8 pb-10">
+      <div class="mx-auto max-w-[1100px] px-4 sm:px-6">
+        <h1 class="so-section-title">Timpriskalkylator</h1>
+        <p class="so-section-muted">
+          Räkna ut ett timpris som täcker kostnader och ger utrymme för ditt mål. Snabbt och konkret.
+        </p>
+
+        <div class="mt-6 so-card p-5 sm:p-6">
+          <TimprisKalkylatorTool showHeader={false} />
+        </div>
+
+        <div class="mt-8 prose prose-slate dark:prose-invert max-w-none">
+          <h2>Så använder du timpriskalkylatorn</h2>
+          <ol>
+            <li>Ange mål (t.ex. månadsinkomst eller årsinkomst).</li>
+            <li>Lägg in kostnader.</li>
+            <li>Ange debiterbar tid och se beräknat timpris.</li>
+          </ol>
+
+          <h2>Vanliga frågor</h2>
+          {faq.map((x) => (
+            <>
+              <h3>{x.q}</h3>
+              <p>{x.a}</p>
+            </>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)}></script>

@@ -1,0 +1,66 @@
+﻿---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import PDFDelaTool from "../_tools/PDF-delaTool.astro";
+
+const title = "Dela PDF gratis – dela upp PDF i sidor | Solopreneur";
+const description =
+  "Dela en PDF i separata filer. Bearbetningen sker lokalt i din webbläsare. Gratis PDF-delare för att dela upp per sida.";
+
+const faq = [
+  { q: "Sparas min PDF någonstans?", a: "Nej. Bearbetningen sker lokalt i din webbläsare." },
+  { q: "Kan jag få en fil per sida?", a: "Ja, verktyget delar upp PDF:en till separata filer per sida." },
+  { q: "Kan jag få resultatet som ZIP?", a: "Ja, du kan packa resultatet som ZIP (rekommenderas)." },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((x) => ({
+    "@type": "Question",
+    name: x.q,
+    acceptedAnswer: { "@type": "Answer", text: x.a },
+  })),
+};
+---
+
+<Layout title={title} description={description}>
+  <Header />
+
+  <main id="main-content">
+    <section class="pt-8 pb-10">
+      <div class="mx-auto max-w-[1100px] px-4 sm:px-6">
+        <h1 class="so-section-title">PDF-dela</h1>
+        <p class="so-section-muted">
+          Dela upp en PDF i en fil per sida. Bearbetningen sker lokalt i din webbläsare och inget sparas.
+        </p>
+
+        <div class="mt-6 so-card p-5 sm:p-6">
+          <PDFDelaTool />
+        </div>
+
+        <div class="mt-8 prose prose-slate dark:prose-invert max-w-none">
+          <h2>Så använder du PDF-delaren</h2>
+          <ol>
+            <li>Välj en PDF med flera sidor.</li>
+            <li>Välj om du vill packa resultatet som ZIP.</li>
+            <li>Klicka på “Dela PDF” och ladda ner resultatet.</li>
+          </ol>
+
+          <h2>Vanliga frågor</h2>
+          {faq.map((x) => (
+            <>
+              <h3>{x.q}</h3>
+              <p>{x.a}</p>
+            </>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)}></script>

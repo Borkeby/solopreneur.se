@@ -1,0 +1,66 @@
+﻿---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import MomsKalkylatorTool from "../_tools/MomsKalkylatorTool.astro";
+
+const title = "Momskalkylator – räkna moms (25, 12, 6 %) | Solopreneur";
+const description =
+  "Räkna ut moms baklänges eller framlänges med 25, 12 eller 6 %. Snabb momskalkylator för företagare.";
+
+const faq = [
+  { q: "Vilka momssatser stödjer kalkylatorn?", a: "25 %, 12 % och 6 %." },
+  { q: "Kan jag räkna både fram och bak?", a: "Ja, du kan räkna både från exkl. till inkl. moms och tvärtom." },
+  { q: "Sparas mina värden?", a: "Nej, verktyget kör i din webbläsare och sparar inte dina inmatningar." },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((x) => ({
+    "@type": "Question",
+    name: x.q,
+    acceptedAnswer: { "@type": "Answer", text: x.a },
+  })),
+};
+---
+
+<Layout title={title} description={description}>
+  <Header />
+
+  <main id="main-content">
+    <section class="pt-8 pb-10">
+      <div class="mx-auto max-w-[1100px] px-4 sm:px-6">
+        <h1 class="so-section-title">Momskalkylator</h1>
+        <p class="so-section-muted">
+          Räkna moms snabbt med 25 %, 12 % eller 6 %. Använd verktyget för att se momsbelopp och belopp exkl. moms.
+        </p>
+
+        <div class="mt-6 so-card p-5 sm:p-6">
+          <MomsKalkylatorTool showHeader={false} />
+        </div>
+
+        <div class="mt-8 prose prose-slate dark:prose-invert max-w-none">
+          <h2>Så använder du momskalkylatorn</h2>
+          <ol>
+            <li>Välj momssats.</li>
+            <li>Ange belopp (inkl. eller exkl. moms).</li>
+            <li>Se resultat direkt.</li>
+          </ol>
+
+          <h2>Vanliga frågor</h2>
+          {faq.map((x) => (
+            <>
+              <h3>{x.q}</h3>
+              <p>{x.a}</p>
+            </>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)}></script>

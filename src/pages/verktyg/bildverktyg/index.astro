@@ -1,0 +1,66 @@
+﻿---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import BildverktygTool from "../_tools/BildverktygTool.astro";
+
+const title = "Bildverktyg – exportera rätt format för sociala medier | Solopreneur";
+const description =
+  "Beskär och exportera bilder i rätt format för Instagram, Facebook, LinkedIn, YouTube och TikTok.";
+
+const faq = [
+  { q: "Vilka plattformar stöds?", a: "Instagram, Facebook, LinkedIn, YouTube och TikTok." },
+  { q: "Sparas mina bilder?", a: "Nej, verktyget är byggt för lokal bearbetning i din webbläsare." },
+  { q: "Kan jag exportera flera format?", a: "Ja, välj format och exportera enligt verktygets val." },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((x) => ({
+    "@type": "Question",
+    name: x.q,
+    acceptedAnswer: { "@type": "Answer", text: x.a },
+  })),
+};
+---
+
+<Layout title={title} description={description}>
+  <Header />
+
+  <main id="main-content">
+    <section class="pt-8 pb-10">
+      <div class="mx-auto max-w-[1100px] px-4 sm:px-6">
+        <h1 class="so-section-title">Bildverktyg</h1>
+        <p class="so-section-muted">
+          Exportera bilder i rätt format för sociala medier. Snabbt sätt att slippa fel storlek och beskärning.
+        </p>
+
+        <div class="mt-6 so-card p-5 sm:p-6">
+          <BildverktygTool />
+        </div>
+
+        <div class="mt-8 prose prose-slate dark:prose-invert max-w-none">
+          <h2>Så använder du bildverktyget</h2>
+          <ol>
+            <li>Ladda upp en bild.</li>
+            <li>Välj plattform/format.</li>
+            <li>Förhandsgranska och exportera.</li>
+          </ol>
+
+          <h2>Vanliga frågor</h2>
+          {faq.map((x) => (
+            <>
+              <h3>{x.q}</h3>
+              <p>{x.a}</p>
+            </>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)}></script>

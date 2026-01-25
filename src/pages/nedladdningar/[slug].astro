@@ -127,4 +127,5 @@ const faqJsonLd = {
 <!-- Canonical + FAQ schema -->
 <link rel="canonical" href={canonical} />
 
-<script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)}></script>
+<script is:inline type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
+

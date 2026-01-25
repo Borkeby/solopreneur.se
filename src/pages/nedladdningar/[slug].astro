@@ -1,4 +1,4 @@
----
+ï»¿---
 import { getCollection, render } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
@@ -38,7 +38,7 @@ const metaParts = [
   "NEDLADDNING",
   dateStr ? dateStr : null,
   (entry.data.kategori ?? "").trim() || null,
-  (entry.data.nivå ?? "").trim() || null,
+  (entry.data.nivÃ¥ ?? "").trim() || null,
   (entry.data.tid ?? "").trim() || null,
   (entry.data.kostnad ?? "").trim() || null,
 ].filter(Boolean);
@@ -50,7 +50,7 @@ const { Content } = await render(entry);
 ---
 
 <Layout
-  title={`${title} – Nedladdning`}
+  title={`${title} â€“ Nedladdning`}
   description={description}
   pubDatetime={pubDatetime}
   modDatetime={modDatetime}
@@ -66,7 +66,7 @@ const { Content } = await render(entry);
       <h1 class="mt-3 text-3xl font-semibold tracking-tight">{title}</h1>
 
       <div class="mt-2 text-sm text-foreground/70">
-        {metaParts.join(" · ")}
+        {metaParts.join(" Â· ")}
       </div>
 
       <div class="mt-6 so-card">

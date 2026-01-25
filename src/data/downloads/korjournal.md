@@ -1,10 +1,10 @@
 ﻿---
-title: "Körjournal (mall)"
+title: "Gratis körjournal (ifyllningsbar PDF) – ladda ner mall"
 slug: "korjournal"
-description: "Mall för körjournal – enkel att fylla i och spara."
+description: "Ladda ner en gratis körjournal i ifyllningsbar PDF. Enkel mall för körning i tjänsten – fyll i, spara och skriv ut."
 draft: false
 featured: true
-tags: ["Körjournal", "Mall", "Bokföring"]
+tags: ["Körjournal", "Mall", "PDF", "Bokföring"]
 kategori: "Mall"
 nivå: "Bas"
 tid: "2 min"
@@ -14,4 +14,28 @@ file:
   label: "Ladda ner (PDF)"
   type: "pdf"
 ---
-Ladda ner den ifyllningsbara PFFD-mallen för körjournalen. Fyll i dina uppgifter direkt i PDF:en och spara den på din dator eller skriv ut den.
+
+Ladda ner en gratis, ifyllningsbar körjournal i PDF-format. Du fyller i uppgifterna direkt i PDF:en och kan sedan spara den på datorn eller skriva ut.
+
+## Det här får du
+- Ifyllningsbar PDF (du skriver direkt i dokumentet)
+- Tydlig struktur för datum, körsträcka och syfte med resan
+- Passar dig som vill dokumentera körning i tjänsten på ett enkelt sätt
+
+## Så använder du mallen
+1. Ladda ner PDF:en.
+2. Fyll i uppgifterna löpande (eller per vecka/månad).
+3. Spara en kopia när perioden är klar, alternativt skriv ut.
+
+## Vanliga frågor
+### Är mallen gratis?
+Ja, du kan ladda ner den utan kostnad.
+
+### Fungerar den för både AB och enskild firma?
+Ja, den fungerar oavsett bolagsform – det viktiga är att du fyller i uppgifterna konsekvent.
+
+### Kan jag fylla i den direkt i PDF:en?
+Ja, mallen är ifyllningsbar. Du kan fylla i och spara lokalt.
+
+### Kan jag skriva ut den och fylla i för hand?
+Ja, den fungerar även för utskrift.

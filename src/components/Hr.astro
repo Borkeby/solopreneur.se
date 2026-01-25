@@ -1,13 +1,33 @@
 ---
-export interface Props {
-  noPadding?: boolean;
-  ariaHidden?: boolean;
-}
+type Props = {
+  class?: string;
+};
 
-const { noPadding = false, ariaHidden = true } = Astro.props;
+const { class: className = "" } = Astro.props as Props;
+const hrClass = ["so-hr", className].filter(Boolean).join(" ");
 ---
 
-<div class:list={["mx-auto max-w-app", noPadding ? "px-0" : "px-4"]}>
-  <hr class="my-10 border-border/70" aria-hidden={ariaHidden} />
+<div class="so-hr-frame">
+  <hr class={hrClass} aria-hidden="true" />
 </div>
 
+<style>
+  /* Samma bredd som innehåll/kort (inte fullbredd) */
+  .so-hr-frame {
+    max-width: var(--so-content-width, 1150px);
+    margin: 0 auto;
+    padding-left: clamp(16px, 3vw, 24px);
+    padding-right: clamp(16px, 3vw, 24px);
+  }
+
+  /* Tydligare linje + tajtare vertikalt */
+  .so-hr {
+    border: 0;
+    border-top: 1px solid rgba(15, 23, 42, 0.14);
+    margin: 1.75rem 0;
+  }
+
+  :global(html.dark) .so-hr {
+    border-top-color: rgba(255, 255, 255, 0.16);
+  }
+</style>

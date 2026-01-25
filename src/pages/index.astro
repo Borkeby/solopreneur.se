@@ -51,18 +51,21 @@ const heroDate =
 const heroImage = toImageSrc(heroPost?.data?.ogImage) ?? defaultCover.src;
 
 const latestPosts = sortedPosts
-  .filter(p => (heroPost ? p.id !== heroPost.id : true))
+  .filter((p) => (heroPost ? p.id !== heroPost.id : true))
   .slice(0, 4);
 
-const playbooks = await getCollection("playbooks", ({ data }) => !data.draft);
-const sortedPlaybooks = getSortedPosts(playbooks as any);
+const guidesCollection = await getCollection("playbooks", ({ data }) => !data.draft);
+const sortedGuides = getSortedPosts(guidesCollection as any);
+const guidePosts = sortedGuides.slice(0, 3);
 
-// Visa 2 guider (ändra till 3 om du vill)
-const playbookPosts = sortedPlaybooks.slice(0, 3);
+const downloadsCollection = await getCollection("downloads", ({ data }) => !data.draft);
+const sortedDownloads = getSortedPosts(downloadsCollection as any);
+const downloadPosts = sortedDownloads.slice(0, 3);
 
 const quickLinks = [
   { label: "Guider", href: "/playbooks/" },
   { label: "Verktyg", href: "/verktyg/" },
+  { label: "Nedladdningar", href: "/nedladdningar/" },
   { label: "Nyhetsbrev", href: "/nyhetsbrev/" },
   { label: "Community", href: "/community/" },
   { label: "Om", href: "/om/" },
@@ -81,8 +84,7 @@ const tools = [
   {
     tag: "Skatt & prissättning",
     title: "Timpriskalkylator",
-    description:
-      "Räkna ut timpris baserat på mål, kostnader och debiterbar tid.",
+    description: "Räkna ut timpris baserat på mål, kostnader och debiterbar tid.",
     href: "/verktyg/#timpriskalkylator",
     image: timprisToolImage.src,
     imageAlt: "Timpriskalkylator",
@@ -116,41 +118,39 @@ const sponsor = {
   <Header />
 
   <main id="main-content" data-layout="index">
-<!-- Hero -->
-<section class="pt-10 pb-10">
-  <div class="so-hero so-hero-left-centered">
-    <div class="so-hero-inner">
-      <div class="so-eyebrow">Solopreneur</div>
+    <!-- Hero -->
+    <section class="pt-8 pb-8">
+      <div class="so-hero so-hero-left-centered">
+        <div class="so-hero-inner">
+          <div class="so-eyebrow">Solopreneur</div>
 
-      <h1 class="so-hero-title">
-        Bygg ett effektivt soloföretag – med guider, verktyg och AI som hävstång
-      </h1>
+          <h1 class="so-hero-title">
+            Bygg ett effektivt soloföretag – med guider, verktyg och AI som hävstång
+          </h1>
 
-      <p class="so-hero-lead">
-        Solopreneur samlar konkreta guider och verktyg som hjälper dig att planera,
-        få användbara tips, sälja och leverera, lite enklare.
-      </p>
+          <p class="so-hero-lead">
+            Solopreneur samlar konkreta guider och verktyg som hjälper dig att planera,
+            få användbara tips, sälja och leverera, lite enklare.
+          </p>
 
-      <div class="mt-6 flex flex-wrap items-center gap-3 so-hero-actions">
-        <a class="so-btn-primary" href="/nyhetsbrev/">Prenumerera</a>
-        <a class="so-btn-secondary" href="/verktyg/">Se verktygen</a>
+          <div class="mt-6 flex flex-wrap items-center gap-3 so-hero-actions">
+            <a class="so-btn-primary" href="/nyhetsbrev/">Prenumerera</a>
+            <a class="so-btn-secondary" href="/verktyg/">Se verktygen</a>
+          </div>
+
+          <div class="mt-6 flex flex-wrap gap-2 so-hero-links">
+            {quickLinks.map((l) => (
+              <a class="so-pill-link" href={l.href}>{l.label}</a>
+            ))}
+          </div>
+        </div>
       </div>
-
-      <div class="mt-6 flex flex-wrap gap-2 so-hero-links">
-        {quickLinks.map(l => (
-          <a class="so-pill-link" href={l.href}>{l.label}</a>
-        ))}
-      </div>
-    </div>
-  </div>
-</section>
-
-
+    </section>
 
     <Hr />
 
     <!-- Utvalt + Senaste -->
-    <section class="pt-8 pb-10">
+    <section class="pt-6 pb-8">
       <div class="grid gap-6 lg:grid-cols-3">
         <div class="lg:col-span-2">
           <h2 class="so-section-title">Utvalt</h2>
@@ -206,7 +206,7 @@ const sponsor = {
               </div>
             ) : (
               <ul class="space-y-1">
-                {latestPosts.map(p => {
+                {latestPosts.map((p) => {
                   const href = getPath(p.id, p.filePath);
                   const d =
                     p.data.pubDatetime?.toLocaleDateString("sv-SE", {
@@ -234,14 +234,14 @@ const sponsor = {
     <Hr />
 
     <!-- Verktyg -->
-    <section id="verktyg" class="pt-8 pb-10">
+    <section id="verktyg" class="pt-6 pb-8">
       <h2 class="so-section-title">Verktyg</h2>
       <p class="so-section-muted">
         Utvalda verktyg som löser vanliga problem snabbt. Fler kommer löpande.
       </p>
 
       <div class="mt-5 grid gap-4 md:grid-cols-3">
-        {tools.map(t => (
+        {tools.map((t) => (
           <a href={t.href} class="so-card so-card-hover block overflow-hidden">
             {t.image && (
               <img
@@ -277,8 +277,65 @@ const sponsor = {
       </div>
     </section>
 
+    <Hr />
+
+<!-- Nedladdningar -->
+<section id="nedladdningar" class="pt-6 pb-8">
+  <h2 class="so-section-title">Nedladdningar</h2>
+  <p class="so-section-muted">
+    Mallar och checklistor du kan ladda ner och använda direkt.
+  </p>
+
+  {downloadPosts.length > 0 ? (
+    <div class="mt-5 grid gap-4 md:grid-cols-3">
+      {downloadPosts.map((d) => {
+        const slug = String((d.data as any).slug ?? d.id).replace(/^\/+/, "");
+        const href = `/nedladdningar/${slug}/`;
+        const kategori = (d.data as any).kategori as string | undefined;
+
+        return (
+          <a href={href} class="so-card so-card-hover block p-5">
+            <div class="text-xs font-semibold tracking-wide text-foreground/60">
+              NEDLADDNING{kategori ? ` · ${kategori}` : ""}
+            </div>
+
+            <div class="mt-2 text-lg font-semibold tracking-tight">
+              {d.data.title}
+            </div>
+
+            {(d.data.ingress ?? d.data.description) && (
+              <p class="mt-2 text-sm text-foreground/75">
+                {d.data.ingress ?? d.data.description}
+              </p>
+            )}
+
+            <div class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-accent">
+              Läs mer <IconArrowRight class="inline-block rtl:-rotate-180" />
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  ) : (
+    <div class="mt-5 so-card p-5 sm:p-6">
+      <div class="text-sm text-foreground/75">
+        Inga nedladdningar att visa ännu.
+      </div>
+    </div>
+  )}
+
+  <div class="mt-6">
+    <a href="/nedladdningar/" class="so-btn-secondary inline-flex items-center gap-2">
+      Visa alla nedladdningar <IconArrowRight class="inline-block rtl:-rotate-180" />
+    </a>
+  </div>
+</section>
+
+
+    <Hr />
+
     <!-- Nyhetsbrev -->
-    <section class="pt-2 pb-10">
+    <section class="pt-6 pb-8">
       <div class="so-card so-card-emphasis p-5 sm:p-6">
         <div class="text-lg font-semibold tracking-tight">
           Prenumerera på Solopreneur nyhetsbrev
@@ -299,14 +356,16 @@ const sponsor = {
       </div>
     </section>
 
-    <!-- Playbooks -->
-    <section class="pt-2 pb-10">
+    <Hr />
+
+    <!-- Guider -->
+    <section class="pt-6 pb-8">
       <h2 class="so-section-title">Guider</h2>
       <p class="so-section-muted">Steg-för-steg guider med fokus på genomförande.</p>
 
-      {playbookPosts.length > 0 ? (
+      {guidePosts.length > 0 ? (
         <div class="mt-5 grid gap-4 md:grid-cols-3">
-          {playbookPosts.map(p => (
+          {guidePosts.map((p) => (
             <a href={`/playbooks/${p.data.slug}/`} class="so-card so-card-hover block p-5">
               <div class="text-xs font-semibold tracking-wide text-foreground/60">
                 GUIDER
@@ -342,7 +401,7 @@ const sponsor = {
     <Hr />
 
     <!-- Community + Om -->
-    <section class="pt-8 pb-10">
+    <section class="pt-6 pb-8">
       <div class="grid gap-4 md:grid-cols-2">
         <a href="/community/" class="so-card so-card-hover block p-5 sm:p-6">
           <div class="text-lg font-semibold tracking-tight">Community</div>
@@ -366,46 +425,47 @@ const sponsor = {
       </div>
     </section>
 
+    <Hr />
+
     <!-- Sponsrat -->
-    <section class="pt-2 pb-12">
+    <section class="pt-6 pb-10">
       <h2 class="so-section-title">Sponsrat</h2>
 
-<a
-  href={sponsor.href}
-  target="_blank"
-  rel="noopener noreferrer sponsored"
-  aria-label={`${sponsor.title} (annons)`}
-  class="mt-5 so-card so-card-hover block overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
-         bg-[#fff6ea] text-slate-900 border border-black/5
-         dark:bg-[#1b140a] dark:text-slate-100 dark:border-white/10"
->
-  <div class="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:gap-6 sm:p-6">
-    <div class="min-w-0 flex-1">
-      <div class="text-xs font-semibold tracking-wide text-slate-700/70 dark:text-slate-200/70">
-        {sponsor.label}
-      </div>
+      <a
+        href={sponsor.href}
+        target="_blank"
+        rel="noopener noreferrer sponsored"
+        aria-label={`${sponsor.title} (annons)`}
+        class="mt-5 so-card so-card-hover block overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+               bg-[#fff6ea] text-slate-900 border border-black/5
+               dark:bg-[#1b140a] dark:text-slate-100 dark:border-white/10"
+      >
+        <div class="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:gap-6 sm:p-6">
+          <div class="min-w-0 flex-1">
+            <div class="text-xs font-semibold tracking-wide text-slate-700/70 dark:text-slate-200/70">
+              {sponsor.label}
+            </div>
 
-      <div class="mt-2 text-xl font-semibold tracking-tight text-slate-900 dark:text-slate-50">
-        {sponsor.title}
-      </div>
+            <div class="mt-2 text-xl font-semibold tracking-tight text-slate-900 dark:text-slate-50">
+              {sponsor.title}
+            </div>
 
-      <p class="mt-2 text-sm text-slate-700 dark:text-slate-200/80">
-        {sponsor.description}
-      </p>
-    </div>
+            <p class="mt-2 text-sm text-slate-700 dark:text-slate-200/80">
+              {sponsor.description}
+            </p>
+          </div>
 
-    {sponsor.logo && (
-      <img
-        src={sponsor.logo}
-        alt={sponsor.logoAlt ?? "Sponsor"}
-        class="h-14 w-auto rounded-md bg-white p-2 sm:h-16 dark:bg-white"
-        loading="lazy"
-        decoding="async"
-      />
-    )}
-  </div>
-</a>
-
+          {sponsor.logo && (
+            <img
+              src={sponsor.logo}
+              alt={sponsor.logoAlt ?? "Sponsor"}
+              class="h-14 w-auto rounded-md bg-white p-2 sm:h-16 dark:bg-white"
+              loading="lazy"
+              decoding="async"
+            />
+          )}
+        </div>
+      </a>
     </section>
   </main>
 

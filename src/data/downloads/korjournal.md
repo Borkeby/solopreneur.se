@@ -7,7 +7,7 @@ slug: "korjournal"
 featured: true
 draft: false
 tags: ["Körjournal", "Mall", "PDF", "Bokföring"]
-ogImage: ""
+ogImage: "/downloads/korjournal/korjournal.jpg"
 description: "Ladda ner en gratis körjournal i ifyllningsbar PDF. Enkel mall för körning i tjänsten – fyll i, spara och skriv ut."
 tid: "2 min"
 nivå: "Bas"

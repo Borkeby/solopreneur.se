@@ -359,34 +359,40 @@ const sponsor = {
 
       {downloadPosts.length > 0 ? (
         <div class="mt-5 grid gap-4 md:grid-cols-2">
-          {downloadPosts.slice(0, 2).map((d) => {
-            const slug = String((d.data as any).slug ?? d.id).replace(/^\/+/, "");
-            const href = `/nedladdningar/${slug}/`;
-            const kategori = (d.data as any).kategori as string | undefined;
+return (
+  <a href={href} class="so-card so-card-hover block overflow-hidden">
+    {toImageSrc((d.data as any).ogImage) && (
+      <img
+        src={toImageSrc((d.data as any).ogImage)!}
+        alt={d.data.title}
+        class="so-tool-img"
+        loading="lazy"
+        decoding="async"
+      />
+    )}
 
-            return (
-              <a href={href} class="so-card so-card-hover block overflow-hidden">
-                <div class="p-5 sm:p-6">
-                  <div class="text-xs font-semibold tracking-wide text-foreground/60">
-                    NEDLADDNING{kategori ? ` · ${kategori}` : ""}
-                  </div>
+    <div class="p-5 sm:p-6">
+      <div class="text-xs font-semibold tracking-wide text-foreground/60">
+        NEDLADDNING{kategori ? ` · ${kategori}` : ""}
+      </div>
 
-                  <div class="mt-2 text-lg font-semibold tracking-tight">
-                    {d.data.title}
-                  </div>
+      <div class="mt-2 text-lg font-semibold tracking-tight">
+        {d.data.title}
+      </div>
 
-                  {(d.data.ingress ?? d.data.description) && (
-                    <p class="mt-2 text-sm text-foreground/75">
-                      {d.data.ingress ?? d.data.description}
-                    </p>
-                  )}
+      {(d.data.ingress ?? d.data.description) && (
+        <p class="mt-2 text-sm text-foreground/75">
+          {d.data.ingress ?? d.data.description}
+        </p>
+      )}
 
-                  <div class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-accent">
-                    Läs mer <IconArrowRight class="inline-block rtl:-rotate-180" />
-                  </div>
-                </div>
-              </a>
-            );
+      <div class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-accent">
+        Läs mer <IconArrowRight class="inline-block rtl:-rotate-180" />
+      </div>
+    </div>
+  </a>
+);
+
           })}
         </div>
       ) : (

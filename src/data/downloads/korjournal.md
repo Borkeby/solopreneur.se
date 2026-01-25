@@ -1,13 +1,19 @@
 ﻿---
 title: "Gratis körjournal (ifyllningsbar PDF) – ladda ner mall"
+author: "Daniel Borkeby"
+pubDatetime: 2026-01-25T00:00:00Z
+modDatetime: 2026-01-25T00:00:00Z
 slug: "korjournal"
-description: "Ladda ner en gratis körjournal i ifyllningsbar PDF. Enkel mall för körning i tjänsten – fyll i, spara och skriv ut."
-draft: false
 featured: true
+draft: false
 tags: ["Körjournal", "Mall", "PDF", "Bokföring"]
-kategori: "Mall"
-nivå: "Bas"
+ogImage: ""
+description: "Ladda ner en gratis körjournal i ifyllningsbar PDF. Enkel mall för körning i tjänsten – fyll i, spara och skriv ut."
 tid: "2 min"
+nivå: "Bas"
+kostnad: "Gratis"
+kategori: "Mall"
+ingress: "Ladda ner en gratis körjournal i ifyllningsbar PDF. Enkel mall för körning i tjänsten – fyll i, spara och skriv ut."
 
 file:
   href: "/downloads/korjournal/solopreneur_korjournal.pdf"

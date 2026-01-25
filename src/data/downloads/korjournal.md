@@ -14,4 +14,4 @@ file:
   label: "Ladda ner (PDF)"
   type: "pdf"
 ---
-Kort instruktion om hur mallen används och vad den innehåller.
+Ladda ner den ifyllningsbara PFFD-mallen för körjournalen. Fyll i dina uppgifter direkt i PDF:en och spara den på din dator eller skriv ut den.

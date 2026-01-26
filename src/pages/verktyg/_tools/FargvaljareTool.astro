@@ -14,7 +14,6 @@ const prefix = "colorpick";
   </div>
 
   <div class="grid gap-4 lg:grid-cols-2">
-    <!-- Preview -->
     <div class="rounded-xl border border-black/10 bg-black/[0.02] p-4 dark:border-white/10 dark:bg-white/[0.03]">
       <div
         id={`${prefix}-swatch`}
@@ -34,7 +33,6 @@ const prefix = "colorpick";
       </div>
     </div>
 
-    <!-- Controls -->
     <div class="space-y-4 rounded-xl border border-black/10 bg-black/[0.02] p-4 dark:border-white/10 dark:bg-white/[0.03]">
       <div class="grid gap-3 sm:grid-cols-2">
         <label class="space-y-1">
@@ -82,14 +80,8 @@ const prefix = "colorpick";
         <div class="space-y-2">
           <div class="flex items-center justify-between gap-3">
             <div class="text-sm font-semibold">R</div>
-            <input
-              id={`${prefix}-rNum`}
-              type="number"
-              min="0"
-              max="255"
-              value="26"
-              class="h-9 w-24 rounded-xl border border-black/10 bg-white px-2 text-sm dark:border-white/15 dark:bg-white/[0.06]"
-            />
+            <input id={`${prefix}-rNum`} type="number" min="0" max="255" value="26"
+              class="h-9 w-24 rounded-xl border border-black/10 bg-white px-2 text-sm dark:border-white/15 dark:bg-white/[0.06]" />
           </div>
           <input id={`${prefix}-r`} type="range" min="0" max="255" value="26" class="w-full" />
         </div>
@@ -97,14 +89,8 @@ const prefix = "colorpick";
         <div class="space-y-2">
           <div class="flex items-center justify-between gap-3">
             <div class="text-sm font-semibold">G</div>
-            <input
-              id={`${prefix}-gNum`}
-              type="number"
-              min="0"
-              max="255"
-              value="115"
-              class="h-9 w-24 rounded-xl border border-black/10 bg-white px-2 text-sm dark:border-white/15 dark:bg-white/[0.06]"
-            />
+            <input id={`${prefix}-gNum`} type="number" min="0" max="255" value="115"
+              class="h-9 w-24 rounded-xl border border-black/10 bg-white px-2 text-sm dark:border-white/15 dark:bg-white/[0.06]" />
           </div>
           <input id={`${prefix}-g`} type="range" min="0" max="255" value="115" class="w-full" />
         </div>
@@ -112,14 +98,8 @@ const prefix = "colorpick";
         <div class="space-y-2">
           <div class="flex items-center justify-between gap-3">
             <div class="text-sm font-semibold">B</div>
-            <input
-              id={`${prefix}-bNum`}
-              type="number"
-              min="0"
-              max="255"
-              value="232"
-              class="h-9 w-24 rounded-xl border border-black/10 bg-white px-2 text-sm dark:border-white/15 dark:bg-white/[0.06]"
-            />
+            <input id={`${prefix}-bNum`} type="number" min="0" max="255" value="232"
+              class="h-9 w-24 rounded-xl border border-black/10 bg-white px-2 text-sm dark:border-white/15 dark:bg-white/[0.06]" />
           </div>
           <input id={`${prefix}-b`} type="range" min="0" max="255" value="232" class="w-full" />
         </div>
@@ -127,14 +107,8 @@ const prefix = "colorpick";
         <div class="space-y-2">
           <div class="flex items-center justify-between gap-3">
             <div class="text-sm font-semibold">Alfa</div>
-            <input
-              id={`${prefix}-aNum`}
-              type="number"
-              min="0"
-              max="100"
-              value="100"
-              class="h-9 w-24 rounded-xl border border-black/10 bg-white px-2 text-sm dark:border-white/15 dark:bg-white/[0.06]"
-            />
+            <input id={`${prefix}-aNum`} type="number" min="0" max="100" value="100"
+              class="h-9 w-24 rounded-xl border border-black/10 bg-white px-2 text-sm dark:border-white/15 dark:bg-white/[0.06]" />
           </div>
           <input id={`${prefix}-a`} type="range" min="0" max="100" value="100" class="w-full" />
         </div>
@@ -142,7 +116,6 @@ const prefix = "colorpick";
     </div>
   </div>
 
-  <!-- Outputs -->
   <div class="space-y-3 rounded-xl border border-black/10 bg-black/[0.02] p-4 dark:border-white/10 dark:bg-white/[0.03]">
     <div class="text-sm font-semibold">Koder</div>
 
@@ -189,330 +162,9 @@ const prefix = "colorpick";
 </div>
 
 <script>
-  /**
-   * Typade hjälpertyper (JSDoc) för att Astro/TS-check ska vara nöjd.
-   * @typedef {{ r:number, g:number, b:number, a:number }} RGBA
-   * @typedef {"r"|"g"|"b"} RGBKey
-   */
+  import initColorPicker from "@/scripts/color-picker";
 
-  const run = () => {
-    const prefix = "colorpick";
-    /** @type {HTMLElement|null} */
-    const root = document.getElementById(`${prefix}-root`);
-    if (!root) return;
-
-    if (root.dataset.wired === "1") return;
-    root.dataset.wired = "1";
-
-    /**
-     * @template T
-     * @param {string} id
-     * @returns {T|null}
-     */
-    const byId = (id) => /** @type {any} */ (document.getElementById(id));
-
-    /** @type {HTMLInputElement|null} */ const picker = byId(`${prefix}-picker`);
-    /** @type {HTMLInputElement|null} */ const hexInput = byId(`${prefix}-hex`);
-    /** @type {HTMLElement|null} */ const hexError = byId(`${prefix}-hexError`);
-
-    /** @type {HTMLButtonElement|null} */ const eyedropperBtn = byId(`${prefix}-eyedropperBtn`);
-    /** @type {HTMLElement|null} */ const eyedropperHint = byId(`${prefix}-eyedropperHint`);
-
-    /** @type {HTMLInputElement|null} */ const rRange = byId(`${prefix}-r`);
-    /** @type {HTMLInputElement|null} */ const gRange = byId(`${prefix}-g`);
-    /** @type {HTMLInputElement|null} */ const bRange = byId(`${prefix}-b`);
-    /** @type {HTMLInputElement|null} */ const aRange = byId(`${prefix}-a`);
-
-    /** @type {HTMLInputElement|null} */ const rNum = byId(`${prefix}-rNum`);
-    /** @type {HTMLInputElement|null} */ const gNum = byId(`${prefix}-gNum`);
-    /** @type {HTMLInputElement|null} */ const bNum = byId(`${prefix}-bNum`);
-    /** @type {HTMLInputElement|null} */ const aNum = byId(`${prefix}-aNum`);
-
-    /** @type {HTMLElement|null} */ const swatch = byId(`${prefix}-swatch`);
-    /** @type {HTMLElement|null} */ const cssLine = byId(`${prefix}-css`);
-    /** @type {HTMLElement|null} */ const textLine = byId(`${prefix}-text`);
-
-    /** @type {HTMLInputElement|null} */ const outHex = byId(`${prefix}-outHex`);
-    /** @type {HTMLInputElement|null} */ const outHex8 = byId(`${prefix}-outHex8`);
-    /** @type {HTMLInputElement|null} */ const outRgb = byId(`${prefix}-outRgb`);
-    /** @type {HTMLInputElement|null} */ const outRgba = byId(`${prefix}-outRgba`);
-    /** @type {HTMLInputElement|null} */ const outHsl = byId(`${prefix}-outHsl`);
-    /** @type {HTMLInputElement|null} */ const outCss = byId(`${prefix}-outCss`);
-    /** @type {HTMLElement|null} */ const toast = byId(`${prefix}-toast`);
-
-    // Guard: om något saknas, avbryt (undviker null-fel vid build + runtime)
-    if (
-      !picker || !hexInput || !hexError ||
-      !rRange || !gRange || !bRange || !aRange ||
-      !rNum || !gNum || !bNum || !aNum ||
-      !swatch || !cssLine || !textLine ||
-      !outHex || !outHex8 || !outRgb || !outRgba || !outHsl || !outCss ||
-      !toast
-    ) {
-      return;
-    }
-
-    /** @param {number} v @param {number} min @param {number} max */
-    const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
-    /** @param {number} v */
-    const clamp255 = (v) => clamp(v | 0, 0, 255);
-    /** @param {number} n */
-    const pad2 = (n) => n.toString(16).toUpperCase().padStart(2, "0");
-
-    /** @param {string} input @returns {string|null} */
-    const normalizeHex = (input) => {
-      const s = String(input ?? "").trim();
-      if (!s) return null;
-
-      const raw = s.startsWith("#") ? s.slice(1) : s;
-      const ok =
-        /^[0-9a-fA-F]{3}$/.test(raw) ||
-        /^[0-9a-fA-F]{4}$/.test(raw) ||
-        /^[0-9a-fA-F]{6}$/.test(raw) ||
-        /^[0-9a-fA-F]{8}$/.test(raw);
-
-      if (!ok) return null;
-
-      if (raw.length === 3 || raw.length === 4) {
-        const expanded = raw.split("").map((c) => c + c).join("");
-        return "#" + expanded.toUpperCase();
-      }
-
-      return "#" + raw.toUpperCase();
-    };
-
-    /** @param {string} hex @returns {RGBA|null} */
-    const hexToRgba = (hex) => {
-      const h = normalizeHex(hex);
-      if (!h) return null;
-
-      const raw = h.slice(1);
-      const r = parseInt(raw.slice(0, 2), 16);
-      const g = parseInt(raw.slice(2, 4), 16);
-      const b = parseInt(raw.slice(4, 6), 16);
-
-      if (raw.length === 8) {
-        const a = parseInt(raw.slice(6, 8), 16) / 255;
-        return { r, g, b, a };
-      }
-
-      return { r, g, b, a: 1 };
-    };
-
-    /** @param {{r:number,g:number,b:number}} c */
-    const rgbaToHex = (c) => "#" + pad2(clamp255(c.r)) + pad2(clamp255(c.g)) + pad2(clamp255(c.b));
-    /** @param {RGBA} c */
-    const rgbaToHex8 = (c) => {
-      const alpha = clamp(c.a ?? 1, 0, 1);
-      return rgbaToHex(c) + pad2(Math.round(alpha * 255));
-    };
-
-    /** @param {{r:number,g:number,b:number}} c */
-    const rgbToHsl = (c) => {
-      const rn = clamp255(c.r) / 255;
-      const gn = clamp255(c.g) / 255;
-      const bn = clamp255(c.b) / 255;
-
-      const max = Math.max(rn, gn, bn);
-      const min = Math.min(rn, gn, bn);
-      const d = max - min;
-
-      let h = 0;
-      if (d !== 0) {
-        if (max === rn) h = ((gn - bn) / d) % 6;
-        else if (max === gn) h = (bn - rn) / d + 2;
-        else h = (rn - gn) / d + 4;
-        h = Math.round(h * 60);
-        if (h < 0) h += 360;
-      }
-
-      const l = (max + min) / 2;
-      const s = d === 0 ? 0 : d / (1 - Math.abs(2 * l - 1));
-
-      return { h, s: Math.round(s * 100), l: Math.round(l * 100) };
-    };
-
-    /** @param {{r:number,g:number,b:number}} c */
-    const recommendedTextColor = (c) => {
-      const yiq = (clamp255(c.r) * 299 + clamp255(c.g) * 587 + clamp255(c.b) * 114) / 1000;
-      return yiq >= 140 ? "#111111" : "#FFFFFF";
-    };
-
-    /** @param {boolean} on */
-    const setHexError = (on) => {
-      hexError.classList.toggle("hidden", !on);
-      hexInput.classList.toggle("border-red-500", !!on);
-    };
-
-    /** @param {string=} message */
-    const setToast = async (message) => {
-      if (message) toast.textContent = message;
-
-      toast.classList.remove("hidden");
-      await new Promise((r) => setTimeout(r, 900));
-      toast.classList.add("hidden");
-
-      toast.textContent = "Kopierat";
-    };
-
-    /** @type {RGBA} */
-    let state = { r: 26, g: 115, b: 232, a: 1 };
-
-    const render = () => {
-      const hex = rgbaToHex(state);
-      const hex8 = rgbaToHex8(state);
-      const aPct = Math.round(clamp(state.a, 0, 1) * 100);
-
-      picker.value = hex;
-      hexInput.value = hex;
-
-      rRange.value = String(clamp255(state.r));
-      gRange.value = String(clamp255(state.g));
-      bRange.value = String(clamp255(state.b));
-      aRange.value = String(aPct);
-
-      rNum.value = String(clamp255(state.r));
-      gNum.value = String(clamp255(state.g));
-      bNum.value = String(clamp255(state.b));
-      aNum.value = String(aPct);
-
-      const bg = `rgba(${clamp255(state.r)}, ${clamp255(state.g)}, ${clamp255(state.b)}, ${clamp(state.a, 0, 1).toFixed(3)})`;
-      swatch.style.background = bg;
-
-      cssLine.textContent = `background: ${aPct === 100 ? hex : bg};`;
-
-      const rec = recommendedTextColor(state);
-      textLine.textContent = rec;
-      textLine.style.color = rec;
-
-      outHex.value = hex;
-      outHex8.value = hex8;
-      outRgb.value = `rgb(${clamp255(state.r)}, ${clamp255(state.g)}, ${clamp255(state.b)})`;
-      outRgba.value = `rgba(${clamp255(state.r)}, ${clamp255(state.g)}, ${clamp255(state.b)}, ${clamp(state.a, 0, 1).toFixed(3)})`;
-
-      const hsl = rgbToHsl(state);
-      outHsl.value = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
-
-      outCss.value = `--so-color: ${hex};`;
-    };
-
-    /** @param {string} hex */
-    const setFromHex = (hex) => {
-      const rgba = hexToRgba(hex);
-      if (!rgba) {
-        setHexError(true);
-        return;
-      }
-      setHexError(false);
-      state = { ...rgba };
-      render();
-    };
-
-    picker.addEventListener("input", () => setFromHex(picker.value));
-
-    hexInput.addEventListener("input", () => {
-      const normalized = normalizeHex(hexInput.value);
-      if (!normalized) {
-        setHexError(true);
-        return;
-      }
-      setFromHex(normalized);
-    });
-
-    /** @param {HTMLInputElement} rangeEl @param {HTMLInputElement} numEl @param {RGBKey} key */
-    const wireChannel = (rangeEl, numEl, key) => {
-      /** @param {string} v */
-      const apply = (v) => {
-        const next = { ...state };
-        next[key] = clamp255(Number(v));
-        state = /** @type {RGBA} */ (next);
-        setHexError(false);
-        render();
-      };
-      rangeEl.addEventListener("input", () => apply(rangeEl.value));
-      numEl.addEventListener("input", () => apply(numEl.value));
-    };
-
-    wireChannel(rRange, rNum, "r");
-    wireChannel(gRange, gNum, "g");
-    wireChannel(bRange, bNum, "b");
-
-    /** @param {HTMLInputElement} rangeEl @param {HTMLInputElement} numEl */
-    const wireAlpha = (rangeEl, numEl) => {
-      /** @param {string} v */
-      const apply = (v) => {
-        const pct = clamp(Number(v), 0, 100);
-        state = { ...state, a: pct / 100 };
-        setHexError(false);
-        render();
-      };
-      rangeEl.addEventListener("input", () => apply(rangeEl.value));
-      numEl.addEventListener("input", () => apply(numEl.value));
-    };
-
-    wireAlpha(aRange, aNum);
-
-    // Copy buttons
-    root.addEventListener("click", async (e) => {
-      const target = e.target;
-      if (!(target instanceof Element)) return;
-
-      const btn = target.closest("[data-copy]");
-      if (!btn) return;
-
-      const id = btn.getAttribute("data-copy");
-      if (!id) return;
-
-      const input = document.getElementById(id);
-      if (!(input instanceof HTMLInputElement)) return;
-
-      try {
-        await navigator.clipboard.writeText(input.value);
-        await setToast("Kopierat");
-      } catch {
-        input.focus();
-        input.select();
-      }
-    });
-
-    // Pipett (EyeDropper API)
-    const hasEyeDropper = typeof window !== "undefined" && "EyeDropper" in window;
-
-    if (eyedropperHint) {
-      eyedropperHint.textContent = hasEyeDropper
-        ? "Fungerar i Chrome/Edge. Klicka och peka på en pixel."
-        : "Stöds inte i din webbläsare. Använd färgrutan eller HEX.";
-    }
-
-    if (eyedropperBtn) {
-      eyedropperBtn.disabled = !hasEyeDropper;
-
-      if (hasEyeDropper) {
-        eyedropperBtn.addEventListener("click", async () => {
-          try {
-            // @ts-ignore
-            const eye = new window.EyeDropper();
-            const result = await eye.open(); // { sRGBHex: "#RRGGBB" }
-
-            const hex = result && result.sRGBHex ? String(result.sRGBHex) : "";
-            const normalized = normalizeHex(hex);
-
-            if (!normalized) {
-              setHexError(true);
-              return;
-            }
-
-            setFromHex(normalized);
-            await setToast("Färg hämtad");
-          } catch {
-            // Avbrutet av användaren (t.ex. ESC) -> ignoreras
-          }
-        });
-      }
-    }
-
-    render();
-  };
+  const run = () => initColorPicker({ prefix: "colorpick" });
 
   document.addEventListener("DOMContentLoaded", run);
   document.addEventListener("astro:page-load", run);

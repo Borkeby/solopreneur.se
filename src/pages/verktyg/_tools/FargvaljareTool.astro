@@ -189,49 +189,77 @@ const prefix = "colorpick";
 </div>
 
 <script>
+  /**
+   * Typade hjälpertyper (JSDoc) för att Astro/TS-check ska vara nöjd.
+   * @typedef {{ r:number, g:number, b:number, a:number }} RGBA
+   * @typedef {"r"|"g"|"b"} RGBKey
+   */
+
   const run = () => {
     const prefix = "colorpick";
+    /** @type {HTMLElement|null} */
     const root = document.getElementById(`${prefix}-root`);
     if (!root) return;
 
     if (root.dataset.wired === "1") return;
     root.dataset.wired = "1";
 
-    const q = (id) => document.getElementById(id);
+    /**
+     * @template T
+     * @param {string} id
+     * @returns {T|null}
+     */
+    const byId = (id) => /** @type {any} */ (document.getElementById(id));
 
-    const picker = q(`${prefix}-picker`);
-    const hexInput = q(`${prefix}-hex`);
-    const hexError = q(`${prefix}-hexError`);
+    /** @type {HTMLInputElement|null} */ const picker = byId(`${prefix}-picker`);
+    /** @type {HTMLInputElement|null} */ const hexInput = byId(`${prefix}-hex`);
+    /** @type {HTMLElement|null} */ const hexError = byId(`${prefix}-hexError`);
 
-    const eyedropperBtn = q(`${prefix}-eyedropperBtn`);
-    const eyedropperHint = q(`${prefix}-eyedropperHint`);
+    /** @type {HTMLButtonElement|null} */ const eyedropperBtn = byId(`${prefix}-eyedropperBtn`);
+    /** @type {HTMLElement|null} */ const eyedropperHint = byId(`${prefix}-eyedropperHint`);
 
-    const rRange = q(`${prefix}-r`);
-    const gRange = q(`${prefix}-g`);
-    const bRange = q(`${prefix}-b`);
-    const aRange = q(`${prefix}-a`);
+    /** @type {HTMLInputElement|null} */ const rRange = byId(`${prefix}-r`);
+    /** @type {HTMLInputElement|null} */ const gRange = byId(`${prefix}-g`);
+    /** @type {HTMLInputElement|null} */ const bRange = byId(`${prefix}-b`);
+    /** @type {HTMLInputElement|null} */ const aRange = byId(`${prefix}-a`);
 
-    const rNum = q(`${prefix}-rNum`);
-    const gNum = q(`${prefix}-gNum`);
-    const bNum = q(`${prefix}-bNum`);
-    const aNum = q(`${prefix}-aNum`);
+    /** @type {HTMLInputElement|null} */ const rNum = byId(`${prefix}-rNum`);
+    /** @type {HTMLInputElement|null} */ const gNum = byId(`${prefix}-gNum`);
+    /** @type {HTMLInputElement|null} */ const bNum = byId(`${prefix}-bNum`);
+    /** @type {HTMLInputElement|null} */ const aNum = byId(`${prefix}-aNum`);
 
-    const swatch = q(`${prefix}-swatch`);
-    const cssLine = q(`${prefix}-css`);
-    const textLine = q(`${prefix}-text`);
+    /** @type {HTMLElement|null} */ const swatch = byId(`${prefix}-swatch`);
+    /** @type {HTMLElement|null} */ const cssLine = byId(`${prefix}-css`);
+    /** @type {HTMLElement|null} */ const textLine = byId(`${prefix}-text`);
 
-    const outHex = q(`${prefix}-outHex`);
-    const outHex8 = q(`${prefix}-outHex8`);
-    const outRgb = q(`${prefix}-outRgb`);
-    const outRgba = q(`${prefix}-outRgba`);
-    const outHsl = q(`${prefix}-outHsl`);
-    const outCss = q(`${prefix}-outCss`);
-    const toast = q(`${prefix}-toast`);
+    /** @type {HTMLInputElement|null} */ const outHex = byId(`${prefix}-outHex`);
+    /** @type {HTMLInputElement|null} */ const outHex8 = byId(`${prefix}-outHex8`);
+    /** @type {HTMLInputElement|null} */ const outRgb = byId(`${prefix}-outRgb`);
+    /** @type {HTMLInputElement|null} */ const outRgba = byId(`${prefix}-outRgba`);
+    /** @type {HTMLInputElement|null} */ const outHsl = byId(`${prefix}-outHsl`);
+    /** @type {HTMLInputElement|null} */ const outCss = byId(`${prefix}-outCss`);
+    /** @type {HTMLElement|null} */ const toast = byId(`${prefix}-toast`);
 
+    // Guard: om något saknas, avbryt (undviker null-fel vid build + runtime)
+    if (
+      !picker || !hexInput || !hexError ||
+      !rRange || !gRange || !bRange || !aRange ||
+      !rNum || !gNum || !bNum || !aNum ||
+      !swatch || !cssLine || !textLine ||
+      !outHex || !outHex8 || !outRgb || !outRgba || !outHsl || !outCss ||
+      !toast
+    ) {
+      return;
+    }
+
+    /** @param {number} v @param {number} min @param {number} max */
     const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
+    /** @param {number} v */
     const clamp255 = (v) => clamp(v | 0, 0, 255);
+    /** @param {number} n */
     const pad2 = (n) => n.toString(16).toUpperCase().padStart(2, "0");
 
+    /** @param {string} input @returns {string|null} */
     const normalizeHex = (input) => {
       const s = String(input ?? "").trim();
       if (!s) return null;
@@ -253,6 +281,7 @@ const prefix = "colorpick";
       return "#" + raw.toUpperCase();
     };
 
+    /** @param {string} hex @returns {RGBA|null} */
     const hexToRgba = (hex) => {
       const h = normalizeHex(hex);
       if (!h) return null;
@@ -270,18 +299,19 @@ const prefix = "colorpick";
       return { r, g, b, a: 1 };
     };
 
-    const rgbaToHex = ({ r, g, b }) =>
-      "#" + pad2(clamp255(r)) + pad2(clamp255(g)) + pad2(clamp255(b));
-
-    const rgbaToHex8 = ({ r, g, b, a }) => {
-      const alpha = clamp(a ?? 1, 0, 1);
-      return rgbaToHex({ r, g, b }) + pad2(Math.round(alpha * 255));
+    /** @param {{r:number,g:number,b:number}} c */
+    const rgbaToHex = (c) => "#" + pad2(clamp255(c.r)) + pad2(clamp255(c.g)) + pad2(clamp255(c.b));
+    /** @param {RGBA} c */
+    const rgbaToHex8 = (c) => {
+      const alpha = clamp(c.a ?? 1, 0, 1);
+      return rgbaToHex(c) + pad2(Math.round(alpha * 255));
     };
 
-    const rgbToHsl = ({ r, g, b }) => {
-      const rn = clamp255(r) / 255;
-      const gn = clamp255(g) / 255;
-      const bn = clamp255(b) / 255;
+    /** @param {{r:number,g:number,b:number}} c */
+    const rgbToHsl = (c) => {
+      const rn = clamp255(c.r) / 255;
+      const gn = clamp255(c.g) / 255;
+      const bn = clamp255(c.b) / 255;
 
       const max = Math.max(rn, gn, bn);
       const min = Math.min(rn, gn, bn);
@@ -302,20 +332,20 @@ const prefix = "colorpick";
       return { h, s: Math.round(s * 100), l: Math.round(l * 100) };
     };
 
-    const recommendedTextColor = ({ r, g, b }) => {
-      const yiq = (clamp255(r) * 299 + clamp255(g) * 587 + clamp255(b) * 114) / 1000;
+    /** @param {{r:number,g:number,b:number}} c */
+    const recommendedTextColor = (c) => {
+      const yiq = (clamp255(c.r) * 299 + clamp255(c.g) * 587 + clamp255(c.b) * 114) / 1000;
       return yiq >= 140 ? "#111111" : "#FFFFFF";
     };
 
+    /** @param {boolean} on */
     const setHexError = (on) => {
-      if (!hexError) return;
       hexError.classList.toggle("hidden", !on);
       hexInput.classList.toggle("border-red-500", !!on);
     };
 
+    /** @param {string=} message */
     const setToast = async (message) => {
-      if (!toast) return;
-
       if (message) toast.textContent = message;
 
       toast.classList.remove("hidden");
@@ -325,6 +355,7 @@ const prefix = "colorpick";
       toast.textContent = "Kopierat";
     };
 
+    /** @type {RGBA} */
     let state = { r: 26, g: 115, b: 232, a: 1 };
 
     const render = () => {
@@ -365,6 +396,7 @@ const prefix = "colorpick";
       outCss.value = `--so-color: ${hex};`;
     };
 
+    /** @param {string} hex */
     const setFromHex = (hex) => {
       const rgba = hexToRgba(hex);
       if (!rgba) {
@@ -387,11 +419,13 @@ const prefix = "colorpick";
       setFromHex(normalized);
     });
 
+    /** @param {HTMLInputElement} rangeEl @param {HTMLInputElement} numEl @param {RGBKey} key */
     const wireChannel = (rangeEl, numEl, key) => {
+      /** @param {string} v */
       const apply = (v) => {
         const next = { ...state };
         next[key] = clamp255(Number(v));
-        state = next;
+        state = /** @type {RGBA} */ (next);
         setHexError(false);
         render();
       };
@@ -403,7 +437,9 @@ const prefix = "colorpick";
     wireChannel(gRange, gNum, "g");
     wireChannel(bRange, bNum, "b");
 
+    /** @param {HTMLInputElement} rangeEl @param {HTMLInputElement} numEl */
     const wireAlpha = (rangeEl, numEl) => {
+      /** @param {string} v */
       const apply = (v) => {
         const pct = clamp(Number(v), 0, 100);
         state = { ...state, a: pct / 100 };
@@ -416,13 +452,19 @@ const prefix = "colorpick";
 
     wireAlpha(aRange, aNum);
 
+    // Copy buttons
     root.addEventListener("click", async (e) => {
-      const btn = e.target && e.target.closest ? e.target.closest("[data-copy]") : null;
+      const target = e.target;
+      if (!(target instanceof Element)) return;
+
+      const btn = target.closest("[data-copy]");
       if (!btn) return;
 
       const id = btn.getAttribute("data-copy");
-      const input = id ? document.getElementById(id) : null;
-      if (!input) return;
+      if (!id) return;
+
+      const input = document.getElementById(id);
+      if (!(input instanceof HTMLInputElement)) return;
 
       try {
         await navigator.clipboard.writeText(input.value);

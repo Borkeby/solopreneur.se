@@ -364,8 +364,8 @@ const sponsor = {
             const href = `/nedladdningar/${slug}/`;
             const kategori = (d.data as any).kategori as string | undefined;
 
-            const imgSrc = toImageSrc((d.data as any).ogImage);
-            const imgAlt = d.data.title;
+const imgSrc = (d.data as any).cardImage as string | undefined;
+const imgAlt = ((d.data as any).cardImageAlt as string | undefined) ?? d.data.title;
 
             return (
               <a href={href} class="so-card so-card-hover block overflow-hidden">

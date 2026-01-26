@@ -34,23 +34,27 @@ const makeSchema = (image: ImageFunction, defaultTags: string[]) =>
 // Downloads: datum ska inte vara krav, men resten vill vi kunna återanvända.
 // Vi utgår från samma fält som makeSchema, men gör pubDatetime optional och lägger till file/file2.
 const makeDownloadsSchema = (image: ImageFunction, defaultTags: string[]) =>
-    makeSchema(image, defaultTags)
-        .extend({
-            pubDatetime: z.date().optional(),
-            description: z.string().optional(), // tillåt kortare poster utan description
-            file: z.object({
-                href: z.string(), // ex "/downloads/korjournal/korjournal.xlsx"
+    makeSchema(image, defaultTags).extend({
+        pubDatetime: z.date().optional(),
+        description: z.string().optional(), // tillåt kortare poster utan description
+
+        // Preview-bild för kort (public URL)
+        cardImage: z.string().optional(),
+        cardImageAlt: z.string().optional(),
+
+        file: z.object({
+            href: z.string(), // ex "/downloads/korjournal/korjournal.xlsx"
+            label: z.string().optional(),
+            type: z.string().optional(),
+        }),
+        file2: z
+            .object({
+                href: z.string(),
                 label: z.string().optional(),
                 type: z.string().optional(),
-            }),
-            file2: z
-                .object({
-                    href: z.string(),
-                    label: z.string().optional(),
-                    type: z.string().optional(),
-                })
-                .optional(),
-        });
+            })
+            .optional(),
+    });
 
 const blog = defineCollection({
     loader: glob({ pattern: "**/[^_]*.md", base: `./${BLOG_PATH}` }),

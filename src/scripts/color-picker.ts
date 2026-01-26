@@ -1,4 +1,4 @@
-type RGBA = { r: number; g: number; b: number; a: number };
+ï»¿type RGBA = { r: number; g: number; b: number; a: number };
 type RGBKey = "r" | "g" | "b";
 
 export default function initColorPicker(opts: { prefix: string }): void {
@@ -43,7 +43,7 @@ export default function initColorPicker(opts: { prefix: string }): void {
     const outCss = byId<HTMLInputElement>(`${prefix}-outCss`);
     const toast = byId<HTMLElement>(`${prefix}-toast`);
 
-    // Guard: saknas något -> avbryt init
+    // Guard: saknas nÃ¥got -> avbryt init
     if (
         !picker ||
         !hexInput ||
@@ -287,8 +287,8 @@ export default function initColorPicker(opts: { prefix: string }): void {
 
     if (eyedropperHint) {
         eyedropperHint.textContent = hasEyeDropper
-            ? "Fungerar i Chrome/Edge. Klicka och peka på en pixel."
-            : "Stöds inte i din webbläsare. Använd färgrutan eller HEX.";
+            ? "Fungerar i Chrome/Edge. Klicka och peka pÃ¥ en pixel."
+            : "StÃ¶ds inte i din webblÃ¤sare. AnvÃ¤nd fÃ¤rgrutan eller HEX.";
     }
 
     if (eyedropperBtn) {
@@ -311,7 +311,7 @@ export default function initColorPicker(opts: { prefix: string }): void {
                     }
 
                     setFromHex(normalized);
-                    await setToast("Färg hämtad");
+                    await setToast("FÃ¤rg hÃ¤mtad");
                 } catch {
                     // ESC/avbryt => ignorera
                 }

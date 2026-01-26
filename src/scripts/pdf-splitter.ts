@@ -1,4 +1,4 @@
-type SplitResultItem = {
+ï»¿type SplitResultItem = {
     filename: string;
     blob: Blob;
 };
@@ -13,7 +13,7 @@ export default function initPdfSplitter(opts?: InitOptions): void {
     const byId = <T extends HTMLElement>(id: string): T | null =>
         document.getElementById(id) as T | null;
 
-    // Stöd både prefixade id:n och gamla id:n (fallback)
+    // StÃ¶d bÃ¥de prefixade id:n och gamla id:n (fallback)
     const id = (key: string) => (prefix ? `${prefix}-${key}` : key);
 
     const dropzone = byId<HTMLDivElement>(id("dropzone")) ?? byId<HTMLDivElement>("dropzone");
@@ -78,7 +78,7 @@ export default function initPdfSplitter(opts?: InitOptions): void {
     const readAsArrayBuffer = (file: File): Promise<ArrayBuffer> =>
         new Promise((resolve, reject) => {
             const r = new FileReader();
-            r.onerror = () => reject(new Error("Kunde inte läsa filen."));
+            r.onerror = () => reject(new Error("Kunde inte lÃ¤sa filen."));
             r.onload = () => resolve(r.result as ArrayBuffer);
             r.readAsArrayBuffer(file);
         });
@@ -144,10 +144,10 @@ export default function initPdfSplitter(opts?: InitOptions): void {
     };
 
     const updateUiForFile = (file: File, pageCount: number) => {
-        fileMeta.textContent = `${file.name} (${humanBytes(file.size)}) • ${pageCount} sidor`;
+        fileMeta.textContent = `${file.name} (${humanBytes(file.size)}) â€¢ ${pageCount} sidor`;
         splitBtn.disabled = pageCount < 2;
 
-        if (pageCount < 2) setStatus("PDF:en har bara 1 sida, så det finns inget att dela upp.");
+        if (pageCount < 2) setStatus("PDF:en har bara 1 sida, sÃ¥ det finns inget att dela upp.");
         else setStatus("Redo att dela upp PDF:en.");
     };
 
@@ -215,13 +215,13 @@ export default function initPdfSplitter(opts?: InitOptions): void {
             currentPageCount = 0;
             splitBtn.disabled = true;
             fileMeta.textContent = "";
-            setError("Filen verkar inte vara en PDF. Välj en .pdf.");
+            setError("Filen verkar inte vara en PDF. VÃ¤lj en .pdf.");
             return;
         }
 
         currentFile = file;
         splitBtn.disabled = true;
-        setStatus("Läser PDF...");
+        setStatus("LÃ¤ser PDF...");
 
         try {
             const pageCount = await loadAndCountPages(file);
@@ -233,7 +233,7 @@ export default function initPdfSplitter(opts?: InitOptions): void {
             splitBtn.disabled = true;
             fileMeta.textContent = "";
             setStatus("");
-            setError(err instanceof Error ? err.message : "Kunde inte läsa PDF:en. Den kan vara skadad eller lösenordsskyddad.");
+            setError(err instanceof Error ? err.message : "Kunde inte lÃ¤sa PDF:en. Den kan vara skadad eller lÃ¶senordsskyddad.");
         }
     };
 
@@ -276,12 +276,12 @@ export default function initPdfSplitter(opts?: InitOptions): void {
 
         const f = currentFile;
         if (!f) {
-            setError("Välj en PDF först.");
+            setError("VÃ¤lj en PDF fÃ¶rst.");
             return;
         }
 
         if (currentPageCount < 2) {
-            setError("PDF:en har mindre än 2 sidor och kan därför inte delas upp.");
+            setError("PDF:en har mindre Ã¤n 2 sidor och kan dÃ¤rfÃ¶r inte delas upp.");
             return;
         }
 
@@ -294,15 +294,15 @@ export default function initPdfSplitter(opts?: InitOptions): void {
             if (zipToggle.checked) {
                 const zipFilename = `${baseName(f.name)}_split.zip`;
                 const zipBlob = await toZip(items);
-                setStatus("Klart. ZIP är redo för nedladdning.");
+                setStatus("Klart. ZIP Ã¤r redo fÃ¶r nedladdning.");
                 renderZipResult(zipFilename, zipBlob);
             } else {
-                setStatus("Klart. Klicka på en sida för att ladda ner.");
+                setStatus("Klart. Klicka pÃ¥ en sida fÃ¶r att ladda ner.");
                 renderMultiResults(items);
             }
         } catch (err: unknown) {
             setStatus("");
-            setError(err instanceof Error ? err.message : "Ett fel inträffade vid uppdelning. Testa en annan PDF eller försök igen.");
+            setError(err instanceof Error ? err.message : "Ett fel intrÃ¤ffade vid uppdelning. Testa en annan PDF eller fÃ¶rsÃ¶k igen.");
         } finally {
             splitBtn.disabled = !(currentFile && currentPageCount >= 2);
         }

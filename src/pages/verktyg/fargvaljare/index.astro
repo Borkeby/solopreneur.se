@@ -1,0 +1,85 @@
+﻿---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+
+import FargvaljareTool from "../_tools/FargvaljareTool.astro";
+
+const title = "Färgpipett & färgväljare gratis – HEX, RGB, HSL | Solopreneur";
+const description =
+  "Peka på en färg på skärmen och få HEX-koden direkt (pipett). Konvertera även mellan HEX, HEX8, RGB, RGBA och HSL. Allt körs lokalt i din webbläsare.";
+
+const faq = [
+  {
+    q: "Hur fungerar färgpipetten?",
+    a: "Klicka på “Pipett” och peka sedan på en pixel på skärmen. Verktyget läser färgen och fyller i HEX/RGB automatiskt.",
+  },
+  {
+    q: "Stöds pipetten i alla webbläsare?",
+    a: "Nej. Pipetten kräver EyeDropper API och fungerar normalt i Chrome/Edge. Saknas stöd kan du ändå välja färg via färgrutan, RGB-reglagen eller genom att skriva in HEX manuellt.",
+  },
+  {
+    q: "Sparas mina färgval någonstans?",
+    a: "Nej. Verktyget körs lokalt i din webbläsare och inget skickas till en server.",
+  },
+  {
+    q: "Vilka format kan jag kopiera?",
+    a: "HEX, HEX8 (med transparens), RGB, RGBA, HSL samt ett exempel på CSS-variabel.",
+  },
+  {
+    q: "Vilka HEX-format stöds som inmatning?",
+    a: "Du kan använda #RGB, #RGBA, #RRGGBB eller #RRGGBBAA (med eller utan #).",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((x) => ({
+    "@type": "Question",
+    name: x.q,
+    acceptedAnswer: { "@type": "Answer", text: x.a },
+  })),
+};
+---
+
+<Layout title={title} description={description}>
+  <Header />
+
+  <main id="main-content">
+    <section class="pt-8 pb-10">
+      <div class="mx-auto max-w-[1100px] px-4 sm:px-6">
+        <h1 class="so-section-title">Färgpipett & färgväljare</h1>
+        <p class="so-section-muted">
+          Peka på en färg på skärmen och få HEX-koden direkt (pipett). Du kan även konvertera mellan HEX, HEX8, RGB, RGBA
+          och HSL. Allt körs lokalt i din webbläsare.
+        </p>
+
+        <div class="mt-6 so-card p-5 sm:p-6">
+          <FargvaljareTool />
+        </div>
+
+        <div class="mt-8 prose prose-slate dark:prose-invert max-w-none">
+          <h2>Så använder du verktyget</h2>
+          <ol>
+            <li>Klicka på <strong>Pipett</strong> om din webbläsare stöder det, och peka på valfri pixel på skärmen.</li>
+            <li>Alternativt: välj färg i färgrutan, justera <strong>R, G, B</strong> eller skriv in <strong>HEX</strong>.</li>
+            <li>Kopiera formatet du behöver: <strong>HEX</strong>, <strong>HEX8</strong>, <strong>RGB</strong>, <strong>RGBA</strong> eller <strong>HSL</strong>.</li>
+          </ol>
+
+          <h2>Vanliga frågor</h2>
+          {faq.map((x) => (
+            <>
+              <h3>{x.q}</h3>
+              <p>{x.a}</p>
+            </>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)}></script>

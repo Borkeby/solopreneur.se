@@ -1,0 +1,592 @@
+---
+/**
+ * Fristående färgväljare för RGB/HEX/HSL.
+ * Ingen extern dependency. Vanilla JS i script.
+ */
+---
+
+<section id="so-color-tool" class="so-color-tool">
+  <header class="so-color-tool__header">
+    <h1 class="so-color-tool__title">Färgväljare (RGB / HEX)</h1>
+    <p class="so-color-tool__lead">
+      Välj en färg och kopiera korrekta värden för HEX, RGB, RGBA och HSL.
+    </p>
+  </header>
+
+  <div class="so-color-tool__grid">
+    <div class="so-color-tool__preview">
+      <div class="so-color-tool__swatch" id="swatch" aria-label="Förhandsvisning"></div>
+
+      <div class="so-color-tool__previewMeta">
+        <div class="so-color-tool__metaRow">
+          <span class="so-color-tool__metaLabel">Bakgrund</span>
+          <code class="so-color-tool__mono" id="previewCss">background: #000000;</code>
+        </div>
+        <div class="so-color-tool__metaRow">
+          <span class="so-color-tool__metaLabel">Rek. textfärg</span>
+          <code class="so-color-tool__mono" id="recommendedText">#FFFFFF</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="so-color-tool__controls">
+      <div class="so-color-tool__row so-color-tool__row--2">
+        <label class="so-color-tool__field">
+          <span class="so-color-tool__label">Välj färg</span>
+          <input id="picker" type="color" value="#1A73E8" class="so-color-tool__colorInput" />
+        </label>
+
+        <label class="so-color-tool__field">
+          <span class="so-color-tool__label">HEX (input)</span>
+          <input
+            id="hexInput"
+            type="text"
+            inputmode="text"
+            autocomplete="off"
+            spellcheck="false"
+            value="#1A73E8"
+            class="so-color-tool__textInput"
+            placeholder="#RRGGBB"
+          />
+        </label>
+      </div>
+
+      <div class="so-color-tool__rgb">
+        <div class="so-color-tool__channel">
+          <div class="so-color-tool__channelHeader">
+            <span class="so-color-tool__label">R</span>
+            <input id="rNum" type="number" min="0" max="255" value="26" class="so-color-tool__numInput" />
+          </div>
+          <input id="rRange" type="range" min="0" max="255" value="26" class="so-color-tool__range" />
+        </div>
+
+        <div class="so-color-tool__channel">
+          <div class="so-color-tool__channelHeader">
+            <span class="so-color-tool__label">G</span>
+            <input id="gNum" type="number" min="0" max="255" value="115" class="so-color-tool__numInput" />
+          </div>
+          <input id="gRange" type="range" min="0" max="255" value="115" class="so-color-tool__range" />
+        </div>
+
+        <div class="so-color-tool__channel">
+          <div class="so-color-tool__channelHeader">
+            <span class="so-color-tool__label">B</span>
+            <input id="bNum" type="number" min="0" max="255" value="232" class="so-color-tool__numInput" />
+          </div>
+          <input id="bRange" type="range" min="0" max="255" value="232" class="so-color-tool__range" />
+        </div>
+
+        <div class="so-color-tool__channel">
+          <div class="so-color-tool__channelHeader">
+            <span class="so-color-tool__label">Alfa</span>
+            <input id="aNum" type="number" min="0" max="100" value="100" class="so-color-tool__numInput" />
+          </div>
+          <input id="aRange" type="range" min="0" max="100" value="100" class="so-color-tool__range" />
+        </div>
+      </div>
+
+      <p id="hexError" class="so-color-tool__error" hidden>
+        Ogiltig HEX-kod. Tillåtna format: #RGB, #RGBA, #RRGGBB, #RRGGBBAA (med eller utan #).
+      </p>
+
+      <div class="so-color-tool__outputs">
+        <h2 class="so-color-tool__subtitle">Koder</h2>
+
+        <div class="so-color-tool__outRow">
+          <label class="so-color-tool__outLabel">HEX</label>
+          <input id="outHex" class="so-color-tool__outInput" readonly />
+          <button type="button" class="so-color-tool__btn" data-copy="outHex">Kopiera</button>
+        </div>
+
+        <div class="so-color-tool__outRow">
+          <label class="so-color-tool__outLabel">HEX8</label>
+          <input id="outHex8" class="so-color-tool__outInput" readonly />
+          <button type="button" class="so-color-tool__btn" data-copy="outHex8">Kopiera</button>
+        </div>
+
+        <div class="so-color-tool__outRow">
+          <label class="so-color-tool__outLabel">RGB</label>
+          <input id="outRgb" class="so-color-tool__outInput" readonly />
+          <button type="button" class="so-color-tool__btn" data-copy="outRgb">Kopiera</button>
+        </div>
+
+        <div class="so-color-tool__outRow">
+          <label class="so-color-tool__outLabel">RGBA</label>
+          <input id="outRgba" class="so-color-tool__outInput" readonly />
+          <button type="button" class="so-color-tool__btn" data-copy="outRgba">Kopiera</button>
+        </div>
+
+        <div class="so-color-tool__outRow">
+          <label class="so-color-tool__outLabel">HSL</label>
+          <input id="outHsl" class="so-color-tool__outInput" readonly />
+          <button type="button" class="so-color-tool__btn" data-copy="outHsl">Kopiera</button>
+        </div>
+
+        <div class="so-color-tool__outRow">
+          <label class="so-color-tool__outLabel">CSS-variabel</label>
+          <input id="outCssVar" class="so-color-tool__outInput" readonly />
+          <button type="button" class="so-color-tool__btn" data-copy="outCssVar">Kopiera</button>
+        </div>
+      </div>
+
+      <p id="copyToast" class="so-color-tool__toast" hidden>kopierat</p>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (() => {
+    const root = document.getElementById("so-color-tool");
+    if (!root) return;
+
+    const qs = (sel) => root.querySelector(sel);
+
+    const picker = qs("#picker");
+    const hexInput = qs("#hexInput");
+    const hexError = qs("#hexError");
+
+    const rRange = qs("#rRange");
+    const gRange = qs("#gRange");
+    const bRange = qs("#bRange");
+    const aRange = qs("#aRange");
+
+    const rNum = qs("#rNum");
+    const gNum = qs("#gNum");
+    const bNum = qs("#bNum");
+    const aNum = qs("#aNum");
+
+    const swatch = qs("#swatch");
+    const previewCss = qs("#previewCss");
+    const recommendedText = qs("#recommendedText");
+
+    const outHex = qs("#outHex");
+    const outHex8 = qs("#outHex8");
+    const outRgb = qs("#outRgb");
+    const outRgba = qs("#outRgba");
+    const outHsl = qs("#outHsl");
+    const outCssVar = qs("#outCssVar");
+
+    const copyToast = qs("#copyToast");
+
+    const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
+    const clamp255 = (v) => clamp(v | 0, 0, 255);
+    const pad2 = (n) => n.toString(16).toUpperCase().padStart(2, "0");
+
+    const normalizeHex = (input) => {
+      const s = String(input ?? "").trim();
+      if (!s) return null;
+
+      const raw = s.startsWith("#") ? s.slice(1) : s;
+      if (!/^[0-9a-fA-F]{3,4}$|^[0-9a-fA-F]{6}$|^[0-9a-fA-F]{8}$/.test(raw)) return null;
+
+      // Expand shorthand (#RGB/#RGBA)
+      if (raw.length === 3 || raw.length === 4) {
+        const chars = raw.split("");
+        const expanded = chars.map((c) => c + c).join("");
+        return "#" + expanded.toUpperCase(); // RRGGBB eller RRGGBBAA
+      }
+
+      return "#" + raw.toUpperCase(); // RRGGBB eller RRGGBBAA
+    };
+
+    const hexToRgba = (hex) => {
+      const h = normalizeHex(hex);
+      if (!h) return null;
+
+      const raw = h.slice(1);
+      const r = parseInt(raw.slice(0, 2), 16);
+      const g = parseInt(raw.slice(2, 4), 16);
+      const b = parseInt(raw.slice(4, 6), 16);
+
+      if (raw.length === 8) {
+        const a = parseInt(raw.slice(6, 8), 16) / 255;
+        return { r, g, b, a };
+      }
+
+      return { r, g, b, a: 1 };
+    };
+
+    const rgbaToHex = ({ r, g, b }) => "#" + pad2(clamp255(r)) + pad2(clamp255(g)) + pad2(clamp255(b));
+    const rgbaToHex8 = ({ r, g, b, a }) => {
+      const alpha = clamp(a ?? 1, 0, 1);
+      const aa = pad2(Math.round(alpha * 255));
+      return rgbaToHex({ r, g, b }) + aa;
+    };
+
+    const rgbToHsl = ({ r, g, b }) => {
+      // r,g,b in [0..255]
+      const rn = clamp255(r) / 255;
+      const gn = clamp255(g) / 255;
+      const bn = clamp255(b) / 255;
+
+      const max = Math.max(rn, gn, bn);
+      const min = Math.min(rn, gn, bn);
+      const d = max - min;
+
+      let h = 0;
+      if (d !== 0) {
+        if (max === rn) h = ((gn - bn) / d) % 6;
+        else if (max === gn) h = (bn - rn) / d + 2;
+        else h = (rn - gn) / d + 4;
+        h = Math.round(h * 60);
+        if (h < 0) h += 360;
+      }
+
+      const l = (max + min) / 2;
+      const s = d === 0 ? 0 : d / (1 - Math.abs(2 * l - 1));
+
+      return {
+        h,
+        s: Math.round(s * 100),
+        l: Math.round(l * 100),
+      };
+    };
+
+    const recommendedTextColor = ({ r, g, b }) => {
+      // Enkel luminans/kontrastheuristik (YIQ)
+      const yiq = (clamp255(r) * 299 + clamp255(g) * 587 + clamp255(b) * 114) / 1000;
+      return yiq >= 140 ? "#111111" : "#FFFFFF";
+    };
+
+    const setError = (on) => {
+      if (!hexError) return;
+      hexError.hidden = !on;
+      hexInput.classList.toggle("so-color-tool__textInput--error", !!on);
+    };
+
+    const setToast = async () => {
+      if (!copyToast) return;
+      copyToast.hidden = false;
+      copyToast.textContent = "Kopierat";
+      await new Promise((r) => setTimeout(r, 900));
+      copyToast.hidden = true;
+    };
+
+    let state = { r: 26, g: 115, b: 232, a: 1 };
+
+    const render = () => {
+      const hex = rgbaToHex(state);
+      const hex8 = rgbaToHex8(state);
+      const aPct = Math.round(clamp(state.a, 0, 1) * 100);
+
+      // Inputs (synk)
+      picker.value = hex;
+      hexInput.value = hex;
+
+      rRange.value = String(clamp255(state.r));
+      gRange.value = String(clamp255(state.g));
+      bRange.value = String(clamp255(state.b));
+      aRange.value = String(aPct);
+
+      rNum.value = String(clamp255(state.r));
+      gNum.value = String(clamp255(state.g));
+      bNum.value = String(clamp255(state.b));
+      aNum.value = String(aPct);
+
+      // Preview
+      const bg = `rgba(${clamp255(state.r)}, ${clamp255(state.g)}, ${clamp255(state.b)}, ${clamp(state.a, 0, 1).toFixed(3)})`;
+      swatch.style.background = bg;
+      previewCss.textContent = `background: ${hex}${aPct === 100 ? ";" : ` (${aPct}%)`};`;
+
+      const rec = recommendedTextColor(state);
+      recommendedText.textContent = rec;
+
+      // Outputs
+      outHex.value = hex;
+      outHex8.value = hex8;
+      outRgb.value = `rgb(${clamp255(state.r)}, ${clamp255(state.g)}, ${clamp255(state.b)})`;
+      outRgba.value = `rgba(${clamp255(state.r)}, ${clamp255(state.g)}, ${clamp255(state.b)}, ${clamp(state.a, 0, 1).toFixed(3)})`;
+
+      const hsl = rgbToHsl(state);
+      outHsl.value = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+
+      outCssVar.value = `--so-color: ${hex};`;
+    };
+
+    const setFromRgb = (r, g, b, a = state.a) => {
+      state = { r: clamp255(r), g: clamp255(g), b: clamp255(b), a: clamp(a, 0, 1) };
+      setError(false);
+      render();
+    };
+
+    const setFromHex = (hex) => {
+      const rgba = hexToRgba(hex);
+      if (!rgba) {
+        setError(true);
+        return;
+      }
+      setError(false);
+      state = { ...rgba };
+      render();
+    };
+
+    // Event wiring
+    picker.addEventListener("input", () => setFromHex(picker.value));
+
+    hexInput.addEventListener("input", () => {
+      const normalized = normalizeHex(hexInput.value);
+      if (!normalized) {
+        setError(true);
+        return;
+      }
+      setFromHex(normalized);
+    });
+
+    const wireChannel = (rangeEl, numEl, key) => {
+      const apply = (v) => {
+        const next = { ...state };
+        next[key] = clamp255(Number(v));
+        state = next;
+        setError(false);
+        render();
+      };
+      rangeEl.addEventListener("input", () => apply(rangeEl.value));
+      numEl.addEventListener("input", () => apply(numEl.value));
+    };
+
+    wireChannel(rRange, rNum, "r");
+    wireChannel(gRange, gNum, "g");
+    wireChannel(bRange, bNum, "b");
+
+    const wireAlpha = (rangeEl, numEl) => {
+      const apply = (v) => {
+        const pct = clamp(Number(v), 0, 100);
+        const next = { ...state, a: pct / 100 };
+        state = next;
+        setError(false);
+        render();
+      };
+      rangeEl.addEventListener("input", () => apply(rangeEl.value));
+      numEl.addEventListener("input", () => apply(numEl.value));
+    };
+
+    wireAlpha(aRange, aNum);
+
+    // Copy buttons
+    root.addEventListener("click", async (e) => {
+      const btn = e.target && e.target.closest ? e.target.closest("[data-copy]") : null;
+      if (!btn) return;
+
+      const id = btn.getAttribute("data-copy");
+      const input = id ? qs("#" + id) : null;
+      if (!input) return;
+
+      try {
+        await navigator.clipboard.writeText(input.value);
+        await setToast();
+      } catch {
+        // Fallback: markera text (användaren kan ctrl+c)
+        input.focus();
+        input.select();
+      }
+    });
+
+    // Init
+    render();
+  })();
+</script>
+
+<style>
+  .so-color-tool {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 1.25rem 1rem 2rem;
+  }
+
+  .so-color-tool__header {
+    margin-bottom: 1rem;
+  }
+
+  .so-color-tool__title {
+    margin: 0 0 0.25rem;
+    font-size: 1.6rem;
+    line-height: 1.25;
+  }
+
+  .so-color-tool__lead {
+    margin: 0;
+    opacity: 0.85;
+  }
+
+  .so-color-tool__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 900px) {
+    .so-color-tool__grid {
+      grid-template-columns: 1fr 1.25fr;
+      align-items: start;
+    }
+  }
+
+  .so-color-tool__preview {
+    border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 14px;
+    overflow: hidden;
+    background: rgba(0,0,0,0.02);
+  }
+
+  .so-color-tool__swatch {
+    height: 220px;
+  }
+
+  .so-color-tool__previewMeta {
+    padding: 0.75rem 0.9rem;
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .so-color-tool__metaRow {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .so-color-tool__metaLabel {
+    opacity: 0.75;
+    font-size: 0.95rem;
+  }
+
+  .so-color-tool__mono {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.95rem;
+  }
+
+  .so-color-tool__controls {
+    border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 14px;
+    padding: 1rem;
+    background: #fff;
+  }
+
+  .so-color-tool__row {
+    display: grid;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .so-color-tool__row--2 {
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 560px) {
+    .so-color-tool__row--2 {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .so-color-tool__field {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .so-color-tool__label {
+    font-size: 0.95rem;
+    opacity: 0.85;
+  }
+
+  .so-color-tool__colorInput {
+    width: 100%;
+    height: 44px;
+    padding: 0;
+    border: 1px solid rgba(0,0,0,0.18);
+    border-radius: 10px;
+    background: transparent;
+  }
+
+  .so-color-tool__textInput,
+  .so-color-tool__numInput,
+  .so-color-tool__outInput {
+    height: 44px;
+    border: 1px solid rgba(0,0,0,0.18);
+    border-radius: 10px;
+    padding: 0 0.75rem;
+    font-size: 1rem;
+    width: 100%;
+  }
+
+  .so-color-tool__textInput--error {
+    border-color: rgba(190, 20, 20, 0.75);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(190, 20, 20, 0.12);
+  }
+
+  .so-color-tool__rgb {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0.75rem 0 0.5rem;
+  }
+
+  .so-color-tool__channel {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .so-color-tool__channelHeader {
+    display: grid;
+    grid-template-columns: 1fr 110px;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .so-color-tool__range {
+    width: 100%;
+  }
+
+  .so-color-tool__error {
+    margin: 0.5rem 0 0;
+    color: rgba(190, 20, 20, 0.95);
+    font-size: 0.95rem;
+  }
+
+  .so-color-tool__outputs {
+    margin-top: 1rem;
+    border-top: 1px solid rgba(0,0,0,0.10);
+    padding-top: 1rem;
+  }
+
+  .so-color-tool__subtitle {
+    margin: 0 0 0.75rem;
+    font-size: 1.2rem;
+  }
+
+  .so-color-tool__outRow {
+    display: grid;
+    grid-template-columns: 110px 1fr 110px;
+    gap: 0.6rem;
+    align-items: center;
+    margin-bottom: 0.6rem;
+  }
+
+  @media (max-width: 520px) {
+    .so-color-tool__outRow {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .so-color-tool__outLabel {
+    opacity: 0.8;
+    font-size: 0.95rem;
+  }
+
+  .so-color-tool__btn {
+    height: 44px;
+    border: 1px solid rgba(0,0,0,0.18);
+    border-radius: 10px;
+    background: rgba(0,0,0,0.03);
+    cursor: pointer;
+  }
+
+  .so-color-tool__btn:hover {
+    background: rgba(0,0,0,0.06);
+  }
+
+  .so-color-tool__toast {
+    margin: 0.6rem 0 0;
+    font-size: 0.95rem;
+    opacity: 0.85;
+  }
+</style>

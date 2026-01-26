@@ -1,0 +1,478 @@
+﻿---
+/**
+ * Modal-vänlig färgpipett + färgväljare.
+ * Viktigt: inga globala body/:root-stilar här. Inget sparas.
+ */
+const prefix = "colorpick";
+---
+
+<div id={`${prefix}-root`} class="space-y-4">
+  <div class="space-y-2">
+    <p class="text-sm text-foreground/70">
+      Peka på en färg på skärmen (pipett) eller välj manuellt. Kopiera HEX, HEX8, RGB, RGBA och HSL. Bearbetningen sker lokalt i din webbläsare.
+    </p>
+  </div>
+
+  <div class="grid gap-4 lg:grid-cols-2">
+    <!-- Preview -->
+    <div class="rounded-xl border border-black/10 bg-black/[0.02] p-4 dark:border-white/10 dark:bg-white/[0.03]">
+      <div
+        id={`${prefix}-swatch`}
+        class="h-44 w-full rounded-xl border border-black/10 dark:border-white/10"
+        aria-label="Förhandsvisning"
+      ></div>
+
+      <div class="mt-3 space-y-2">
+        <div class="flex flex-wrap items-center justify-between gap-2 text-sm">
+          <span class="text-foreground/70">Bakgrund</span>
+          <code id={`${prefix}-css`} class="text-xs text-foreground/70"></code>
+        </div>
+        <div class="flex flex-wrap items-center justify-between gap-2 text-sm">
+          <span class="text-foreground/70">Rek. textfärg</span>
+          <code id={`${prefix}-text`} class="text-xs font-semibold"></code>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="space-y-4 rounded-xl border border-black/10 bg-black/[0.02] p-4 dark:border-white/10 dark:bg-white/[0.03]">
+      <div class="grid gap-3 sm:grid-cols-2">
+        <label class="space-y-1">
+          <div class="text-sm font-semibold">Välj färg</div>
+          <input
+            id={`${prefix}-picker`}
+            type="color"
+            value="#1A73E8"
+            class="h-11 w-full rounded-xl border border-black/10 bg-white px-2 dark:border-white/15 dark:bg-white/[0.06]"
+          />
+        </label>
+
+        <label class="space-y-1">
+          <div class="text-sm font-semibold">HEX (input)</div>
+          <input
+            id={`${prefix}-hex`}
+            type="text"
+            inputmode="text"
+            autocomplete="off"
+            spellcheck="false"
+            value="#1A73E8"
+            placeholder="#RRGGBB"
+            class="h-11 w-full rounded-xl border border-black/10 bg-white px-3 text-sm dark:border-white/15 dark:bg-white/[0.06]"
+          />
+        </label>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3">
+        <button
+          id={`${prefix}-eyedropperBtn`}
+          type="button"
+          class="inline-flex items-center justify-center rounded-xl border border-black/10 bg-white px-4 py-2 text-sm font-semibold hover:bg-black/[0.03] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/15 dark:bg-white/[0.06] dark:hover:bg-white/[0.10]"
+        >
+          Pipett: peka och hämta färg
+        </button>
+
+        <span id={`${prefix}-eyedropperHint`} class="text-sm text-foreground/60"></span>
+      </div>
+
+      <p id={`${prefix}-hexError`} class="hidden text-sm text-red-600">
+        Ogiltig HEX-kod. Tillåtna format: #RGB, #RGBA, #RRGGBB, #RRGGBBAA (med eller utan #).
+      </p>
+
+      <div class="space-y-3">
+        <div class="space-y-2">
+          <div class="flex items-center justify-between gap-3">
+            <div class="text-sm font-semibold">R</div>
+            <input
+              id={`${prefix}-rNum`}
+              type="number"
+              min="0"
+              max="255"
+              value="26"
+              class="h-9 w-24 rounded-xl border border-black/10 bg-white px-2 text-sm dark:border-white/15 dark:bg-white/[0.06]"
+            />
+          </div>
+          <input id={`${prefix}-r`} type="range" min="0" max="255" value="26" class="w-full" />
+        </div>
+
+        <div class="space-y-2">
+          <div class="flex items-center justify-between gap-3">
+            <div class="text-sm font-semibold">G</div>
+            <input
+              id={`${prefix}-gNum`}
+              type="number"
+              min="0"
+              max="255"
+              value="115"
+              class="h-9 w-24 rounded-xl border border-black/10 bg-white px-2 text-sm dark:border-white/15 dark:bg-white/[0.06]"
+            />
+          </div>
+          <input id={`${prefix}-g`} type="range" min="0" max="255" value="115" class="w-full" />
+        </div>
+
+        <div class="space-y-2">
+          <div class="flex items-center justify-between gap-3">
+            <div class="text-sm font-semibold">B</div>
+            <input
+              id={`${prefix}-bNum`}
+              type="number"
+              min="0"
+              max="255"
+              value="232"
+              class="h-9 w-24 rounded-xl border border-black/10 bg-white px-2 text-sm dark:border-white/15 dark:bg-white/[0.06]"
+            />
+          </div>
+          <input id={`${prefix}-b`} type="range" min="0" max="255" value="232" class="w-full" />
+        </div>
+
+        <div class="space-y-2">
+          <div class="flex items-center justify-between gap-3">
+            <div class="text-sm font-semibold">Alfa</div>
+            <input
+              id={`${prefix}-aNum`}
+              type="number"
+              min="0"
+              max="100"
+              value="100"
+              class="h-9 w-24 rounded-xl border border-black/10 bg-white px-2 text-sm dark:border-white/15 dark:bg-white/[0.06]"
+            />
+          </div>
+          <input id={`${prefix}-a`} type="range" min="0" max="100" value="100" class="w-full" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Outputs -->
+  <div class="space-y-3 rounded-xl border border-black/10 bg-black/[0.02] p-4 dark:border-white/10 dark:bg-white/[0.03]">
+    <div class="text-sm font-semibold">Koder</div>
+
+    <div class="grid gap-3">
+      <div class="grid gap-2 sm:grid-cols-[90px_1fr_120px] sm:items-center">
+        <div class="text-sm text-foreground/70">HEX</div>
+        <input id={`${prefix}-outHex`} class="h-11 w-full rounded-xl border border-black/10 bg-white px-3 text-sm dark:border-white/15 dark:bg-white/[0.06]" readonly />
+        <button data-copy={`${prefix}-outHex`} type="button" class="h-11 rounded-xl bg-black px-4 text-sm font-semibold text-white dark:bg-white dark:text-black">Kopiera</button>
+      </div>
+
+      <div class="grid gap-2 sm:grid-cols-[90px_1fr_120px] sm:items-center">
+        <div class="text-sm text-foreground/70">HEX8</div>
+        <input id={`${prefix}-outHex8`} class="h-11 w-full rounded-xl border border-black/10 bg-white px-3 text-sm dark:border-white/15 dark:bg-white/[0.06]" readonly />
+        <button data-copy={`${prefix}-outHex8`} type="button" class="h-11 rounded-xl bg-black px-4 text-sm font-semibold text-white dark:bg-white dark:text-black">Kopiera</button>
+      </div>
+
+      <div class="grid gap-2 sm:grid-cols-[90px_1fr_120px] sm:items-center">
+        <div class="text-sm text-foreground/70">RGB</div>
+        <input id={`${prefix}-outRgb`} class="h-11 w-full rounded-xl border border-black/10 bg-white px-3 text-sm dark:border-white/15 dark:bg-white/[0.06]" readonly />
+        <button data-copy={`${prefix}-outRgb`} type="button" class="h-11 rounded-xl bg-black px-4 text-sm font-semibold text-white dark:bg-white dark:text-black">Kopiera</button>
+      </div>
+
+      <div class="grid gap-2 sm:grid-cols-[90px_1fr_120px] sm:items-center">
+        <div class="text-sm text-foreground/70">RGBA</div>
+        <input id={`${prefix}-outRgba`} class="h-11 w-full rounded-xl border border-black/10 bg-white px-3 text-sm dark:border-white/15 dark:bg-white/[0.06]" readonly />
+        <button data-copy={`${prefix}-outRgba`} type="button" class="h-11 rounded-xl bg-black px-4 text-sm font-semibold text-white dark:bg-white dark:text-black">Kopiera</button>
+      </div>
+
+      <div class="grid gap-2 sm:grid-cols-[90px_1fr_120px] sm:items-center">
+        <div class="text-sm text-foreground/70">HSL</div>
+        <input id={`${prefix}-outHsl`} class="h-11 w-full rounded-xl border border-black/10 bg-white px-3 text-sm dark:border-white/15 dark:bg-white/[0.06]" readonly />
+        <button data-copy={`${prefix}-outHsl`} type="button" class="h-11 rounded-xl bg-black px-4 text-sm font-semibold text-white dark:bg-white dark:text-black">Kopiera</button>
+      </div>
+
+      <div class="grid gap-2 sm:grid-cols-[90px_1fr_120px] sm:items-center">
+        <div class="text-sm text-foreground/70">CSS</div>
+        <input id={`${prefix}-outCss`} class="h-11 w-full rounded-xl border border-black/10 bg-white px-3 text-sm dark:border-white/15 dark:bg-white/[0.06]" readonly />
+        <button data-copy={`${prefix}-outCss`} type="button" class="h-11 rounded-xl bg-black px-4 text-sm font-semibold text-white dark:bg-white dark:text-black">Kopiera</button>
+      </div>
+    </div>
+
+    <p id={`${prefix}-toast`} class="hidden text-sm text-foreground/70" aria-live="polite">Kopierat</p>
+  </div>
+</div>
+
+<script>
+  const run = () => {
+    const prefix = "colorpick";
+    const root = document.getElementById(`${prefix}-root`);
+    if (!root) return;
+
+    if (root.dataset.wired === "1") return;
+    root.dataset.wired = "1";
+
+    const q = (id) => document.getElementById(id);
+
+    const picker = q(`${prefix}-picker`);
+    const hexInput = q(`${prefix}-hex`);
+    const hexError = q(`${prefix}-hexError`);
+
+    const eyedropperBtn = q(`${prefix}-eyedropperBtn`);
+    const eyedropperHint = q(`${prefix}-eyedropperHint`);
+
+    const rRange = q(`${prefix}-r`);
+    const gRange = q(`${prefix}-g`);
+    const bRange = q(`${prefix}-b`);
+    const aRange = q(`${prefix}-a`);
+
+    const rNum = q(`${prefix}-rNum`);
+    const gNum = q(`${prefix}-gNum`);
+    const bNum = q(`${prefix}-bNum`);
+    const aNum = q(`${prefix}-aNum`);
+
+    const swatch = q(`${prefix}-swatch`);
+    const cssLine = q(`${prefix}-css`);
+    const textLine = q(`${prefix}-text`);
+
+    const outHex = q(`${prefix}-outHex`);
+    const outHex8 = q(`${prefix}-outHex8`);
+    const outRgb = q(`${prefix}-outRgb`);
+    const outRgba = q(`${prefix}-outRgba`);
+    const outHsl = q(`${prefix}-outHsl`);
+    const outCss = q(`${prefix}-outCss`);
+    const toast = q(`${prefix}-toast`);
+
+    const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
+    const clamp255 = (v) => clamp(v | 0, 0, 255);
+    const pad2 = (n) => n.toString(16).toUpperCase().padStart(2, "0");
+
+    const normalizeHex = (input) => {
+      const s = String(input ?? "").trim();
+      if (!s) return null;
+
+      const raw = s.startsWith("#") ? s.slice(1) : s;
+      const ok =
+        /^[0-9a-fA-F]{3}$/.test(raw) ||
+        /^[0-9a-fA-F]{4}$/.test(raw) ||
+        /^[0-9a-fA-F]{6}$/.test(raw) ||
+        /^[0-9a-fA-F]{8}$/.test(raw);
+
+      if (!ok) return null;
+
+      if (raw.length === 3 || raw.length === 4) {
+        const expanded = raw.split("").map((c) => c + c).join("");
+        return "#" + expanded.toUpperCase();
+      }
+
+      return "#" + raw.toUpperCase();
+    };
+
+    const hexToRgba = (hex) => {
+      const h = normalizeHex(hex);
+      if (!h) return null;
+
+      const raw = h.slice(1);
+      const r = parseInt(raw.slice(0, 2), 16);
+      const g = parseInt(raw.slice(2, 4), 16);
+      const b = parseInt(raw.slice(4, 6), 16);
+
+      if (raw.length === 8) {
+        const a = parseInt(raw.slice(6, 8), 16) / 255;
+        return { r, g, b, a };
+      }
+
+      return { r, g, b, a: 1 };
+    };
+
+    const rgbaToHex = ({ r, g, b }) =>
+      "#" + pad2(clamp255(r)) + pad2(clamp255(g)) + pad2(clamp255(b));
+
+    const rgbaToHex8 = ({ r, g, b, a }) => {
+      const alpha = clamp(a ?? 1, 0, 1);
+      return rgbaToHex({ r, g, b }) + pad2(Math.round(alpha * 255));
+    };
+
+    const rgbToHsl = ({ r, g, b }) => {
+      const rn = clamp255(r) / 255;
+      const gn = clamp255(g) / 255;
+      const bn = clamp255(b) / 255;
+
+      const max = Math.max(rn, gn, bn);
+      const min = Math.min(rn, gn, bn);
+      const d = max - min;
+
+      let h = 0;
+      if (d !== 0) {
+        if (max === rn) h = ((gn - bn) / d) % 6;
+        else if (max === gn) h = (bn - rn) / d + 2;
+        else h = (rn - gn) / d + 4;
+        h = Math.round(h * 60);
+        if (h < 0) h += 360;
+      }
+
+      const l = (max + min) / 2;
+      const s = d === 0 ? 0 : d / (1 - Math.abs(2 * l - 1));
+
+      return { h, s: Math.round(s * 100), l: Math.round(l * 100) };
+    };
+
+    const recommendedTextColor = ({ r, g, b }) => {
+      const yiq = (clamp255(r) * 299 + clamp255(g) * 587 + clamp255(b) * 114) / 1000;
+      return yiq >= 140 ? "#111111" : "#FFFFFF";
+    };
+
+    const setHexError = (on) => {
+      if (!hexError) return;
+      hexError.classList.toggle("hidden", !on);
+      hexInput.classList.toggle("border-red-500", !!on);
+    };
+
+    const setToast = async (message) => {
+      if (!toast) return;
+
+      if (message) toast.textContent = message;
+
+      toast.classList.remove("hidden");
+      await new Promise((r) => setTimeout(r, 900));
+      toast.classList.add("hidden");
+
+      toast.textContent = "Kopierat";
+    };
+
+    let state = { r: 26, g: 115, b: 232, a: 1 };
+
+    const render = () => {
+      const hex = rgbaToHex(state);
+      const hex8 = rgbaToHex8(state);
+      const aPct = Math.round(clamp(state.a, 0, 1) * 100);
+
+      picker.value = hex;
+      hexInput.value = hex;
+
+      rRange.value = String(clamp255(state.r));
+      gRange.value = String(clamp255(state.g));
+      bRange.value = String(clamp255(state.b));
+      aRange.value = String(aPct);
+
+      rNum.value = String(clamp255(state.r));
+      gNum.value = String(clamp255(state.g));
+      bNum.value = String(clamp255(state.b));
+      aNum.value = String(aPct);
+
+      const bg = `rgba(${clamp255(state.r)}, ${clamp255(state.g)}, ${clamp255(state.b)}, ${clamp(state.a, 0, 1).toFixed(3)})`;
+      swatch.style.background = bg;
+
+      cssLine.textContent = `background: ${aPct === 100 ? hex : bg};`;
+
+      const rec = recommendedTextColor(state);
+      textLine.textContent = rec;
+      textLine.style.color = rec;
+
+      outHex.value = hex;
+      outHex8.value = hex8;
+      outRgb.value = `rgb(${clamp255(state.r)}, ${clamp255(state.g)}, ${clamp255(state.b)})`;
+      outRgba.value = `rgba(${clamp255(state.r)}, ${clamp255(state.g)}, ${clamp255(state.b)}, ${clamp(state.a, 0, 1).toFixed(3)})`;
+
+      const hsl = rgbToHsl(state);
+      outHsl.value = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+
+      outCss.value = `--so-color: ${hex};`;
+    };
+
+    const setFromHex = (hex) => {
+      const rgba = hexToRgba(hex);
+      if (!rgba) {
+        setHexError(true);
+        return;
+      }
+      setHexError(false);
+      state = { ...rgba };
+      render();
+    };
+
+    picker.addEventListener("input", () => setFromHex(picker.value));
+
+    hexInput.addEventListener("input", () => {
+      const normalized = normalizeHex(hexInput.value);
+      if (!normalized) {
+        setHexError(true);
+        return;
+      }
+      setFromHex(normalized);
+    });
+
+    const wireChannel = (rangeEl, numEl, key) => {
+      const apply = (v) => {
+        const next = { ...state };
+        next[key] = clamp255(Number(v));
+        state = next;
+        setHexError(false);
+        render();
+      };
+      rangeEl.addEventListener("input", () => apply(rangeEl.value));
+      numEl.addEventListener("input", () => apply(numEl.value));
+    };
+
+    wireChannel(rRange, rNum, "r");
+    wireChannel(gRange, gNum, "g");
+    wireChannel(bRange, bNum, "b");
+
+    const wireAlpha = (rangeEl, numEl) => {
+      const apply = (v) => {
+        const pct = clamp(Number(v), 0, 100);
+        state = { ...state, a: pct / 100 };
+        setHexError(false);
+        render();
+      };
+      rangeEl.addEventListener("input", () => apply(rangeEl.value));
+      numEl.addEventListener("input", () => apply(numEl.value));
+    };
+
+    wireAlpha(aRange, aNum);
+
+    root.addEventListener("click", async (e) => {
+      const btn = e.target && e.target.closest ? e.target.closest("[data-copy]") : null;
+      if (!btn) return;
+
+      const id = btn.getAttribute("data-copy");
+      const input = id ? document.getElementById(id) : null;
+      if (!input) return;
+
+      try {
+        await navigator.clipboard.writeText(input.value);
+        await setToast("Kopierat");
+      } catch {
+        input.focus();
+        input.select();
+      }
+    });
+
+    // Pipett (EyeDropper API)
+    const hasEyeDropper = typeof window !== "undefined" && "EyeDropper" in window;
+
+    if (eyedropperHint) {
+      eyedropperHint.textContent = hasEyeDropper
+        ? "Fungerar i Chrome/Edge. Klicka och peka på en pixel."
+        : "Stöds inte i din webbläsare. Använd färgrutan eller HEX.";
+    }
+
+    if (eyedropperBtn) {
+      eyedropperBtn.disabled = !hasEyeDropper;
+
+      if (hasEyeDropper) {
+        eyedropperBtn.addEventListener("click", async () => {
+          try {
+            // @ts-ignore
+            const eye = new window.EyeDropper();
+            const result = await eye.open(); // { sRGBHex: "#RRGGBB" }
+
+            const hex = result && result.sRGBHex ? String(result.sRGBHex) : "";
+            const normalized = normalizeHex(hex);
+
+            if (!normalized) {
+              setHexError(true);
+              return;
+            }
+
+            setFromHex(normalized);
+            await setToast("Färg hämtad");
+          } catch {
+            // Avbrutet av användaren (t.ex. ESC) -> ignoreras
+          }
+        });
+      }
+    }
+
+    render();
+  };
+
+  document.addEventListener("DOMContentLoaded", run);
+  document.addEventListener("astro:page-load", run);
+  document.addEventListener("astro:after-swap", run);
+</script>

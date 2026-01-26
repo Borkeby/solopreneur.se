@@ -19,6 +19,9 @@ export interface Props {
 
 const DEFAULT_OG_IMAGE = "/og/solopreneur-og.jpg";
 
+// Analytics (V1)
+const analyticsBaseUrl = import.meta.env.PUBLIC_ANALYTICS_BASE_URL ?? "";
+
 const normalizeOgImage = (input: unknown): string | null => {
   if (!input) return null;
 
@@ -190,6 +193,42 @@ const ogType = isPost ? "article" : "website";
 
     <ClientRouter />
     <script is:inline src="/toggle-theme.js"></script>
+
+    <!-- Paidin Analytics V1 (Solopreneur) -->
+    <script src="/js/paidin-analytics-v1.js" defer></script>
+
+    <!-- OBS: define:vars injicerar analyticsBaseUrl korrekt som en JS-variabel -->
+    <script define:vars={{ analyticsBaseUrl }}>
+      (function () {
+        var baseUrl = analyticsBaseUrl;
+        if (!baseUrl) return;
+
+        function init() {
+          var api =
+            window.paidinAnalytics &&
+            window.paidinAnalytics.create({ baseUrl: baseUrl, siteId: "solopreneur" });
+
+          if (!api) return;
+
+          var lastPath = null;
+
+          function track() {
+            var p = location.pathname || "/";
+            if (p === lastPath) return;
+            lastPath = p;
+            api.trackPageview();
+          }
+
+          // Initial pageview
+          track();
+
+          // Astro transitions / client-side navigation
+          document.addEventListener("astro:page-load", track);
+        }
+
+        window.addEventListener("load", init, { once: true });
+      })();
+    </script>
   </head>
 
   <body>

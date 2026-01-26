@@ -7,6 +7,7 @@ import momsToolImage from "@/assets/images/tools/moms.jpg";
 import timprisToolImage from "@/assets/images/tools/timpris.jpg";
 import bildToolImage from "@/assets/images/tools/bild.jpg";
 import pdfToolImage from "@/assets/images/tools/adobe.jpg";
+import FargvaljareToolImage from "@/assets/images/tools/pipette.jpg";
 
 const pageTitle = "Verktyg";
 const pageDescription =
@@ -53,6 +54,15 @@ const tools = [
     imageAlt: "PDF-dela",
     legacyHash: "pdf-dela",
   },
+  {
+  tag: "Marknadsföring",
+  title: "Färgväljare",
+  description: "På sekunder: RGB → HEX, HEX8, RGBA och HSL. Allt körs lokalt i webbläsaren.",
+  href: "/verktyg/fargvaljare/",
+  image: FargvaljareToolImage.src,
+  imageAlt: "Färgväljare",
+  legacyHash: "fargvaljare",
+},
 ];
 ---
 
@@ -108,6 +118,7 @@ const tools = [
         "timpriskalkylator": "/verktyg/timpriskalkylator/",
         "bildverktyg": "/verktyg/bildverktyg/",
         "pdf-dela": "/verktyg/pdf-dela/",
+        "fargvaljare": "/verktyg/fargvaljare/",
       };
 
       const key = (location.hash || "").replace(/^#/, "").trim();

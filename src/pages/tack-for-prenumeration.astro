@@ -1,0 +1,39 @@
+﻿---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+
+const pageTitle = "Tack för prenumerationen";
+const pageDescription = "Du är nu prenumerant på Solopreneurs nyhetsbrev.";
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <Header />
+
+  <main id="main-content">
+    <section class="pt-8 pb-10">
+      <h1 class="so-section-title">Tack för prenumerationen</h1>
+      <p class="so-section-muted">
+        Klart. Du får nästa utskick i inkorgen.
+      </p>
+
+      <div class="mt-5 flex flex-wrap gap-3">
+        <a class="so-btn-primary" href="/">Till startsidan</a>
+        <a class="so-btn-secondary" href="/nyhetsbrev/">Tillbaka till nyhetsbrev</a>
+      </div>
+
+      <p class="mt-5 text-xs text-foreground/60">
+        Om du inte får något mail: kontrollera skräpposten och lägg till avsändaren som betrodd.
+      </p>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script is:inline>
+  (function () {
+    if (typeof window === "undefined") return;
+    if (window.piTrackEvent) window.piTrackEvent("newsletter_complete");
+  })();
+</script>

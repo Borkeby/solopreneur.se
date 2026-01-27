@@ -224,6 +224,18 @@ const ogType = isPost ? "article" : "website";
 
           // Astro transitions / client-side navigation
           document.addEventListener("astro:page-load", track);
+
+          // Enkel event-tracking via data-attribut: data-pi-event="newsletter_signup"
+document.addEventListener("click", function (e) {
+  var el = e.target && e.target.closest ? e.target.closest("[data-pi-event]") : null;
+  if (!el) return;
+
+  var name = el.getAttribute("data-pi-event");
+  if (!name) return;
+
+  api.trackEvent(name);
+});
+
         }
 
         window.addEventListener("load", init, { once: true });

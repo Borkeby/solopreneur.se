@@ -156,7 +156,7 @@ const sponsor = {
           </p>
 
           <div class="mt-6 flex flex-wrap items-center gap-3 so-hero-actions">
-            <a class="so-btn-primary" href="/nyhetsbrev/">Prenumerera</a>
+            <a class="so-btn-primary" href="/nyhetsbrev/" data-pi-event="newsletter_signup">Prenumerera</a>
             <a class="so-btn-secondary" href="/verktyg/">Se verktygen</a>
           </div>
 
@@ -468,10 +468,10 @@ const imgAlt = ((d.data as any).cardImageAlt as string | undefined) ?? d.data.ti
         </p>
 
         <div class="mt-4 flex flex-wrap items-center gap-3">
-          <a class="so-btn-primary" href="/nyhetsbrev/">
+          <a class="so-btn-primary" data-pi-event="newsletter_signup" href="/nyhetsbrev/">
             Prenumerera
           </a>
-          <a class="so-btn-secondary" href="/nyhetsbrev/">
+          <a class="so-btn-secondary" data-pi-event="newsletter_signup" href="/nyhetsbrev/">
             Läs mer
           </a>
         </div>

@@ -4,7 +4,7 @@ author: "Daniel Borkeby"
 pubDatetime: 2025-08-25T09:00:00Z
 modDatetime: 2025-08-25T09:00:00Z
 slug: "starten-pa-solopreneur-bolagsbyggande-fran-grunden"
-featured: true
+featured: false
 draft: false
 tags: ["Soloföretag", "Bolagsbyggande", "Struktur", "AI", "Tillväxt"]
 ogImage: ""

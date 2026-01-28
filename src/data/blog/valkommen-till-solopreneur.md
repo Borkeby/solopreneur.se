@@ -1,105 +1,124 @@
----
-title: "Välkommen till Solopreneur – min resa, min erfarenhet och varför jag bygger det här"
+ï»¿---
+title: "VÃ¤lkommen till Solopreneur â€“ min resa, mina erfarenheter och varfÃ¶r jag bygger det hÃ¤r"
 author: "Daniel Borkeby"
-pubDatetime: 2026-01-22T09:00:00Z
-modDatetime: 2026-01-22T09:00:00Z
+pubDatetime: 2026-01-27T09:00:00Z
+modDatetime: 2026-01-27T09:00:00Z
 slug: "valkommen-till-solopreneur"
 featured: true
-draft: true
-tags: ["Soloföretag", "Entreprenörskap", "Mentorskap", "Struktur", "AI", "Tillväxt"]
+draft: false
+tags: ["SolofÃ¶retag", "EntreprenÃ¶rskap", "Mentorskap", "Struktur", "AI", "TillvÃ¤xt"]
 ogImage: ""
-description: "Jag har byggt bolag sedan 2008. Solopreneur samlar mina erfarenheter i praktiska guider, verktyg och inspiration för dig som vill starta och växa som entreprenör – med AI som operativ hävstång."
+description: "Jag har byggt bolag sedan 2008. Solopreneur samlar mina erfarenheter i praktiska guider, verktyg och inspiration fÃ¶r dig som vill starta och vÃ¤xa som entreprenÃ¶r â€“ med AI som operativ hÃ¤vstÃ¥ng."
 tid: "5-10 min"
-nivå: "Bas"
+nivÃ¥: "Bas"
 kategori: "Blogg"
-ingress: "Jag har byggt företag sedan 2008. Nu samlar jag mina lärdomar i Solopreneur – för att hjälpa nya entreprenörer bygga en stabil start och en hållbar vardag."
+ingress: "Jag har byggt fÃ¶retag sedan 2008. Nu samlar jag mina lÃ¤rdomar i Solopreneur â€“ fÃ¶r att hjÃ¤lpa nya entreprenÃ¶rer bygga en stabil start och en hÃ¥llbar vardag."
 ---
 
-# Välkommen till Solopreneur
+# VÃ¤lkommen till Solopreneur
 
-Solopreneur är mitt sätt att samla erfarenheter, metoder och verktyg på ett ställe – och göra dem användbara för dig som vill starta din entreprenörsresa, eller som redan har börjat men vill få mer struktur, tydlighet och fart framåt.
+Solopreneur Ã¤r mitt sÃ¤tt att samla erfarenheter, metoder och verktyg pÃ¥ ett stÃ¤lle â€“ och gÃ¶ra dem anvÃ¤ndbara fÃ¶r dig som vill starta din entreprenÃ¶rsresa, eller som redan har bÃ¶rjat men vill fÃ¥ mer struktur, tydlighet och fart framÃ¥t.
 
-Det här blir en kombination av konkret vägledning och verklighet. Inte teorier för teorins skull, utan det som faktiskt fungerar när man ska få vardagen att gå ihop: affär, ekonomi, fokus, försäljning och leverans.
+Fokus ligger pÃ¥ verklighet och inte teorier. Du ska kunna fÃ¶lja guider och fÃ¥ ett eget fullt anvÃ¤ndbart resultat. Eller anvÃ¤nda de enkla verktygen och spara tid direkt.
 
-## Varför jag bygger Solopreneur
+En mentor innom entreprenÃ¶rskap fast i digital form, helt enkelt!
 
-Nya entreprenörer möter ofta samma hinder:
+## VarfÃ¶r jag bygger Solopreneur
 
-- För många beslut på en gång, utan ramverk för prioritering.
-- För lite struktur i ekonomi, kundarbete och vardagsprocesser.
-- Svårigheter att gå från idé till första intäkt.
-- Ensamhet i besluten när ingen i omgivningen riktigt förstår resan.
-- Överbelastning av “tips” utan sammanhang, vilket skapar mer stress än framsteg.
+Nya entreprenÃ¶rer mÃ¶ter ofta samma hinder:
 
-Solopreneur ska vara motsatsen: ett paraply där du får ordning, riktning och verktyg – steg för steg.
+- FÃ¶r mÃ¥nga beslut pÃ¥ en gÃ¥ng, utan ramverk fÃ¶r prioritering.
+- FÃ¶r lite struktur i ekonomi, kundarbete och vardagsprocesser.
+- SvÃ¥righeter att gÃ¥ frÃ¥n idÃ© till fÃ¶rsta intÃ¤kt.
+- Ensamhet i besluten nÃ¤r ingen i omgivningen riktigt fÃ¶rstÃ¥r resan.
+- Ã–verbelastning av â€œtipsâ€ utan sammanhang, vilket skapar mer stress Ã¤n framsteg.
 
-AI är en viktig del i detta. Inte som “magisk genväg”, utan som en operativ hävstång: snabbare första utkast, bättre struktur, enklare research, tydligare kommunikation och mer tid till sådant som kräver mänskligt omdöme.
+Solopreneur ska vara motsatsen: ett paraply dÃ¤r du fÃ¥r ordning, riktning och verktyg och kunna arbeta steg fÃ¶r steg.
+
+AI Ã¤r en viktig del i detta. Inte som â€œmagisk genvÃ¤gâ€, utan som en operativ hÃ¤vstÃ¥ng: snabbare fÃ¶rsta utkast, bÃ¤ttre struktur, enklare research, tydligare kommunikation och mer tid till sÃ¥dant som krÃ¤ver mÃ¤nskligt omdÃ¶me.
 
 ## Min bakgrund, i korthet
 
-Jag började min resa som entreprenör 2008. Sedan dess har jag:
+Jag bÃ¶rjade min resa som entreprenÃ¶r 2008. Sedan dess har jag:
 
-- Startat, drivit och sålt företag (9 aktiebolag + några enskilda firmor).
-- Byggt bolag både som ensam och tillsammans med andra.
-- Haft anställda, arbetat med kollegor och drivit verksamhet helt själv.
-- Varit mentor genom Almis mentorsprogram samt även utanför programmet.
-- Utbildat mig till redovisningskonsult och kompletterat med flera ledarskapsutbildningar.
+- Startat, drivit och sÃ¥lt fÃ¶retag (9 aktiebolag + nÃ¥gra enskilda firmor).
+- Byggt bolag bÃ¥de ensam och tillsammans med andra.
+- Rekryterat och haft anstÃ¤llda, arbetat med kollegor och drivit verksamheter som solopreneur.
+- Varit mentor genom Almis mentorsprogram samt Ã¤ven utanfÃ¶r programmet.
+- Bakgrund inom IT och ekonomi, utbildad redovisningskonsult och ledare.
 
-Sedan mitten av 2024 driver jag verksamheten själv och fokuserar på mina kvarvarande fyra bolag.
+Sedan mitten av 2024 driver jag mina verksamheter sjÃ¤lv och fokuserar pÃ¥ mina kvarvarande fyra bolag.
 
-Det viktigaste jag tar med mig från alla år är detta: entreprenörskap är inte en sprint, utan ett system. Och system går att lära sig – oavsett var man börjar.
+Det viktigaste jag tar med mig frÃ¥n alla Ã¥r och sjÃ¤lv mÃ¥ste pÃ¥minna mig om ibland Ã¤r: entreprenÃ¶rskap Ã¤r inte en sprint, utan ett system. Och system gÃ¥r att lÃ¤ra sig, oavsett var man bÃ¶rjar.
 
-## Vad du hittar på Solopreneur
+## Vad du hittar pÃ¥ Solopreneur
 
-Solopreneur är byggt för att vara praktiskt. Här kommer du hitta:
+Solopreneur Ã¤r byggt fÃ¶r att vara praktiskt. HÃ¤r kommer du hitta:
 
 ### Guider
-Tydliga genomgångar som hjälper dig från osäkerhet till beslut och handling, till exempel:
+Tydliga genomgÃ¥ngar som hjÃ¤lper dig frÃ¥n osÃ¤kerhet till beslut och handling, till exempel:
 
-- Kom igång: från idé till första kund och första intäkt.
+- Kom igÃ¥ng: frÃ¥n idÃ© till fÃ¶rsta kund och fÃ¶rsta intÃ¤kt.
 - Struktur: rutiner, planering, fokus och prioritering.
-- Ekonomi: grundläggande förståelse, uppföljning och beslutsstöd.
-- Försäljning och leverans: erbjudande, prissättning, offert och kunddialog.
-- Verktyg och arbetssätt: vad som faktiskt är värt tiden i början.
+- Ekonomi: grundlÃ¤ggande fÃ¶rstÃ¥else, uppfÃ¶ljning och beslutsstÃ¶d.
+- FÃ¶rsÃ¤ljning och leverans: erbjudande, prissÃ¤ttning, offert och kunddialog.
+- Verktyg och arbetssÃ¤tt: vad som faktiskt Ã¤r vÃ¤rt tiden i bÃ¶rjan.
 
 ### Verktyg och mallar
-Saker du kan använda direkt, till exempel kalkylatorer, checklistor och mallar som gör det enklare att ta nästa steg utan att fastna.
+Saker du kan anvÃ¤nda direkt, till exempel kalkylatorer, checklistor och mallar som gÃ¶r det enklare att ta nÃ¤sta steg utan att fastna.
 
 ### Inspiration och erfarenheter
-Reflektioner och konkreta exempel från verkligheten – både det som fungerat och det som kostat mer än det borde.
+Reflektioner och konkreta exempel frÃ¥n verkligheten â€“ bÃ¥de det som fungerat och det som kostat mer Ã¤n det borde.
 
-## Hur jag ser på AI i entreprenörskap
+## Hur jag ser pÃ¥ AI i entreprenÃ¶rskap
 
-AI är kraftfullt när det används rätt. Min utgångspunkt är enkel:
+AI Ã¤r kraftfullt nÃ¤r det anvÃ¤nds rÃ¤tt. Min utgÃ¥ngspunkt Ã¤r enkel:
 
-- AI hjälper dig att komma igång snabbare.
-- Du ansvarar för kvalitet, fakta och beslut.
-- Första utkast blir billigare. Omdöme och genomförande är fortfarande kärnan.
+- AI hjÃ¤lper dig att komma igÃ¥ng snabbare.
+- Du ansvarar fÃ¶r kvalitet, fakta och beslut.
+- FÃ¶rsta utkast blir billigare. OmdÃ¶me och genomfÃ¶rande Ã¤r fortfarande kÃ¤rnan.
 
-Jag kommer visa hur jag använder AI för att spara tid, skapa struktur och höja kvaliteten – utan att tumma på ansvar och professionalism.
+Jag kommer visa hur jag anvÃ¤nder AI fÃ¶r att spara tid, skapa struktur och hÃ¶ja kvaliteten â€“ utan att tumma pÃ¥ ansvar och professionalism.
 
-## För vem är Solopreneur?
+## FÃ¶r vem Ã¤r Solopreneur?
 
-Solopreneur är för dig som:
+Solopreneur Ã¤r fÃ¶r dig som:
 
-- Vill starta, och göra det smart och strukturerat.
-- Har startat, men känner att det är rörigt och svårt att prioritera.
-- Vill bygga något långsiktigt – inte bara “testa lite”.
-- Vill använda AI för att få mer gjort, men utan att förlora kontrollen.
+- Vill starta, och gÃ¶ra det smart och strukturerat.
+- Har startat, men kÃ¤nner att det Ã¤r rÃ¶rigt och svÃ¥rt att prioritera.
+- Vill bygga nÃ¥got lÃ¥ngsiktigt â€“ inte bara â€œtesta liteâ€.
+- Vill anvÃ¤nda AI fÃ¶r att fÃ¥ mer gjort, men utan att fÃ¶rlora kontrollen.
 
-## Så får du ut mest av Solopreneur
+## SÃ¥ fÃ¥r du ut mest av Solopreneur
 
-Om du är ny här, börja så här:
+Om du Ã¤r ny hÃ¤r, bÃ¶rja sÃ¥ hÃ¤r:
 
-1. Läs några guider i den ordning som passar din situation (start, struktur, ekonomi, försäljning).
-2. Använd verktygen och mallarna direkt i din vardag.
-3. Testa i små steg, justera och bygg vidare.
-4. Prenumerera på nyhetsbrevet för nya guider, verktyg och konkreta exempel.
+1. LÃ¤s nÃ¥gra guider i den ordning som passar din situation.
+2. AnvÃ¤nd verktygen och mallarna direkt i din vardag. BokmÃ¤rk sidan fÃ¶r enkel Ã¥tkomst.
+3. Testa och bygg i smÃ¥ steg, justera och bygg vidare.
+4. Prenumerera pÃ¥ nyhetsbrevet fÃ¶r nya guider, verktyg och konkreta exempel.
 
 ## En sista sak
 
-Det här är inte en “perfekt plan” för alla. Det är ett samlat bibliotek av erfarenhet, metoder och verktyg som du kan använda, anpassa och bygga vidare på.
+Det hÃ¤r Ã¤r inte en â€œperfekt planâ€ fÃ¶r alla. Det Ã¤r mitt samlade bibliotek av erfarenhet, metoder och verktyg som du kan anvÃ¤nda, anpassa och bygga vidare pÃ¥.
 
-Målet är tydligt: att hjälpa fler nya entreprenörer få en bättre start, undvika onödiga misstag och snabbare komma till ett läge där företaget känns stabilt – både i siffror och i vardag.
+MÃ¥let Ã¤r tydligt: att hjÃ¤lpa fler nya entreprenÃ¶rer fÃ¥ en bÃ¤ttre start, undvika onÃ¶diga misstag och snabbare komma till ett lÃ¤ge dÃ¤r fÃ¶retaget kÃ¤nns stabilt â€“ bÃ¥de i siffror och i vardag.
 
-Välkommen.
+VÃ¤lkommen!
+
+/Daniel Borkeby
+
+<div class="so-card so-card-emphasis" style="margin-top: 2rem; padding: 1.25rem;">
+  <div style="font-weight: 600; font-size: 1.125rem; line-height: 1.4;">
+    Prenumerera pÃ¥ nyhetsbrevet
+  </div>
+  <p style="margin-top: .5rem;">
+    AnvÃ¤ndbara tips, mina lÃ¤rdomar och nya resurser pÃ¥ Solopreneur.se - Direkt i din inkorg.
+  </p>
+  <div style="margin-top: 1rem;">
+    <a class="so-btn-primary" href="/nyhetsbrev/" data-pi-event="newsletter_signup">
+      Prenumerera
+    </a>
+  </div>
+</div>
+

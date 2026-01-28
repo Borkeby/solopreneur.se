@@ -118,8 +118,16 @@ html[data-theme="dark"] {
     }
 
     /* Buttons */
+    .so-btn-primary,
+    .so-btn-secondary {
+        @apply inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold transition no-underline;
+        text-decoration: none;
+        border-bottom: 0;
+        background-image: none;
+    }
+
     .so-btn-primary {
-        @apply inline-flex items-center justify-center rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white transition;
+        @apply bg-accent text-white;
     }
 
         .so-btn-primary:hover {
@@ -127,12 +135,22 @@ html[data-theme="dark"] {
         }
 
     .so-btn-secondary {
-        @apply inline-flex items-center justify-center rounded-full border border-border bg-surface px-5 py-2.5 text-sm font-semibold text-foreground transition;
+        @apply border border-border bg-surface text-foreground;
     }
 
         .so-btn-secondary:hover {
             background: color-mix(in srgb, var(--color-muted) 60%, transparent);
         }
+
+    /* Ensure prose/markdown link styles never underline buttons */
+    .prose a.so-btn-primary,
+    .prose a.so-btn-secondary {
+        @apply no-underline;
+        text-decoration: none !important;
+        border-bottom: 0 !important;
+        background-image: none !important;
+    }
+
 
     /* Pills */
     .so-pill-link {
@@ -178,6 +196,16 @@ html[data-theme="dark"] {
 :target {
     scroll-margin-block: 1rem;
 }
+
+.so-tag-chip {
+    @apply bg-surface text-foreground border border-border no-underline;
+    text-decoration: none;
+    background-image: none;
+}
+
+    .so-tag-chip:hover {
+        background: color-mix(in srgb, var(--color-muted) 60%, transparent);
+    }
 
 /* HERO: vänsterställd text, men hela innehållsblocket centrerat i kortet */
 .so-hero.so-hero-left-centered {

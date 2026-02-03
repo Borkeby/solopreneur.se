@@ -83,7 +83,7 @@ Jag använder båda beroende på läge.
 ## Vill du göra exakt samma resa?
 
 > Jag har lagt allt “hur du gör”-innehåll som en guide. Den innehåller steg-för-steg: repo, första pushen, token eller SSH, och hur du slipper lösenordsstrul:  
-> **[Från lokal AstroPaper till GitHub utan lösenordsstrul](/playbooks/astro-paper-lokalt-till-github/)**
+> **[Från lokal AstroPaper till GitHub utan lösenordsstrul](/guider/astro-paper-lokalt-till-github/)**
 
 ## Nästa inlägg
 

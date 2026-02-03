@@ -55,7 +55,7 @@ const latestPosts = sortedPosts
   .filter((p) => (heroPost ? p.id !== heroPost.id : true))
   .slice(0, 4);
 
-const guidesCollection = await getCollection("playbooks", ({ data }) => !data.draft);
+const guidesCollection = await getCollection("guider", ({ data }) => !data.draft);
 const sortedGuides = getSortedPosts(guidesCollection as any);
 const guidePosts = sortedGuides.slice(0, 3);
 
@@ -64,7 +64,7 @@ const sortedDownloads = getSortedPosts(downloadsCollection as any);
 const downloadPosts = sortedDownloads.slice(0, 3);
 
 const quickLinks = [
-  { label: "Guider", href: "/playbooks/" },
+  { label: "Guider", href: "/guider/" },
   { label: "Verktyg", href: "/verktyg/" },
   { label: "Nedladdningar", href: "/nedladdningar/" },
   { label: "Nyhetsbrev", href: "/nyhetsbrev/" },
@@ -492,7 +492,7 @@ const imgAlt = ((d.data as any).cardImageAlt as string | undefined) ?? d.data.ti
         <div class="mt-5 grid gap-4 md:grid-cols-2">
           {guidePosts.slice(0, 2).map((p) => (
             <a
-              href={`/playbooks/${p.data.slug}/`}
+              href={`/guider/${p.data.slug}/`}
               class="so-card so-card-hover block overflow-hidden"
             >
               <div class="p-5 sm:p-6">
@@ -540,7 +540,7 @@ const imgAlt = ((d.data as any).cardImageAlt as string | undefined) ?? d.data.ti
           <ul class="space-y-1">
             {guidePosts.slice(2).map((p) => (
               <li>
-                <a href={`/playbooks/${p.data.slug}/`} class="so-latest-link">
+                <a href={`/guider/${p.data.slug}/`} class="so-latest-link">
                   <div class="so-latest-date">GUIDE</div>
                   <div class="so-latest-title">{p.data.title}</div>
                 </a>
@@ -552,7 +552,7 @@ const imgAlt = ((d.data as any).cardImageAlt as string | undefined) ?? d.data.ti
 
       <div class="mt-6">
         <a
-          href="/playbooks/"
+          href="/guider/"
           class="so-btn-secondary inline-flex w-full items-center justify-center gap-2"
         >
           Visa alla guider <IconArrowRight class="inline-block rtl:-rotate-180" />

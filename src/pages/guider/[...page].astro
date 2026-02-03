@@ -11,7 +11,7 @@ import getSortedPosts from "@/utils/getSortedPosts";
 import { SITE } from "@/config";
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const guides = await getCollection("playbooks", ({ data }) => !data.draft);
+  const guides = await getCollection("guider", ({ data }) => !data.draft);
   return paginate(getSortedPosts(guides as any), { pageSize: SITE.postPerPage });
 }) satisfies GetStaticPaths;
 
@@ -29,7 +29,7 @@ const { page } = Astro.props;
             <Card
               {...(entry as any)}
               eyebrow="GUIDER"
-              href={`/playbooks/${slug}/`}
+              href={`/guider/${slug}/`}
             />
           );
         })

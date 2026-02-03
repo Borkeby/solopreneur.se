@@ -4,7 +4,7 @@ import { glob } from "astro/loaders";
 import { SITE } from "@/config";
 
 export const BLOG_PATH = "src/data/blog";
-export const PLAYBOOKS_PATH = "src/data/playbooks";
+export const GUIDER_PATH = "src/data/guider";
 export const DOWNLOADS_PATH = "src/data/downloads";
 
 const makeSchema = (image: ImageFunction, defaultTags: string[]) =>
@@ -61,9 +61,9 @@ const blog = defineCollection({
     schema: ({ image }) => makeSchema(image, ["others"]),
 });
 
-const playbooks = defineCollection({
-    loader: glob({ pattern: "**/[^_]*.md", base: `./${PLAYBOOKS_PATH}` }),
-    schema: ({ image }) => makeSchema(image, ["playbooks"]),
+const guider = defineCollection({
+    loader: glob({ pattern: "**/[^_]*.md", base: `./${GUIDER_PATH}` }),
+    schema: ({ image }) => makeSchema(image, ["guider"]),
 });
 
 const downloads = defineCollection({
@@ -71,4 +71,4 @@ const downloads = defineCollection({
     schema: ({ image }) => makeDownloadsSchema(image, ["downloads"]),
 });
 
-export const collections = { blog, playbooks, downloads };
+export const collections = { blog, guider, downloads };

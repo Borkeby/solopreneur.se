@@ -91,7 +91,7 @@ Mitt första mål var enklare:
 När det var gjort visste jag att jag hade kontroll på grunderna: filer, struktur och flödet från ändring → resultat.
 
 > Vill du göra samma resa? Jag har skrivit en enkel guide som visar exakt hur du kommer igång lokalt – utan att du behöver några förkunskaper eller pengar för den delen (det är gratis):  
-> **[Kom igång med AstroPaper lokalt (nybörjarguide) – så gjorde jag med Solopreneur](/playbooks/kom-igang-med-astropaper-lokalt/)**
+> **[Kom igång med AstroPaper lokalt (nybörjarguide) – så gjorde jag med Solopreneur](/guider/kom-igang-med-astropaper-lokalt/)**
 
 ## Mer än “bara en statisk sida”: verktyg och annat jag kan bygga vidare med
 
@@ -123,6 +123,6 @@ Om du är nybörjare och vill komma igång utan att krångla:
 - Fortsätt sedan steg för steg.
 
 Jag har gjort guiden så enkel som möjligt här:
-**[Kom igång med AstroPaper lokalt (nybörjarguide) – så gjorde jag med Solopreneur](/playbooks/kom-igang-med-astropaper-lokalt/)**
+**[Kom igång med AstroPaper lokalt (nybörjarguide) – så gjorde jag med Solopreneur](/guider/kom-igang-med-astropaper-lokalt/)**
 
 Nästa inlägg kan jag skriva om hur jag gick från “det fungerar lokalt” till Github och källkodsredigerare som Visual Studio och Visual Code).

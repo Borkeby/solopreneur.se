@@ -1,5 +1,5 @@
 ﻿---
-title: "Varför jag bytte från ChatGPT till Claude – och varför det förändrade allt"
+title: "Varför jag bytte från ChatGPT till Claude – och hur mycket bättre det blev"
 author: "Daniel Borkeby"
 pubDatetime: 2026-02-03T09:00:00Z
 modDatetime: 2026-02-03T09:00:00Z
